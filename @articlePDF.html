@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head  th:replace="templates/fragment/header :: common_header(~{::title},~{::link},~{})">
+
+    <link rel="stylesheet" href="/templates/resources/css/pdf.css">
+    <!-- markdown扩展 -->
+    <link rel="stylesheet" href="/templates/resources/css/admonition.css">
+    <title>PDF预览</title>
+</head>
+
+<body cms:inline="none">
+    <div class="markdown container" th:utext="${view.formatContent}">
+    </div>
+    <div th:replace="templates/fragment/footer"></div>
+    <script>
+        // 图片居中
+        $('.markdown p').find('> img').parent().css({ "display": 'flex', "justify-content": "center", "align-items": "center" });
+    </script>
+</body>
+
+</html>

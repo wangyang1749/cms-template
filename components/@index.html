@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
+    <meta charset="UTF-8">
+    <meta name="keywords" content="生物信息学,生物信息分析,微生物学,免疫学,分子生物学,生物化学,基因工程,细胞生物学,r语言,python">
+    <meta name="description"
+        content="学生物，是帮助喜欢生物的人学习最新、最热门生物知识,网站内容包括生物信息学,生物信息分析,微生物学,免疫学,分子生物学,生物化学,基因工程,细胞生物学方面文章,r语言,python">
+    <title>学生物</title>
+    <link rel="stylesheet" href="/templates/resources/css/home.css">
+
+</head>
+
+<body cms:inline="none">
+    <div cms:replace="/html/components/header :: #fragment"></div>
+
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-9">
+                <div id="main-content">
+                    <div cms:replace="/html/components/carousel :: #fragment" ></div>
+                        
+                    <div class="category-horizontal mb-3">
+                        <div class="category-title"><span>所有文章分类</span></div>
+                        <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm mb-3">
+                            <div cms:replace="/html/components/hotArticle :: #fragment"></div>
+                        </div>
+                        <!-- <div class="col-sm mb-3">
+                            <div cms:replace="/html/components/likeArticle.html"></div>
+                        </div> -->
+                        <div class="col-sm  mb-3">
+                            <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
+                        </div>
+                        
+                    </div>
+
+
+                    <div th:each="item : ${category}" class="mb-3 list-group-flush">
+                        <div class="list-group-item list-group-item-light   d-flex justify-content-between">
+                            <span th:text="${item.name}"></span>
+                            <a class="text-secondary" th:href="@{'~/'+${item.path}+'/'+${item.viewName}+'.html'}"> 更多
+                            </a>
+                        </div>
+                        <div class=" index-article  ">
+                                <div cms:replace="@{'~/html/components/'+${item.viewName}+'.html'}" parser></div>
+
+                        </div>
+                    </div>
+
+                    <!-- <div class="row">
+                        <div class="col-lg-1">
+                                
+                        </div>
+                        <div class="col-lg-11">
+                           
+                        </div>
+                    </div> -->
+
+
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <div id="siderbar">
+                    <div class="card mb-3  bg-white p-4">
+                        <a href="/user/write" target="_blank" class="mb-1">
+                            <button type="button" class="btn btn-outline-secondary btn-lg btn-block">写文章</button>
+                        </a>
+                        <div>
+                            <div cms:if="${#request.getAttribute('username')!=null}" class="bd-search d-flex align-items-center">
+                                <a  class="nav-link text-secondary" cms:text="'欢迎'+${#request.getAttribute('username')+'登录'}" href="/user/info"></a>
+                                <a class="text-secondary" href="/user/logout">退出</a>
+                            </div>
+
+                            <a  cms:if="${#request.getAttribute('username')==null}"  class="nav-link text-secondary" href="/login">请登录</a>
+                        </div>
+                    </div>
+
+
+                    <div class="card mb-3  bg-white p-4">
+                        <h5><span class="badge badge-danger ">21考研倒计时:</span></h5>
+                        <h5><strong id="timer">&nbsp;</strong></h5>
+                    </div>
+                    <div class="col-sm  mb-3">
+                            <div cms:replace="~{/html/components/myArticle :: #fragment} ?:_"></div>
+                        </div>
+                    <!-- <div class="mb-3">
+                        <include href="/html/components/myArticle.html"/>
+                    </div>
+
+                    <div class="mb-3">
+                        <include href="/html/components/keyWordArticle.html"/>
+                    </div> -->
+
+                    <!-- <div class="card mb-3  bg-white p-2">
+                        <include href="/html/components/myHtml.html">
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+
+    <div th:replace="templates/fragment/footer"></div>
+    <script src="/templates/resources/js/search_engine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        function leftTimer(year, month, day, hour, minute, second) {
+            var leftTime = (new Date(year, month - 1, day, hour, minute, second)) - (new Date()); //计算剩余的毫秒数 
+            var days = parseInt(leftTime / 1000 / 60 / 60 / 24, 10); //计算剩余的天数 
+            var hours = parseInt(leftTime / 1000 / 60 / 60 % 24, 10); //计算剩余的小时 
+            var minutes = parseInt(leftTime / 1000 / 60 % 60, 10);//计算剩余的分钟 
+            var seconds = parseInt(leftTime / 1000 % 60, 10);//计算剩余的秒数 
+            // console.log(days)
+            days = checkTime(days);
+            hours = checkTime(hours);
+            minutes = checkTime(minutes);
+            seconds = checkTime(seconds);
+
+            document.getElementById("timer").innerHTML = days + "天" + hours + "小时" + minutes + "分" + seconds + "秒";
+        }
+
+        leftTimer(2020, 12, 26, 0, 0, 0)
+        setInterval(function () { leftTimer(2020, 12, 26, 0, 0, 0) }, 1000);
+
+
+        function checkTime(i) { //将0-9的数字前面加上0，例1变为01 
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+
+
+        $('.bd-search').carousel({
+            interval: 2000
+        })
+
+        // 图片懒加载
+        $(function () {
+            $("img.lazy").lazyload({ effect: "fadeIn" });
+        });
+    </script>
+</body>
+
+</html>

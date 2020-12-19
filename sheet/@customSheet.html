@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="templates/fragment/header :: common_header(~{::title},~{::link},~{})">
+
+    <title th:text="${view.title}"></title>
+    <link rel="stylesheet" href="/templates/resources/css/sheet.css">
+    <!-- markdown扩展 -->
+    <link rel="stylesheet" href="/templates/resources/css/admonition.css">
+</head>
+
+<body cms:inline="none">
+
+    <div cms:replace="/html/components/header :: #fragment"></div>
+    <canvas id="canvas" width="" height="" class="canvas-bg canvas wrap-bg" ref="canvas"></canvas>
+
+    <div class="container">
+        <div class="container-bg   shadow-lg  mb-3  rounded p-3">
+            <div th:utext="${view.formatContent}">
+
+            </div>
+        </div>
+    </div>
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+    <div th:replace="templates/fragment/footer"></div>
+    <script src="/templates/resources/js/search_engine.js"></script>
+
+    <script>
+
+        $(function () {
+            $("img.lazy").lazyload({ effect: "fadeIn" });
+
+            $("video.lazy").lazyload({ effect: "fadeIn" });
+
+        });
+
+
+        function colorValue(min) {
+            return Math.floor(Math.random() * 255 + min);
+        }
+        function createColorStyle(r, g, b) {
+            return 'rgba(' + r + ',' + g + ',' + b + ', 0.8)';
+        }
+        function Color(min) {
+            min = min || 0;
+            this.r = colorValue(min);
+            this.g = colorValue(min);
+            this.b = colorValue(min);
+            this.style = createColorStyle(this.r, this.g, this.b);
+        }
+        canvasControler = [
+            {
+                canvasEffect: function (canvas) {
+                    var dots = {
+                        nb: 1000,//Dot的总数
+                        distance: 50,
+                        d_radius: 100,
+                        array: []
+                    };
+
+                    //创建Dot类以及一系列方法
+                    function Dot() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+
+                        this.vx = -.5 + Math.random();
+                        this.vy = -.5 + Math.random();
+
+                        this.radius = Math.random() * 2;
+
+                        this.color = new Color();
+                    }
+
+                    Dot.prototype = {
+                        draw: function () {
+                            ctx.beginPath();
+                            ctx.fillStyle = this.color.style;
+                            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                            ctx.fill();
+                        }
+                    };
+                    for (var i = 0; i < dots.nb; i++) {
+                        dots.array.push(new Dot());
+                    }
+
+                    var ctx = canvas.getContext("2d");
+                    function animateDots() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);//清除画布，否则线条会连在一起
+                        for (var i = 0; i < dots.nb; i++) {
+                            var dot = dots.array[i];
+                            if (dot.y < 0 || dot.y > canvas.height) {
+                                // dot.vx = dot.vx;
+                                dot.vy = - dot.vy;
+                            }
+                            else if (dot.x < 0 || dot.x > canvas.width) {
+                                dot.vx = - dot.vx;
+                                // dot.vy = dot.vy;
+                            }
+                            dot.x += dot.vx;
+                            dot.y += dot.vy;
+                        }
+                        for (i = 0; i < dots.nb; i++) {
+                            dots.array[i].draw();
+                        }
+                        requestAnimationFrame(animateDots)
+                    }
+                    animateDots()
+                }
+            }, {
+                canvasEffect: function (canvas) {
+                    var ctx = canvas.getContext("2d");
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = "30px Verdana";
+                    var gradient = ctx.createLinearGradient(50, 0, canvas.width, 50);
+                    gradient.addColorStop("0", "magenta");
+                    gradient.addColorStop("0.5", "blue");
+                    gradient.addColorStop("1.0", "red");
+                    // Fill with gradient
+                    ctx.strokeStyle = gradient;
+                    ctx.strokeText("Big smile!", 10, 60);
+                }
+            }
+        ]
+
+
+        document.getElementById("canvas").height = window.innerHeight
+        document.getElementById("canvas").width = window.innerWidth
+        canvasControler[0].canvasEffect(document.getElementById("canvas"))
+
+
+
+
+
+        //alert("ddwedwef"+ $('#mp3Btn').html())
+        $(function () {
+
+            //播放器控制
+            var audio = document.getElementById('mp3Btn');
+
+            audio.volume = .3;
+
+
+            //播放完毕
+            $('#mp3Btn').on('ended', function () {
+                console.log("音频已播放完成");
+                audio.play();
+            })
+
+
+            $(document).one('click', function () {
+
+                $('.btn-audio').toggleClass("rotate");
+                audio.play();
+            })
+
+            $('.btn-audio').click(function () {
+                $(this).toggleClass("rotate");
+                event.stopPropagation();//防止冒泡
+
+                if ($(this).hasClass("rotate")) { //如果当前是暂停状态
+                    // $('.btn-audio').css({'background':'url(http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/imgSvg-1601552624518.svg) no-repeat center bottom','background-size':'cover'});
+                    audio.play(); //播放
+                    return;
+                } else {//当前是播放状态
+                    //  $('.btn-audio').css({'background':'url(http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/imgSvg-1601552311513.svg) no-repeat center bottom','background-size':'cover'});
+                    audio.pause(); //暂停
+                }
+            });
+        })
+
+    </script>
+
+</body>
+
+</html>

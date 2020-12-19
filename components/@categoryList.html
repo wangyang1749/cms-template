@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="templates/fragment/header :: common_header(~{},~{},~{})">
+    <title>Document</title>
+</head>
+
+<body>
+    <section id="fragment">
+        <div class="category-list">
+            <a th:each="item : ${view}" th:href="${item.linkPath}" th:text="${item.name}"
+                th:class="'css-'+${item.viewName}">Dapibus ac facilisis in</a>
+        </div>
+    </section>
+</body>
+
+</html>

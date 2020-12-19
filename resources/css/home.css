@@ -1,0 +1,32 @@
+
+.showloading {
+    display: none;
+}
+
+.css-首页 {
+    color: rgba(0, 0, 0, .7) !important;
+}
+
+.carousel-item {
+    max-height: 17rem;
+
+    text-shadow: 5px 2px 6px #000;
+}
+
+.carousel-item img {
+    height: 100%;
+}
+
+.carousel-caption h5 {
+    font-weight: bold;
+}
+
+.carousel-item p {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+a:link {
+    text-decoration: none;
+
+}
