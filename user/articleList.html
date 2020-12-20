@@ -54,7 +54,15 @@
             <a class="list-group-item list-header-item" th:href="'/user/articleList?categoryId='+${item.id}"
                 th:each="item : ${categories}" th:text="${item.name}"></a>
         </div>
-
+        <div th:if="${categoryId!=null}">
+                <form th:action="@{'~/user/writeDraft/'+${categoryId}}" method="get" class="input-group">
+                    <input name="title" type="text" class="form-control" placeholder="input article name" >
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit" >创建文章</button>
+                    </div>
+                </form>
+        </div>
+      
 
         <div th:if="${view.totalPages} gt '1'">
             <nav aria-label="Page navigation example">
