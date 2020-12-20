@@ -149,6 +149,7 @@
     let categoryUrl = $("#categoryUrl").val()
     var url = location.hostname;
     var protocol = window.location.protocol;
+    var token = $.cookie('Authorization')
     /*回收文章*/
     function deleteArticle() {
         var r = confirm("确认移入回收站吗？");
@@ -159,7 +160,8 @@
                     'user-agent': 'Mozilla/4.0 MDN Example',
                     'content-type': 'application/json',
                     'Accept': 'application/json,text/plain,*/*',
-                    'AuthorizeType': 'Cookie'
+                    'Authorization': 'Bearer ' + token,
+                    // 'AuthorizeType': 'Cookie'
                 },
                 method: 'GET',
             }).then(function (response) {
