@@ -147,12 +147,13 @@
     let articleId = $("#articleId").val()
     let pathname = window.location.pathname
     let categoryUrl = $("#categoryUrl").val()
-
+    var url = location.hostname;
+    var protocol = window.location.protocol;
     /*回收文章*/
     function deleteArticle() {
         var r = confirm("确认移入回收站吗？");
         if (r == true) {
-            fetch('http://localhost:8080/api/article/recycle/' + articleId, {
+            fetch(protocol + "//" + url + ":8080/api/article/recycle/" + articleId, {
                 // body: JSON.stringify(data),
                 headers: {
                     'user-agent': 'Mozilla/4.0 MDN Example',
