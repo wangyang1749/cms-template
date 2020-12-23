@@ -25,7 +25,7 @@
                 }
 
                 elems.forEach(elem => {
-                    katex.render(elem.textContent, elem, { throwOnError: true, displayMode: elem.nodeName !== 'SPAN', });
+                    katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
                 });
             });
         })();
