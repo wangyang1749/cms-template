@@ -76,7 +76,7 @@
                         <div>
                             <div cms:if="${#request.getAttribute('username')!=null}" class="bd-search d-flex align-items-center">
                                 <a  class="nav-link text-secondary" cms:text="'欢迎'+${#request.getAttribute('username')+'登录'}" href="/user/info"></a>
-                                <a class="text-secondary" href="/user/logout">退出</a>
+                                <a class="text-secondary" href="javascript:;" id="exit">退出</a>
                             </div>
 
                             <a  cms:if="${#request.getAttribute('username')==null}"  class="nav-link text-secondary" href="/login">请登录</a>
@@ -144,8 +144,14 @@
             }
             return i;
         }
-
-
+        // https://www.cnblogs.com/kuiyeit/p/4785539.html
+        // https://www.cnblogs.com/miny-simp/p/9555498.html
+        $("#exit").click(function(){
+            localStorage.removeItem("Authorization");
+            localStorage.removeItem("user");
+            $.cookie("Authorization",null,{path:"/"});
+            window.location.href = "/"
+        })
 
         $('.bd-search').carousel({
             interval: 2000

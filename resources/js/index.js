@@ -189,11 +189,19 @@ function previewArticleHTML(path, viewName) {
     if ($("#" + viewName).html().replace(/\s+/g, "") == "") {
         $.ajax({
             url: httpUrl + "/" + path + "/" + viewName + ".html",
+            headers: {
+                'Content-Type': 'application/json;charset=utf8',
+                'Accept': 'application/json'
+            },
             type: "get",
             success: function (data) {
                 // console.log($(data).find(".markdown").html())
 
                 $("#" + viewName).html("<div class='p-3'>" + $(data).find(".markdown").html() + "</div>")
+            },error: function (e) {
+                // console.log(e)
+                console.log(e.status);
+                console.log(e.responseJSON.message);
             }
         });
     } else {

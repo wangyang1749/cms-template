@@ -75,8 +75,7 @@
         <form class="article-option">
             <div class="form-group">
                 <label for="exampleFormControlInput1">文章标题</label>
-                <input class="form-control" th:value="${view==null?'':view.title}" id="title" type="text"
-                    placeholder="请输入文章标题" />
+                <input class="form-control" th:value="${view==null?'':view.title}" id="title" type="text" placeholder="请输入文章标题" />
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">文章分类</label>
@@ -91,8 +90,8 @@
             </div>
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">文章摘要</label>
-                <textarea th:text="${view==null?'':view.summary}" id="summary" class="form-control"
-                    placeholder="请输入摘要（不输入，将自动从文章截取）" rows="3"></textarea>
+                <textarea th:text="${view==null?'':view.summary}" id="summary" class="form-control" placeholder="请输入摘要（不输入，将自动从文章截取）"
+                    rows="3"></textarea>
 
             </div>
             <div class="d-flex justify-content-end form-group">
@@ -175,6 +174,44 @@
 
 
     <script src="/templates/resources/js/jquery-3.4.1.min.js"></script>
+
+    <script>
+
+        /**
+     * 插入内容到光标处
+     */
+        (function ($) {
+            // "use strict";
+            $.fn.extend({
+                insertAtCaret: function (myValue) {
+                    var $t = $(this)[0];
+                    if (document.selection) {
+                        this.focus();
+                        var sel = document.selection.createRange();
+                        sel.text = myValue;
+                        this.focus();
+                    } else {
+                        if ($t.selectionStart || $t.selectionStart == '0') {
+                            var startPos = $t.selectionStart;
+                            var endPos = $t.selectionEnd;
+                            var scrollTop = $t.scrollTop;
+                            $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
+                            this.focus();
+                            $t.selectionStart = startPos + myValue.length;
+                            $t.selectionEnd = startPos + myValue.length;
+                            $t.scrollTop = scrollTop;
+                        } else {
+                            this.value += myValue;
+                            this.focus();
+                        }
+                    }
+                }
+            });
+        })(jQuery);
+
+
+    </script>
+
     <script src="/templates/resources/js/jquery.cookie.js"></script>
 
     <script src="/templates/resources/js/markdown-it.min.js"></script>
@@ -186,13 +223,49 @@
     <script src="/templates/resources/js/jquery.pagination.js"></script>
     <script src="/templates/resources/js/editormd.min.js"></script>
     <script src="/templates/resources/js/uploadImg.js"></script>
+    <script>
+        var testEditor;
+
+        $(function () {
+            testEditor = editormd("test-editormd", {
+                width: "90%",
+                height: 640,
+                syncScrolling: "single",
+                path: "/templates/resources/lib/editor/",
+                htmlDecode: true,
+                imageUpload: true,
+                onload: function () {
+                    initPasteDragImg(this); //必须
+                }
+                // emoji:true
+            });
+
+            /*
+            // or
+            testEditor = editormd({
+                id      : "test-editormd",
+                width   : "90%",
+                height  : 640,
+                path    : "../lib/"
+            });
+            */
+        });
+    </script>
     <script src="/templates/resources/js/write.js?v=1.3"></script>
 
-    <script th:inline="javascript">
-        cmsWrite.defaultCategoryId = /*[[${ view==null?'':view.categoryId }]]*/ "";
-        cmsWrite.articleId =/*[[${ view==null?'':view.id }]]*/ null;
-        // setSelectTags([[${ view==null?'':view.tagIds }]])
-        setSelectTags(/*[[${ view==null?'':view.tagIds }]]*/ null);
+    <script>
+
+
+
+
+
+        cmsWrite.defaultCategoryId = [[${ view==null?'':view.categoryId }]]
+        setSelectTags([[${ view==null?'':view.tagIds }]])
+        cmsWrite.articleId = null
+        function setArticleId(param) {
+            cmsWrite.articleId = param
+        }
+        setArticleId([[${ view==null?'':view.id }]])
         /**
          * 判断是否在更新页面
          */
@@ -202,37 +275,14 @@
         }
         cmsWriteInit()
 
-        $(function () {
-            var testEditor = editormd("test-editormd", {
-                width: "90%",
-                height: 640,
-                syncScrolling: "single",
-                path: "/templates/resources/lib/editor/",
-                htmlDecode: true,
-                tex: true,
-                imageUpload: true,
-                imageUploadURL: "/api/attachment/editormd",             // Upload url
-                // toolbarIcons: function () {
-                //     // Or return editormd.toolbarModes[name]; // full, simple, mini
-                //     // Using "||" set icons align right.
-                //     return ["undo", "redo", "|", "image", 
-                //      "fullscreen", "preview", "file","category","file","category"]
-                // },
-                onload: function () {
-                    initPasteDragImg(this); //必须
-                }, toolbarCustomIcons: {
-                    file: "<input type='text' accept=''.md' />",
-                    category: "<input type='text' accept=''.md' />",
-                    faicon: "<i class='fa fa-star' onclick='alert('faicon');'>ss</i>"
-                }
-                // emoji:true
-            });
-        });
-        editormd.katexURL = {
-            js: "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min",  // default: //cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min
-            css: "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min"   // default: //cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min
-        };
+        // formatHtml()
+
+
+
+
+
     </script>
+
 </body>
 
 </html>

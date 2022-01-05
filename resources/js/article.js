@@ -78,7 +78,7 @@ function shareTo(stype) {
 }
 
 // 图片居中
-$('.markdown p').find('> img').parent().css({"display":'flex',"justify-content":"center","align-items":"center"});
+$('.markdown p').find('> img').parent().css({ "display": 'flex', "justify-content": "center", "align-items": "center" });
 
 
 // 图片点击放大
@@ -117,19 +117,24 @@ var protocol = window.location.protocol;
 // var token = $.cookie('viewId')
 var port = window.location.port
 
-function downloadPDF(articleId){
-    let httpUrl = protocol + "//" + url ;
-    if(port){
-        httpUrl+=":"+port;
+function downloadPDF(articleId) {
+    let httpUrl = protocol + "//" + url;
+    if (port) {
+        httpUrl += ":" + port;
     }
     // console.log()
-    window.open(httpUrl+"/download/pdf/"+articleId);   
+    window.open(httpUrl + "/download/pdf/" + articleId);
 }
+
 
 function increaseViewCount(articleId) {
     if ($.cookie("viewId") != articleId) {
         $.ajax({
             url: protocol + "//" + url + ":8080/option/increaseViewCount/" + articleId,
+            headers: {
+                'Content-Type': 'application/json;charset=utf8',
+                'Accept': 'application/json'
+            },
             type: "get",
             success: function (data) {
                 $.cookie(
@@ -140,16 +145,29 @@ function increaseViewCount(articleId) {
                     }
                 );
                 document.getElementById("visits").innerHTML = data.data
-
+            }, error: function (e) {
+                // console.log(e)
+                console.log(e.status);
+                console.log(e.responseJSON.message);
             }
+
         });
     } else {
         $.ajax({
             url: protocol + "//" + url + ":8080/option/getVisitsCount/" + articleId,
+            headers: {
+                'Content-Type': 'application/json;charset=utf8',
+                'Accept': 'application/json'
+            },
             type: "get",
             success: function (data) {
                 document.getElementById("visits").innerHTML = data.data
+            }, error: function (e) {
+                // console.log(e)
+                console.log(e.status);
+                console.log(e.responseJSON.message);
             }
+
         });
     }
 
@@ -157,14 +175,14 @@ function increaseViewCount(articleId) {
 
 // 点赞状态
 function likeStatus(articleId) {
-        
+
     if ($.cookie("likeId") == articleId) {
         $("#like-img").attr("src", "/templates/resources/img/like_.svg");
     }
 }
 
 // 点赞
-function  increaseLikeCount(articleId) {
+function increaseLikeCount(articleId) {
     if ($.cookie("likeId") != articleId) {
         $.ajax({
             url: protocol + "//" + url + ":8080/option/increaseLikeCount/" + articleId,
@@ -185,11 +203,11 @@ function  increaseLikeCount(articleId) {
 }
 
 // 目录导航高度
-function setContentTableHeight(){
+function setContentTableHeight() {
     let headerHeight = $("#header").outerHeight(true)
     let windowHeight = $(window).height()
-    let contentTableHeight = windowHeight-headerHeight-18
-    $("#content-table").css("max-height",contentTableHeight+"px");
+    let contentTableHeight = windowHeight - headerHeight - 18
+    $("#content-table").css("max-height", contentTableHeight + "px");
 }
 
 if (document.body.clientWidth >= 977) {

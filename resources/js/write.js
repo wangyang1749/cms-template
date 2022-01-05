@@ -1,35 +1,3 @@
-/**
-* 插入内容到光标处
-*/
-(function ($) {
-    // "use strict";
-    $.fn.extend({
-        insertAtCaret: function (myValue) {
-            var $t = $(this)[0];
-            if (document.selection) {
-                this.focus();
-                var sel = document.selection.createRange();
-                sel.text = myValue;
-                this.focus();
-            } else {
-                if ($t.selectionStart || $t.selectionStart == '0') {
-                    var startPos = $t.selectionStart;
-                    var endPos = $t.selectionEnd;
-                    var scrollTop = $t.scrollTop;
-                    $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
-                    this.focus();
-                    $t.selectionStart = startPos + myValue.length;
-                    $t.selectionEnd = startPos + myValue.length;
-                    $t.scrollTop = scrollTop;
-                } else {
-                    this.value += myValue;
-                    this.focus();
-                }
-            }
-        }
-    });
-})(jQuery);
-
 
 function cmsWriteInit() {
     loadCategory()
@@ -102,7 +70,6 @@ function showTags() {
                     data: JSON.stringify({ "name": tag, "slugName": tag }),
                     success: function (data) {
                         // console.log(data.data.id)
-                        
                         cmsWrite.selectTags.push(data.data.id)
                         selectTagsMap[data.data.name] = data.data.id
                         // console.log(cmsWrite.selectTags)
@@ -361,8 +328,9 @@ $("#file").change(function () {
         $.ajax({
             url: protocol + "//" + url + ":8080/api/attachment/upload",
             headers: {
-
-                'Authorization': 'Bearer ' + token
+                'Content-Type': 'application/json;charset=utf8',
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json'
             },
             type: 'post',
             data: fd,
@@ -431,10 +399,9 @@ function deleteAttachment(id) {
     let address = protocol + "//" + url + ":8080/api/attachment/delete/" + id;
     fetch(address, {
         headers: {
-            'user-agent': 'Mozilla/4.0 MDN Example',
-            'content-type': 'application/json',
-            'Accept': 'application/json,text/plain,*/*',
-            'AuthorizeType': 'Cookie'
+            'Content-Type': 'application/json;charset=utf8',
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
         },
         credentials: "include",
     }).then(function (response) {
@@ -451,10 +418,9 @@ function loadAttachment(page) {
     let address = protocol + "//" + url + ":8080/api/attachment?page=" + page;
     fetch(address, {
         headers: {
-            'user-agent': 'Mozilla/4.0 MDN Example',
-            'content-type': 'application/json',
-            'Accept': 'application/json,text/plain,*/*',
-            'AuthorizeType': 'Cookie'
+            'Content-Type': 'application/json;charset=utf8',
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
         },
         credentials: "include",
     }).then(function (response) {
@@ -633,7 +599,9 @@ function uploadStrContentChange(originalData, svgInput, isUpdate, callback, atta
     $.ajax({
         url: uploadUrl,
         headers: {
-            'Authorization': 'Bearer ' + token
+            'Content-Type': 'application/json;charset=utf8',
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
         },
         type: 'post',
         data: JSON.stringify({ "formatContent": svgInput, "originContent": originalData, renderType: dataRender }),
@@ -737,6 +705,7 @@ function updateAttachmentInput(id) {
     $.ajax({
         url: protocol + "//" + url + ":8080/api/attachment/find/" + id,
         headers: {
+            'Content-Type': 'application/json;charset=utf8',
             'Authorization': 'Bearer ' + token,
             'Accept': 'application/json'
         },

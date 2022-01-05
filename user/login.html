@@ -27,27 +27,31 @@
 
     <div class=" container ">
         <div class="row justify-content-md-center login">
-            <form method="POST">
-                <input type="text"  id="redirectURL">
+            <!-- <form method="POST"> -->
+            <div>
+                <!-- <input type="text" id="redirectURL"> -->
                 <div class="form-group ">
                     <label for="exampleInputEmail1">用户名</label>
-                    <input type="text" name="username" class="form-control" id="exampleInputEmail1"
-                        aria-describedby="emailHelp">
+                    <input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp">
                     <small id="emailHelp" class="form-text text-muted">输入你的用户名</small>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">用户密码</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" name="password" class="form-control" id="password">
                 </div>
                 <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1"> 记住我</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+                <button id="submit" class="btn btn-primary">Submit</button>
+                <!-- </form> -->
+            </div>
         </div>
     </div>
+    <script src="/templates/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/templates/resources/js/jquery.cookie.js"></script>
     <script>
+
         function getQueryVariable(variable) {
             var query = window.location.search.substring(1);
             var vars = query.split("&");
@@ -58,10 +62,43 @@
             return (false);
         }
         let param = getQueryVariable("redirect")
-        if(param){
-            document.getElementById("redirectURL").value=param
+        if (param) {
+            document.getElementById("redirectURL").value = param
         }
-        
+        var url = location.hostname;
+        var protocol = window.location.protocol;
+        function login(jsonData) {
+            $.ajax({
+                url: protocol + "//" + url + ":8080/api/user/login",
+                headers: {
+                    'Content-Type': 'application/json;charset=utf8',
+                    'Accept': 'application/json'
+                },
+                data: jsonData,
+                type: "POST",
+                success: function (data) {
+                    let token = data.data.token
+                    // console.log(token)
+                    localStorage.setItem("Authorization",token);
+                    $.cookie('Authorization',token)
+                    window.location.href = "/"
+
+                }
+            });
+        }
+
+        $("#submit").click(function () {
+            let username = $("#username").val()
+            let password = $("#password").val()
+            // alert(username + password)
+            let jsonData = JSON.stringify({username:username,password,password})
+            
+            login(jsonData)
+        })
+
+
+
+
     </script>
 </body>
 
