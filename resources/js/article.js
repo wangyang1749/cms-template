@@ -123,7 +123,16 @@ function downloadPDF(articleId) {
         httpUrl += ":" + port;
     }
     // console.log()
-    window.open(httpUrl + "/download/pdf/" + articleId);
+    window.open(httpUrl + "/download/article/" + articleId);
+}
+
+function downloadSheetPDF(id) {
+    let httpUrl = protocol + "//" + url;
+    if (port) {
+        httpUrl += ":" + port;
+    }
+    // console.log()
+    window.open(httpUrl + "/download/sheet/" + id);
 }
 
 
