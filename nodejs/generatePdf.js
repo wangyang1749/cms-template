@@ -29,7 +29,7 @@ const headerTemplate = `<div
         const page = await browser.newPage();
         await page.goto(arguments[0], { waitUntil: 'networkidle2' });
         // *{font-family: '楷体'} @page{margin: 27mm 16mm 27mm 16mm;} 
-        await page.addStyleTag({ content: "body{font-size: 18px;} audio{ display:none} video{ display:none}  #header{display:none} @font-face{font:'abc';src: url('./abc.ttf')} " })
+        await page.addStyleTag({ content: ".pdf{display:none} body{font-size: 18px;} audio{ display:none} video{ display:none}  #header{display:none} @font-face{font:'abc';src: url('./abc.ttf')} " })
         await page.pdf({
             path: arguments[1],
             format: 'A4',
