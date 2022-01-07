@@ -20,10 +20,14 @@
 </head>
 
 <body>
-        <div class="container ">
+    <div cms:replace="/html/components/header :: #fragment"></div>
+
+    <div class="container ">
         <h2>[[${status}]] 发生错误了</h2>
         [[${message}]]
     </div>
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+
 </body>
 
 </html>
