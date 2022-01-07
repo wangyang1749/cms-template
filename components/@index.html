@@ -74,12 +74,11 @@
                             <button type="button" class="btn btn-outline-secondary btn-lg btn-block">写文章</button>
                         </a>
                         <div>
-                            <div cms:if="${#request.getAttribute('username')!=null}" class="bd-search d-flex align-items-center">
+                            <div cms:if="${username}" class="bd-search d-flex align-items-center">
                                 <a  class="nav-link text-secondary" cms:text="'欢迎'+${#request.getAttribute('username')+'登录'}" href="/user/info"></a>
                                 <a class="text-secondary" href="javascript:;" id="exit">退出</a>
                             </div>
-
-                            <a  cms:if="${#request.getAttribute('username')==null}"  class="nav-link text-secondary" href="/login">请登录</a>
+                            <a  cms:if="!${username}"  class="nav-link text-secondary" href="/login">请登录</a>
                         </div>
                     </div>
 
