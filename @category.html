@@ -60,7 +60,7 @@
                             </a> -->
                         </div>
                         <!-- <div cms:replace="'/'+${view.category.path}+'/top/'+${view.category.viewName} ?: _" parser null></div> -->
-                        <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName}} ?:_" parser ></div>
+                        <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName}}  :: #fragment ?:_" parser ></div>
                     
                         <div id="components">
 
