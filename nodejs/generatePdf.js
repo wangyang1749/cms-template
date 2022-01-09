@@ -37,7 +37,7 @@ const headerTemplate = `<div
             headerTemplate,
             displayHeaderFooter: true,
             margin: {
-                top: 80,
+                top: 50,
                 bottom: 80
             },
         });
