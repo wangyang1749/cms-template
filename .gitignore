@@ -1,3 +1,4 @@
 install/
 nodejs/node_modules/
 *.pdf
+push.sh
