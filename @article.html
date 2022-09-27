@@ -2,7 +2,7 @@
 <html>
 
 <head th:replace="templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
-    <title th:text="${view.title}">文章详情</title>
+    <title th:text="${view.title} +' - 生信小木屋'">文章详情</title>
     <meta name="keywords" content="生命科学知识分享,生物技术,生物信息学" th:content="${view.title}">
     <meta name="description" content="分享生命科学方面相关文章" th:content="${view.summary}">
 

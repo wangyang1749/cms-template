@@ -3,10 +3,10 @@
 
 <head th:replace="templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
     <meta charset="UTF-8">
-    <meta name="keywords" content="生物信息学,生物信息分析,微生物学,免疫学,分子生物学,生物化学,基因工程,细胞生物学,r语言,python">
+    <meta name="keywords" content="生物信息学,生信,生信小木屋,生物信息分析,r语言,python">
     <meta name="description"
-        content="学生物，是帮助喜欢生物的人学习最新、最热门生物知识,网站内容包括生物信息学,生物信息分析,微生物学,免疫学,分子生物学,生物化学,基因工程,细胞生物学方面文章,r语言,python">
-    <title>学生物</title>
+        content="生信小木屋，用数据科学的知识，探索生命科学的奥秘">
+    <title>生信小木屋</title>
     <link rel="stylesheet" href="/templates/resources/css/home.css">
 
 </head>
@@ -83,10 +83,10 @@
                     </div>
 
 
-                    <div class="card mb-3  bg-white p-4">
+                     <!-- <div class="card mb-3  bg-white p-4">
                         <h5><span class="badge badge-danger ">21考研倒计时:</span></h5>
                         <h5><strong id="timer">&nbsp;</strong></h5>
-                    </div>
+                    </div> -->
                     <div class="col-sm  mb-3">
                             <div cms:replace="~{/html/components/myArticle :: #fragment} ?:_"></div>
                         </div>
@@ -130,11 +130,11 @@
             minutes = checkTime(minutes);
             seconds = checkTime(seconds);
 
-            document.getElementById("timer").innerHTML = days + "天" + hours + "小时" + minutes + "分" + seconds + "秒";
+            //document.getElementById("timer").innerHTML = days + "天" + hours + "小时" + minutes + "分" + seconds + "秒";
         }
 
-        leftTimer(2020, 12, 26, 0, 0, 0)
-        setInterval(function () { leftTimer(2020, 12, 26, 0, 0, 0) }, 1000);
+      //  leftTimer(2020, 12, 26, 0, 0, 0)
+       // setInterval(function () { leftTimer(2020, 12, 26, 0, 0, 0) }, 1000);
 
 
         function checkTime(i) { //将0-9的数字前面加上0，例1变为01 
