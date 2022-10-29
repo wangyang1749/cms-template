@@ -6,12 +6,28 @@
 </head>
 
 <body>
-    <section id="fragment">
-        <div class="category-list">
-            <a th:each="item : ${view}" th:href="${item.linkPath}" th:text="${item.name}"
-                th:class="'css-'+${item.viewName}">Dapibus ac facilisis in</a>
-        </div>
-    </section>
+    <div cms:replace="/html/components/header :: #fragment"></div>
+    <div class="container">
+    <div class="row ">
+    <div class="col-lg-9">
+
+           
+        <section id="fragment">
+            <div class="category-horizontal mb-3" th:each="item : ${view}" >
+            <div class="category-title"><span th:text="${item.name}">所有文章分类</span></div>
+            <div class="category-list"  >
+                <!-- [[${item.name}]] -->
+                <a th:each="child : ${item.childCategories}" th:href="${child.linkPath}" th:text="${child.name}"
+                    th:class="'css-'+${child.viewName}">Dapibus ac facilisis in</a>
+            </div>
+            </div>
+        </section>
+    
+    </div>
+    </div>
+    </div>
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+
 </body>
 
 </html>
