@@ -17,7 +17,7 @@
             <div class="category-title"><span th:text="${item.name}">所有文章分类</span></div>
             <div class="category-list"  >
                 <!-- [[${item.name}]] -->
-                <a th:each="child : ${item.childCategories}" th:href="${child.linkPath}" th:text="${child.name}"
+                <a th:each="child : ${item.children}" th:href="${child.linkPath}" th:text="${child.name}"
                     th:class="'css-'+${child.viewName}">Dapibus ac facilisis in</a>
             </div>
             </div>
