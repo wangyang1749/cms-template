@@ -175,8 +175,11 @@
                 // item = contents[i]
                 // console.log(item)
                 if(contents[i].id==id){
-                    console.log(contents[i])
-                    contents[i].children=jsonObj
+                    // console.log(contents[i])
+                    // if(contents[i].parentId)
+                    // const newItem = { ...jsonObj }
+
+                    contents[i].children = jsonObj.concat(contents[i].children)
                  
                 }
                 if(contents[i].children.length > 0){
@@ -196,17 +199,18 @@
             data.forEach(item => {
                 const detailsEle = document.createElement('ul');
                 const summaryEle = document.createElement('li');
-                if(item.parentId==0){
-                    const span = document.createElement('span');
-                    span.innerHTML = item.title;
-                    summaryEle.appendChild(span);
-                }else{
-                    const a = document.createElement('a');
-                    a.innerHTML = item.title;
-                    a.href=item.linkPath
-                    // a.className="nav-link"
-                    summaryEle.appendChild(a);
-                }
+                // if(item.parentId==0){
+                //     const span = document.createElement('span');
+                //     span.innerHTML = item.title;
+                //     summaryEle.appendChild(span);
+                // }else{
+                    
+                // }
+                const a = document.createElement('a');
+                a.innerHTML = item.title;
+                a.href=item.linkPath
+                // a.className="nav-link"
+                summaryEle.appendChild(a);
                
                 
                 

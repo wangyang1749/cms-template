@@ -55,7 +55,11 @@
                         <div id="components" class="mb-3">
 
                             <ul th:each="item : ${view.contents}"  class="list-group ">
-                                <li style="font-size: 1.2rem;" class="list-group-item  list-group-item-success font-weight-bold shadow-sm" th:text="${item.title}" >A disabled item</li>
+                                <a th:href="${item.linkPath}">
+                                    <li style="font-size: 1.2rem;" class="list-group-item  list-group-item-success font-weight-bold shadow-sm" th:text="${item.title}" >A disabled item</li>
+
+                                </a>
+                                
                                 <a th:each="child : ${item.children}" th:href="${child.linkPath}" class="text-secondary text-center" >
                                     <li   class="list-group-item list-group-item-action" th:text="${child.title}">
                                    

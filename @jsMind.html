@@ -26,13 +26,17 @@
 </head>
 
 <body>
-    <include href="/html/components/header.html"/>
+    <div cms:replace="/html/components/header :: #fragment"></div>
+
+    <!-- <include href="/html/components/header.html"/> -->
     <div class="container">
 
         <a class="text-secondary" th:href="@{'~/'+${category.path}+'/'+${category.viewName}+'.html'}">返回列表</a>
         <div id="jsmind_container"></div>
     </div>
-    <include href="/html/components/footer.html"/>
+    <!-- <include href="/html/components/footer.html"/>
+     -->
+     <div cms:replace="/html/components/footer :: #fragment"></div>
 
     <script type="text/javascript" src="/templates/resources/js/jsmind.js"></script>
     <script type="text/javascript" src="/templates/resources/js/jsmind.draggable.js"></script>
