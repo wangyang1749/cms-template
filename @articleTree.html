@@ -33,7 +33,12 @@
                                 <span class="mr-2  ">最后发布时间:<strong
                                         th:text="${#dates.format( view.updateDate, 'yyyy-MM-dd HH:mm:ss')}">时间</strong></span>
                                 <span class="mr-2">浏览量:<strong id="visits"></strong></span>
-                                <a  th:href="@{'~/user/edit/'+${view.id}}" class="text-secondary justify-content-end text-right">编辑</a>
+                                <span  class="admin" style="display: none;">
+                                    <a  th:href="@{'~/user/edit/'+${view.id}}" class=" text-secondary justify-content-end text-right">编辑</a>
+                                    <a  class=" text-secondary justify-content-end text-right" href="javascript:;" th:onclick="deleteArticle([[${view.id}]])" th:attr="data-id=${view.id}" >删除</a>
+                                </span>
+                               
+                                <!-- <div cms:if="${userId}!=null">11 </div> -->
                             </div>
                         </div>
                      
@@ -164,6 +169,7 @@
     <script src="/templates/resources/js/article.js?v=1.06"></script>
     <script src="/templates/resources/js/admonition.js"></script>
     <script src="/templates/resources/js/search_engine.js"></script>
+
     <script>
       
         function listContents(contents,id,jsonObj){
@@ -254,6 +260,33 @@
                 
             })
     </script>
+        <script>
+            // let viewName = "[[${view.category.viewName}]]"
+            var url = location.hostname;
+            var protocol = window.location.protocol;
+            var token = $.cookie('Authorization')
+            function deleteArticle(id) {
+    
+                if (confirm("确定删除该文章?")) {
+                    $.ajax({
+                        url: protocol + "//" + url + ":8080/api/article/delete/" + id,
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf8',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        type: "get",
+                        success: function (data) {
+                            // console.log(data.data)
+                            var datas = data.data
+                            // Toast("删除文章" + data.data.title + "成功！", 'success')
+                            window.location.href="/html_articleList_"+viewName+".html";
+                        }
+                    });
+    
+                }
+    
+            }
+        </script>
     <script >
         $(function () {
             $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
@@ -274,6 +307,11 @@
 
         /*************************评论代码****************************/
         let userId = $("#userId").val()
+
+        if(userId!=-1){
+            $(".admin").css("display","inline")
+        }
+       
         let submit = $('#submit')
         let pathname = window.location.pathname
         if (userId == "") {
