@@ -100,7 +100,7 @@ function move(header, panel, closeBtn) {
 
 
 
-function siderBar() {
+function siderBar(id) {
     // console.log("siderbarHeight" + $("#siderbar").outerHeight(true))
     // console.log("siderbarWidth" + $("#siderbar").width())
     // console.log("window" + $(window).height())
@@ -110,8 +110,8 @@ function siderBar() {
     // console.log("document height" + $(document).height());
     // console.log($("#main-content").outerHeight(true))
 
-    let siderbarHeight = $("#siderbar").outerHeight(true);
-    let siderbarWidth = $("#siderbar").width()
+    let siderbarHeight = $(id).outerHeight(true);
+    let siderbarWidth = $(id).width()
     let headerHeight = $("#header").outerHeight(true)
     let footerHeight = $("#footer").outerHeight(true)
     let windowHeight = $(window).height()
@@ -123,19 +123,19 @@ function siderBar() {
     // 底部导航是否出现并且 浏览器窗口不能同时显示头部侧栏和底部
     if (mainContentHeight > siderbarHeight) {
         if (documentHeight - windowHeight - scrollTop < footerHeight && windowHeight - headerHeight - footerHeight < siderbarHeight) {
-            $("#siderbar").css({ "position": "absolute", "bottom": "0", "top": "" })
+            $(id).css({ "position": "absolute", "bottom": "0", "top": "" })
         } else {
             // 窗口高度是否大于左侧面板高度
             if (windowHeight > siderbarHeight + headerHeight) {
-                $("#siderbar").css({ "position": "fixed", "top": headerHeight + "px", "width": siderbarWidth + "px" })
+                $(id).css({ "position": "fixed", "top": headerHeight + "px", "width": siderbarWidth + "px" })
             } else {
                 // console.log("2222")
                 // 窗口大小+滚动的距离是否=左侧面板的距离
                 if (scrollTop + windowHeight > siderbarHeight + headerHeight) {
                     // console.log("ok")
-                    $("#siderbar").css({ "position": "fixed", "bottom": "0", "width": siderbarWidth + "px" })
+                    $(id).css({ "position": "fixed", "bottom": "0", "width": siderbarWidth + "px" })
                 } else {
-                    $("#siderbar").css({ "position": "", "bottom": "" })
+                    $(id).css({ "position": "", "bottom": "" })
 
                 }
             }
@@ -144,9 +144,9 @@ function siderBar() {
 
 }
 if (document.body.clientWidth >= 977) {
-    siderBar()
+    siderBar("#siderbar")
     $(document).scroll(function () {
-        siderBar()
+        siderBar("#siderbar")
     })
 }
 

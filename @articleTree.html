@@ -16,6 +16,7 @@
 
     <div class="container ">
         <div class="row">
+            
             <div class="col-lg-9 mb-3">
 
                 <!-- <div>
@@ -68,24 +69,18 @@
 
                 <div id="siderbar">
 
-                    <div id="content-table" class="mb-3">
-                        <!-- 文章目录 -->
-                        <div class="  card shadow  bd-links ">
-                            <div id="content-table-header" class="card-header d-flex justify-content-between">
-                                <span>目录</span>
-                                <a href="javascript:;" id="close-content-table">&times;</a>
-                            </div>
-                            <div id="toc">
-
-                            </div>
-                            <div style="display: none;" id="thisToc" class="card-body" th:utext="${view.toc}">
-                            </div>
-                        </div>
-                    </div>
-
-
                     <div class="card mb-3  bg-white">
                         <div class="card-body">
+                            <dl >
+                                <!-- <dt class="text-muted" th:text="${view.user.username}"></dt> -->
+                                <div class="d-flex user-info">
+                                    <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
+                                    <div class="align-self-center ml-3">
+                                        <strong th:text="${view.user.username}"> </strong>
+                                    </div>
+                                </div>
+                                <hr>
+                            </dl>
                             <dl>
                                 <dt class="text-muted">快捷入口</dt>
                                 <dd th:if="${view.category!=null}">
@@ -105,27 +100,44 @@
                                 </dd>
 
                             </dl>
+
+
+                          
                         </div>
                     </div>
 
-                    <div class="card mb-3  bg-white p-3 user-info">
 
-                        <div class="d-flex justify-content-center">
-                            <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
-                            <div class="align-self-center ml-3">
-                                <strong th:text="${view.user.username}"> </strong>
+                    <!-- <div class="card mb-3  bg-white p-3 user-info">
+
+                      
+
+                    </div> -->
+
+
+                    <div id="content-table" class="mb-3">
+                        <!-- 文章目录 -->
+                        <div class="  card shadow  bd-links ">
+                            <div id="content-table-header" class="card-header d-flex justify-content-between">
+                                <span>目录</span>
+                                <a href="javascript:;" id="close-content-table">&times;</a>
+                            </div>
+                            <div id="toc">
 
                             </div>
+                            <div style="display: none;" id="thisToc" class="card-body" th:utext="${view.toc}">
+                            </div>
                         </div>
-
                     </div>
 
 
 
-                    <!-- <div class=" mb-3 shadow">
-                </div>
- -->
-                    <div class="card mb-3 p-3  bg-white">
+
+              
+
+
+
+
+                    <!-- <div class="card mb-3 p-3  bg-white">
                         <div class=" d-flex mb-2">
                             <span class="text-muted">分享到：</span>
                             <img style="width: 1.5rem;height: 1.5rem;" src="/templates/resources/img/qq.svg"
@@ -135,7 +147,7 @@
                             <a target="_blank" th:href="@{'~/preview/pdf/'+${view.id}}">浏览PDF</a>
                             <a href="javascript:;" th:onclick="downloadPDF([[${view.id}]])">下载PDF</a>
                         </div>
-                    </div>
+                    </div> -->
 
                     
                 </div>
