@@ -5,11 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>å¤´éƒ¨ç»„ä»¶</title>
+ 
 </head>
 <body>
+  <style>
+    /* .navbar{
+      padding:0 !important;
+      height: 3.5rem;
+    }
+    .nav-title{
+  
+      background: #f8f9fa;
+      height: 100%;
+      line-height: 3.5rem;
+}
+
+    .navbar-collapse a{
+      padding:0;
+      line-height: 3.5rem;
+    }
+    .navbar-collapse a:hover{
+        background: #00dfff!important;
+        color: white!important;
+        
+    } */
+
+    /* .nav-title:hover{
+      background: white;
+    } */
+
+  </style>
   <section id="fragment">
       <nav class="navbar navbar-expand-lg navbar-light mb-3 fixed-top shadow-sm app" id="header">
-          <div class="nav-title mr-3 " id="mobile-nav-logo">
+          <div class="nav-title " id="mobile-nav-logo">
             <div>
               <a class="nav-link" href="/"><img src="/logo.png" alt="" srcset="" /></a>
         
@@ -21,7 +49,7 @@
         
         
         
-          <div class=" navbar-collapse" id="mobile-nav1">
+          <div class=" navbar-collapse ml-2" id="mobile-nav1">
             <ul class="nav navbar-nav mr-auto">
               <li class="nav-item" th:each="item : ${view}">
                 <a th:class="'nav-link '+'css-'+${item.name}" th:href="${item.urlName}" th:text="${item.name}"></a>

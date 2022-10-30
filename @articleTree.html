@@ -12,36 +12,137 @@
 </head>
 
 <body cms:inline="none">
+    <script async>
+
+        function listContents(contents, id, jsonObj) {
+            // contents.forEach(row => {
+            //     map[row.id] = {title: row.title, children: row.children}
+            // })
+            // console.log(contents)
+            for (i in contents) {
+                // item = contents[i]
+                // console.log(item)
+                if (contents[i].id == id) {
+                    // console.log(contents[i])
+                    // if(contents[i].parentId)
+                    // const newItem = { ...jsonObj }
+
+                    contents[i].children = jsonObj.concat(contents[i].children)
+
+                }
+                if (contents[i].children.length > 0) {
+                    // console.log()
+                    listContents(contents[i].children, id, jsonObj)
+                }
+            }
+
+
+        }
+        // console.log($("#thisToc"))
+
+
+        function createMenu(data, root, id) {
+            if (!data.length) throw new Error('粗错啦');
+
+            data.forEach(item => {
+                const detailsEle = document.createElement('ul');
+                const summaryEle = document.createElement('li');
+                // if(item.parentId==0){
+                //     const span = document.createElement('span');
+                //     span.innerHTML = item.title;
+                //     summaryEle.appendChild(span);
+                // }else{
+
+                // }
+                const a = document.createElement('a');
+                a.innerHTML = item.title;
+                a.href = item.linkPath
+                // a.className="nav-link"
+                summaryEle.appendChild(a);
+
+
+
+                detailsEle.appendChild(summaryEle);
+                root.appendChild(detailsEle);
+                // if(item.id==id){
+                //     // console.log(item)
+                //     detailsEle.innerHTML=$("#thisToc").html()
+                //     // createMenu(item.children, detailsEle,id)
+                // }
+
+                if (item.children?.length) createMenu(item.children, detailsEle, id);
+            });
+        }
+        // console.log($("#toc"))
+
+
+
+        let viewName = "[[${view.category.viewName}]]"
+        let id = parseInt("[[${view.id}]]")
+        fetch('/html/articleListJs/' + viewName + ".json")
+            .then((response) => response.json())
+            .then((json) => {
+                // console.log(json)
+                // console.log(json.contents)
+                // let map = {}
+
+                let strJSON = $("#tocJSON").val()
+                if (strJSON) {
+                    jsonObj = JSON.parse(strJSON)
+                    listContents(json.contents, id, jsonObj)
+                }
+
+
+                // createMenu(json.contents,root,id)
+
+                const root = document.getElementById('toc');
+                if (!root) {
+                    window.onload = function () {
+                        createMenu(json.contents, root, id)
+                    }
+                    // console.log("window.onload")
+                } else {
+                    // console.log("createMenu")
+                    createMenu(json.contents, root, id)
+                }
+                // console.log(json.contents)
+                // console.log(map)
+
+
+            })
+    </script>
     <div cms:replace="/html/components/header :: #fragment"></div>
 
     <div class="container ">
         <div class="row">
-            
+
             <div class="col-lg-9 mb-3">
 
                 <!-- <div>
                 <img th:src="${view.picPath}" class="rounded-pill"/>
             </div> -->
 
-            
+
                 <div id="main-content">
                     <div class=" shadow bg-white">
                         <div class="content-header border-bottom pl-3 pr-3 pt-3 pb-3">
                             <h1 class="m-0 title" th:text="${view.title}">标题</h1>
                             <div class="info text-secondary">
-                                
-                                <span class="mr-2  ">最后发布时间:<strong
+
+                                <span class="mr-2  "><i class="bi bi-clock"></i> 最后发布时间 : <strong
                                         th:text="${#dates.format( view.updateDate, 'yyyy-MM-dd HH:mm:ss')}">时间</strong></span>
-                                <span class="mr-2">浏览量:<strong id="visits"></strong></span>
-                                <span  class="admin" style="display: none;">
-                                    <a  th:href="@{'~/user/edit/'+${view.id}}" class=" text-secondary justify-content-end text-right">编辑</a>
-                                    <a  class=" text-secondary justify-content-end text-right" href="javascript:;" th:onclick="deleteArticle([[${view.id}]])" th:attr="data-id=${view.id}" >删除</a>
+                                <span class="mr-2"> <i class="bi bi-eye"></i> 浏览量 : <strong id="visits"></strong></span>
+                                <span class="admin" style="display: none;">
+                                    <a th:href="@{'~/user/edit/'+${view.id}}"
+                                        class=" text-secondary justify-content-end text-right"><i class="bi bi-pencil-square"></i> 编辑</a>
+                                    <a class=" text-secondary justify-content-end text-right" href="javascript:;"
+                                        th:onclick="deleteArticle([[${view.id}]])" th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
                                 </span>
-                               
+
                                 <!-- <div cms:if="${userId}!=null">11 </div> -->
                             </div>
                         </div>
-                     
+
 
 
                         <div class="markdown pt-2 pl-3 pr-3 pb-3" th:utext="${view.formatContent}">
@@ -75,30 +176,34 @@
                 <div id="siderbar">
 
                     <div class="card mb-3  bg-white">
-                        <div class="card-body">
-                            <dl >
+                        <div class="card-body shadow">
+                            <dl>
                                 <!-- <dt class="text-muted" th:text="${view.user.username}"></dt> -->
                                 <div class="d-flex user-info">
                                     <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
                                     <div class="align-self-center ml-3">
-                                        <strong th:text="${view.user.username}"> </strong>
+                                        <i class="bi bi-person"></i>: <strong th:text="${view.user.username}"> </strong>
                                     </div>
                                 </div>
                                 <hr>
                             </dl>
                             <dl>
-                                <dt class="text-muted">快捷入口</dt>
+                                <dt class="text-muted"> <i class="bi bi-joystick"></i> 快捷入口</dt>
                                 <dd th:if="${view.category!=null}">
                                     <a class=" badge badge-success"
-                                        th:href="'/html_articleList_'+${view.category.viewName}+'.html'"
-                                        th:text="${view.category.name}"></a>
+                                        th:href="'/html_articleList_'+${view.category.viewName}+'.html'">
+                                        <i class="bi bi-bookmarks"></i> <span th:text="${view.category.name}"></span>
+                                    </a>
                                     <a class=" badge badge-success"
-                                        th:href="'/html_articleList_'+${view.category.viewName}+'_'+${view.category.id}+'_mind.html'">思维导图</a>
+                                        th:href="'/html_articleList_'+${view.category.viewName}+'_'+${view.category.id}+'_mind.html'">
+                                        <i class="bi bi-layers"></i> 思维导图</a>
                                 </dd>
                             </dl>
 
                             <dl>
-                                <dt class="text-muted">标签</dt>
+                                <dt class="text-muted">
+                                    <i class="bi bi-tags"></i> 标签
+                                </dt>
                                 <dd th:if="${view.tags!=null}">
                                     <a th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
                                         th:each="item : ${view.tags}" th:text="${item.name}"></a>
@@ -107,7 +212,7 @@
                             </dl>
 
 
-                          
+
                         </div>
                     </div>
 
@@ -119,12 +224,12 @@
                     </div> -->
 
 
-                    <div id="content-table" class="mb-3">
+                    <div id="content-table" class="mb-3 shadow">
                         <!-- 文章目录 -->
                         <div class="  card shadow  bd-links ">
                             <div id="content-table-header" class="card-header d-flex justify-content-between">
-                                <span>目录</span>
-                                <a href="javascript:;" id="close-content-table">&times;</a>
+                                <span><i class="bi bi-layout-text-sidebar-reverse"></i> 目录</span>
+                                <!-- <a href="javascript:;" id="close-content-table">&times;</a> -->
                             </div>
                             <div id="toc">
 
@@ -137,7 +242,7 @@
 
 
 
-              
+
 
 
 
@@ -154,7 +259,7 @@
                         </div>
                     </div> -->
 
-                    
+
                 </div>
 
             </div>
@@ -162,7 +267,7 @@
 
     </div>
     <input type="hidden" cms:value="${userId}" id="userId">
-    <input type="hidden"  th:value="${view.tocJSON}" id="tocJSON">
+    <input type="hidden" th:value="${view.tocJSON}" id="tocJSON">
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
     <div th:replace="templates/fragment/footer"></div>
@@ -170,128 +275,39 @@
     <script src="/templates/resources/js/admonition.js"></script>
     <script src="/templates/resources/js/search_engine.js"></script>
 
+
     <script>
-      
-        function listContents(contents,id,jsonObj){
-            // contents.forEach(row => {
-            //     map[row.id] = {title: row.title, children: row.children}
-            // })
-            // console.log(contents)
-            for(i in contents){
-                // item = contents[i]
-                // console.log(item)
-                if(contents[i].id==id){
-                    // console.log(contents[i])
-                    // if(contents[i].parentId)
-                    // const newItem = { ...jsonObj }
+        // let viewName = "[[${view.category.viewName}]]"
+        var url = location.hostname;
+        var protocol = window.location.protocol;
+        var token = $.cookie('Authorization')
+        function deleteArticle(id) {
 
-                    contents[i].children = jsonObj.concat(contents[i].children)
-                 
-                }
-                if(contents[i].children.length > 0){
-                    // console.log()
-                    listContents(contents[i].children, id,jsonObj)
-                }
+            if (confirm("确定删除该文章?")) {
+                $.ajax({
+                    url: protocol + "//" + url + ":8080/api/article/delete/" + id,
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf8',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    type: "get",
+                    success: function (data) {
+                        // console.log(data.data)
+                        var datas = data.data
+                        // Toast("删除文章" + data.data.title + "成功！", 'success')
+                        window.location.href = "/html_articleList_" + viewName + ".html";
+                    }
+                });
+
             }
 
-            
         }
-        // console.log($("#thisToc"))
-       
-
-        function createMenu(data, root,id) {
-            if (!data.length) throw new Error('粗错啦');
-
-            data.forEach(item => {
-                const detailsEle = document.createElement('ul');
-                const summaryEle = document.createElement('li');
-                // if(item.parentId==0){
-                //     const span = document.createElement('span');
-                //     span.innerHTML = item.title;
-                //     summaryEle.appendChild(span);
-                // }else{
-                    
-                // }
-                const a = document.createElement('a');
-                a.innerHTML = item.title;
-                a.href=item.linkPath
-                // a.className="nav-link"
-                summaryEle.appendChild(a);
-               
-                
-                
-                detailsEle.appendChild(summaryEle);
-                root.appendChild(detailsEle);
-                // if(item.id==id){
-                //     // console.log(item)
-                //     detailsEle.innerHTML=$("#thisToc").html()
-                //     // createMenu(item.children, detailsEle,id)
-                // }
-               
-                if (item.children?.length) createMenu(item.children, detailsEle,id);
-            });
-        }
-        // console.log($("#toc"))
-
-
-  
-        let viewName = "[[${view.category.viewName}]]"
-        let id =parseInt("[[${view.id}]]")
-         fetch('/html/articleListJs/'+viewName+".json")
-            .then((response) => response.json())
-            .then((json) =>{
-                // console.log(json)
-                // console.log(json.contents)
-                // let map = {}
-                const root = document.getElementById('toc');
-                let strJSON = $("#tocJSON").val()
-                if(strJSON){
-                    jsonObj = JSON.parse(strJSON)
-                    listContents(json.contents, id,jsonObj)
-                }
-                
-
-                // createMenu(json.contents,root,id)
-                
-                createMenu(json.contents,root,id)
-                // console.log(json.contents)
-                // console.log(map)
-               
-                
-            })
     </script>
-        <script>
-            // let viewName = "[[${view.category.viewName}]]"
-            var url = location.hostname;
-            var protocol = window.location.protocol;
-            var token = $.cookie('Authorization')
-            function deleteArticle(id) {
-    
-                if (confirm("确定删除该文章?")) {
-                    $.ajax({
-                        url: protocol + "//" + url + ":8080/api/article/delete/" + id,
-                        headers: {
-                            'Content-Type': 'application/json;charset=utf8',
-                            'Authorization': 'Bearer ' + token
-                        },
-                        type: "get",
-                        success: function (data) {
-                            // console.log(data.data)
-                            var datas = data.data
-                            // Toast("删除文章" + data.data.title + "成功！", 'success')
-                            window.location.href="/html_articleList_"+viewName+".html";
-                        }
-                    });
-    
-                }
-    
-            }
-        </script>
-    <script >
+    <script>
         $(function () {
             $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
         });
-       
+
         increaseViewCount([[${ view.id }]])
         likeStatus([[${ view.id }]])
 
@@ -300,7 +316,7 @@
         })
 
 
-        
+
 
 
         // $('#test1').load("/[[${view.path}]]/comment-[[${view.viewName}]].html ")
@@ -308,10 +324,10 @@
         /*************************评论代码****************************/
         let userId = $("#userId").val()
 
-        if(userId!=-1){
-            $(".admin").css("display","inline")
+        if (userId != -1) {
+            $(".admin").css("display", "inline")
         }
-       
+
         let submit = $('#submit')
         let pathname = window.location.pathname
         if (userId == "") {

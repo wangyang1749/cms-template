@@ -211,7 +211,7 @@ a:focus {
 
 /* 分类头部样式 */
 .catrgory-header {
-    display: flex;
+    /* display: flex; */
     padding: 1rem;
     border: 1px solid rgba(0, 0, 0, .125);
     margin-bottom: 0.5rem;
@@ -227,9 +227,9 @@ a:focus {
 
 }
 
-.catrgory-header img {
+/* .catrgory-header img {
     width: 100%;
-}
+} */
 .catrgory-header .title {
     white-space: nowrap;
 }
@@ -397,4 +397,36 @@ a:focus {
 
   #toc{
     overflow-x: auto;
+  }
+
+  
+
+
+
+
+
+
+  .navbar{
+    padding:0 !important;
+    height: 3.5rem;
+  }
+  .nav-title{
+
+    background: #cffff68c;
+    height: 100%;
+    line-height: 3.5rem;
+    border-radius: 10%;
+}
+.nav-title:hover{
+    background: white;
+  }
+  
+  .navbar-collapse a{
+    padding:0;
+    line-height: 3.5rem;
+  }
+  .navbar-collapse a:hover{
+      background: #00dfff!important;
+      color: white!important;
+      
   }

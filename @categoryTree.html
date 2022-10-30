@@ -10,6 +10,18 @@
 </head>
 
 <body cms:inline="none">
+    <style>
+          #components a{
+            display: block;
+          }
+        #components a:hover{
+            background: #6c757d!important;
+            color: white!important;
+        }
+        #components li{
+            list-style:none;
+        }
+    </style>
     <div cms:replace="/html/components/header :: #fragment"></div>
 
     <div class="container" id="app">
@@ -19,55 +31,62 @@
 
                 <div id="main-content">
 
-                    <div class="catrgory-header">
-                        <div class="img mr-3">
+                    <div class="catrgory-header shadow ">
+                        <div class="img">
                             <img th:if="${view.category.picPath==''||view.category.picPath==null}" class="mb-1"
                                 src="/templates/resources/img/logo_category.png">
                             <img th:if="${view.category.picPath!=null||view.category.picPath!=''}"
                                 th:src="${view.category.picPath}" class="mb-1">
-                            <div class="d-flex title">
+                            <!-- <div class="d-flex title">
                                 <a class="text-secondary"
                                     th:href="@{'~'+${view.linkPath}+'_'+${view.category.id}+'_mind.html'}">
                                     <span th:text="${view.category.name}"></span>
                                 </a>
-
-                                <!-- 
-                                <a class="text-secondary" th:href="@{'~/user/mindJs/'+${view.category.id}}">
-                                    &nbsp; [编辑]
-                                </a> -->
-
-                                <!-- <a class="text-secondary" href="#">
-                                    &nbsp; [新建文章]
-                                </a> -->
-                            </div>
+                            </div> -->
                         </div>
-
-                        <p th:text="${view.category.description}"></p>
-                    </div>
-
-                    <ul class="list-group list-group-flush mb-3">
-                        <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName} :: #fragment }   ?:_"
-                    parser></div>
-                    </ul>
-                    <!-- 文章列表 -->
-                    <!-- <ul class="list-group list-group-flush mb-3 text-center"> -->
-                  
-                        <div id="components" class="mb-3">
-
-                            <ul th:each="item : ${view.contents}"  class="list-group ">
-                                <a th:href="${item.linkPath}">
-                                    <li style="font-size: 1.2rem;" class="list-group-item  list-group-item-success font-weight-bold shadow-sm" th:text="${item.title}" >A disabled item</li>
-
-                                </a>
-                                
-                                <a th:each="child : ${item.children}" th:href="${child.linkPath}" class="text-secondary text-center" >
-                                    <li   class="list-group-item list-group-item-action" th:text="${child.title}">
-                                   
-                                    </li>
-                                </a>
-                             
+                        <hr>
+                    
+                        <div class="bg-light p-3">
+                            <div th:utext="${view.category.description}"></div>
+                            <ul class="list-group list-group-flush">
+                                <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName} :: #fragment }   ?:_"
+                                    parser></div>
                             </ul>
                         </div>
+           
+
+                    </div>
+             
+                  
+                  
+                    <!-- 文章列表 -->
+                    <!-- <ul class="list-group list-group-flush mb-3 text-center"> -->
+
+                    <div id="components" class="mb-3 bg-white card">
+                        <div class="card-body shadow ">
+                            <ul th:each="item : ${view.contents}" class="list-group ">
+
+                                <!-- <li style="font-size: 1.2rem;" class="list-group-item  list-group-item-success font-weight-bold shadow-sm" th:text="${item.title}" >A disabled item</li> -->
+                                <h4>
+                                    </i><a th:href="${item.linkPath}"  class="text-muted">
+                                        <i class="bi bi-layout-text-sidebar-reverse"></i> <span th:text="${item.title}"></span>
+                                    </a>
+                                </h4>
+
+                                <ul>
+                                    <li th:each="child : ${item.children}">
+                                        <a th:href="${child.linkPath}" class="text-secondary" >
+                                            <i class="bi  bi-file-earmark-text"></i> <span th:text="${child.title}"></span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+
+                            </ul>
+                        </div>
+
+                    </div>
 
                     <!-- </ul> -->
 
@@ -104,13 +123,26 @@
 
             <div class="col-lg-3">
                 <div class="card">
-                    <div class="p-1">
-                        <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
-                            <input name="title" type="text" class="form-control" placeholder="input article name">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit">创建文章</button>
-                            </div>
-                        </form>
+                    <div class="card-body shadow">
+                        <dl>
+                            <dt class="text-muted">快捷入口</dt>
+                            <dd>
+                                <a class=" badge badge-success"
+                                th:href="@{'~'+${view.linkPath}+'_'+${view.category.id}+'_mind.html'}">
+                                <!-- <span th:text="${view.category.name}"></span> -->
+                                思维导图
+                            </a>
+                            </dd>
+                        </dl>
+                        <hr>
+                        <dl>
+                            <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                                <input name="title" type="text" class="form-control" placeholder="input article name">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">创建文章</button>
+                                </div>
+                            </form>
+                        </dl>
                     </div>
                 </div>
 

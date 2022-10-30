@@ -70,28 +70,36 @@
 
             <div class="col-lg-3">
 
+
                 <div id="siderbar">
-                    <div class="card mb-3  bg-white p-4">
-                        <a href="/user/write" target="_blank" class="mb-1">
-                            <button type="button" class="btn btn-outline-secondary btn-lg btn-block">写文章</button>
-                        </a>
-                        <div>
-                            <div cms:if="${username}" class="bd-search d-flex align-items-center">
-                                <a  class="nav-link text-secondary" cms:text="'欢迎'+${#request.getAttribute('username')+'登录'}" href="/user/info"></a>
-                                <a class="text-secondary" href="javascript:;" id="exit">退出</a>
+                    <div class="card mb-3  bg-white ">
+                        <div class="card-body shadow">
+                            <a href="/user/write" target="_blank" class="mb-1">
+                                <button type="button" class="btn btn-outline-secondary btn-lg btn-block">写文章 <i class="bi bi-pencil"></i></button>
+                            </a>
+                            <div>
+                                <div cms:if="${username}" class="bd-search d-flex align-items-center">
+                                    <a  class="nav-link text-secondary" cms:text="'欢迎'+${#request.getAttribute('username')+'登录'}" href="/user/info"></a>
+                                    <a class="text-secondary" href="javascript:;" id="exit">退出</a>
+                                </div>
+                                <a  cms:if="!${username}"  class="nav-link text-secondary" href="/login">请登录</a>
                             </div>
-                            <a  cms:if="!${username}"  class="nav-link text-secondary" href="/login">请登录</a>
+                            <hr>
+                            <div cms:replace="~{/html/components/myArticle :: #fragment} ?:_"></div>
                         </div>
+                        
+
+                        
                     </div>
-
-
+                    
+                    
                      <!-- <div class="card mb-3  bg-white p-4">
                         <h5><span class="badge badge-danger ">21考研倒计时:</span></h5>
                         <h5><strong id="timer">&nbsp;</strong></h5>
                     </div> -->
-                    <div class="col-sm  mb-3">
-                            <div cms:replace="~{/html/components/myArticle :: #fragment} ?:_"></div>
-                        </div>
+                    <!-- <div class="col-sm  mb-3">
+                            
+                    </div> -->
                     <!-- <div class="mb-3">
                         <include href="/html/components/myArticle.html"/>
                     </div>
