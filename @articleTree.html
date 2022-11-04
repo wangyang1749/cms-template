@@ -6,15 +6,19 @@
     <meta name="keywords" content="生命科学知识分享,生物技术,生物信息学" th:content="${view.title}">
     <meta name="description" content="分享生命科学方面相关文章" th:content="${view.summary}">
 
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/styles/default.min.css">
+    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/styles/default.min.css">
+     -->
+     <link rel="stylesheet" href="/templates/resources/css/highlight.css">
+
     <!-- markdown扩展 -->
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="/templates/resources/css/katex.min.css" >
 
 </head>
 
-<body cms:inline="none">
-    <script async>
+<body >
+    <script async  cms:inline="javascript">
 
         function listContents(contents, id, jsonObj) {
             // contents.forEach(row => {
@@ -79,8 +83,8 @@
 
 
 
-        let viewName = "[[${view.category.viewName}]]"
-        let id = parseInt("[[${view.id}]]")
+        let viewName = [[${view.category.viewName}]]
+        let id = parseInt([[${view.id}]])
         fetch('/html/articleListJs/' + viewName + ".json")
             .then((response) => response.json())
             .then((json) => {
@@ -173,7 +177,7 @@
 
 
 
-                        <div class="markdown pt-2 pl-3 pr-3 pb-3" th:utext="${view.formatContent}">
+                        <div cms:inline="none" class="markdown pt-2 pl-3 pr-3 pb-3" th:utext="${view.formatContent}">
 
                         </div>
                         <div class="  p-3  d-flex justify-content-around">
@@ -378,7 +382,7 @@
             var data = {
                 "userId": userId,
                 "content": content,
-                "articleId": "[[${view.id}]]"
+                "articleId": [[${view.id}]]
             }
             console.log(data)
             // console.log(jm.get_data("node_array").data)
@@ -409,7 +413,7 @@
                 "username": username,
                 "email": email,
                 "content": content,
-                "articleId": "[[${view.id}]]"
+                "articleId": [[${view.id}]]
             }
             console.log("/components/[[${view.viewName}]].html")
             commentApi.add(data).then(response => {
@@ -431,10 +435,13 @@
         move("content-table-header", "content-table", "close-content-table");
     </script> -->
     <!-- 代码高亮 -->
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script>
+    <!-- <script  src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script> -->
+    <script  src="/templates/resources/js/highlight.min.js" ></script>
+
     <script>hljs.initHighlightingOnLoad();</script>
 
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script> -->
+    <script defer src="/templates/resources/js/katex.min.js" ></script>
 
     <script>
 
