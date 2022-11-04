@@ -49,7 +49,7 @@
         
         
         
-          <div class=" navbar-collapse ml-2" id="mobile-nav1">
+          <div class=" navbar-collapse " id="mobile-nav1">
             <ul class="nav navbar-nav mr-auto">
               <li class="nav-item" th:each="item : ${view}">
                 <a th:class="'nav-link '+'css-'+${item.name}" th:href="${item.urlName}" th:text="${item.name}"></a>
@@ -70,5 +70,16 @@
           <div id="mobile-nav2"></div>
         </nav>
   </section>
+  <div class="container ">
+  </div>
+
+
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+
+    <div th:replace="templates/fragment/footer"></div>
+    <script src="/templates/resources/js/article.js?v=1.06"></script>
+    <script src="/templates/resources/js/admonition.js"></script>
+    <script src="/templates/resources/js/search_engine.js"></script>
+
 </body>
 </html>

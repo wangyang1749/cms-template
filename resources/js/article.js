@@ -210,12 +210,24 @@ function increaseLikeCount(articleId) {
         });
     }
 }
-
+// console.log(userCard)
 // 目录导航高度
 function setContentTableHeight() {
     let headerHeight = $("#header").outerHeight(true)
     let windowHeight = $(window).height()
-    let contentTableHeight = windowHeight - headerHeight - 18
+    let userCard = $("#user-card").outerHeight(true)
+    let footerHeight = $("#footer").outerHeight(true)
+    let documentHeight = $(document).height()
+    let mainContentHeight = $("#main-content").outerHeight(true)
+    let scrollTop = $(document).scrollTop()
+    let bottom = footerHeight-(documentHeight - windowHeight )
+   
+    // console.log(mainContentHeight > siderbarHeight)
+    let contentTableHeight = windowHeight - headerHeight - userCard - 18 
+    if(bottom>0){
+        contentTableHeight=contentTableHeight - bottom
+    }
+    // console.log(contentTableHeight)
     $("#content-table").css("max-height", contentTableHeight + "px");
 }
 

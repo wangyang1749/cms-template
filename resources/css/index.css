@@ -372,6 +372,10 @@ a:focus {
     .carousel-caption p {
         display: none;
     }
+    .navbar-collapse a{
+        padding:0;
+        line-height: none;
+      }
 }
 
 .meta-media {
@@ -412,7 +416,7 @@ a:focus {
   }
   .nav-title{
 
-    background: #cffff68c;
+    background: #f8f9fa;
     height: 100%;
     line-height: 3.5rem;
     border-radius: 10%;
@@ -420,7 +424,7 @@ a:focus {
 .nav-title:hover{
     background: white;
   }
-  
+
   .navbar-collapse a{
     padding:0;
     line-height: 3.5rem;
@@ -430,3 +434,21 @@ a:focus {
       color: white!important;
       
   }
+
+  @media screen and (max-width: 991px) {
+
+    .navbar-collapse{
+      background: white;
+      box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+    }
+   
+
+    .navbar-collapse a{
+        /* padding: 1rem 0.5rem!important; */
+        line-height: inherit!important;
+      }
+      .nav-title{
+        line-height: inherit!important;
+        height: auto;
+      }
+}

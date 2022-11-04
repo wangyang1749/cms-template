@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/styles/default.min.css">
     <!-- markdown扩展 -->
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous">
+
 </head>
 
 <body cms:inline="none">
@@ -86,25 +88,51 @@
                 // console.log(json.contents)
                 // let map = {}
 
-                let strJSON = $("#tocJSON").val()
-                if (strJSON) {
-                    jsonObj = JSON.parse(strJSON)
-                    listContents(json.contents, id, jsonObj)
+                // let strJSON = $("#tocJSON").val()
+                let tocJSON=document.getElementById('tocJSON')
+                if(tocJSON){
+                    strJSON = tocJSON.value
+                    if (strJSON) {
+                        jsonObj = JSON.parse(strJSON)
+                        listContents(json.contents, id, jsonObj)
+                    }
+                    const root = document.getElementById('toc');
+                    if (!root) {
+                        window.onload = function () {
+                            createMenu(json.contents, root, id)
+                        }
+                        // console.log("window.onload")
+                    } else {
+                        // console.log("createMenu")
+                        createMenu(json.contents, root, id)
+                    }
+                }else{
+                    window.onload = function () {
+                        tocJSON=document.getElementById('tocJSON')
+                        strJSON = tocJSON.value
+                        if (strJSON) {
+                            jsonObj = JSON.parse(strJSON)
+                            listContents(json.contents, id, jsonObj)
+                        }
+                        const root = document.getElementById('toc');
+                        if (!root) {
+                            window.onload = function () {
+                                root = document.getElementById('toc');
+                                createMenu(json.contents, root, id)
+                            }
+                            // console.log("window.onload")
+                        } else {
+                            // console.log("createMenu")
+                            createMenu(json.contents, root, id)
+                        }
+                    }
                 }
+
 
 
                 // createMenu(json.contents,root,id)
 
-                const root = document.getElementById('toc');
-                if (!root) {
-                    window.onload = function () {
-                        createMenu(json.contents, root, id)
-                    }
-                    // console.log("window.onload")
-                } else {
-                    // console.log("createMenu")
-                    createMenu(json.contents, root, id)
-                }
+                
                 // console.log(json.contents)
                 // console.log(map)
 
@@ -175,7 +203,7 @@
 
                 <div id="siderbar">
 
-                    <div class="card mb-3  bg-white">
+                    <div id="user-card" class="card mb-3  bg-white">
                         <div class="card-body shadow">
                             <dl>
                                 <!-- <dt class="text-muted" th:text="${view.user.username}"></dt> -->
@@ -271,7 +299,7 @@
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
     <div th:replace="templates/fragment/footer"></div>
-    <script src="/templates/resources/js/article.js?v=1.06"></script>
+    <script src="/templates/resources/js/article.js?v=1.07"></script>
     <script src="/templates/resources/js/admonition.js"></script>
     <script src="/templates/resources/js/search_engine.js"></script>
 
@@ -405,6 +433,25 @@
     <!-- 代码高亮 -->
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script>
+
+    <script>
+
+        (function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                var mathElems = document.getElementsByClassName("katex");
+                var elems = [];
+                for (const i in mathElems) {
+                    if (mathElems.hasOwnProperty(i)) elems.push(mathElems[i]);
+                }
+
+                elems.forEach(elem => {
+                    katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
+                });
+            });
+        })();
+    </script>
 </body>
 
 </html>
