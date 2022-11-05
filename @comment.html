@@ -1,30 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="templates/fragment/header :: common_header(~{},~{},~{})">
+    <title>Document</title>
+</head>
+
+<body>
+
 <!-- 评论嵌入 -->
-<div class="list-group list-group-flush mb-3 shadow  bg-white rounded" id="comment">
+<section id="fragment">
 
-    <div class="list-group-item list-group-item-light">
+    <div class="list-group list-group-flush mb-3 shadow  bg-white rounded" id="comment">
 
-        <div class="form-group">
-            <!-- <label>输入你的评论</label> -->
+     
+    
+        <div id="comment-list">
+            <dl>
+                <dd th:each="item : ${comments}" class="list-group-item list-group-item-action">
+                    <span th:text="${item.user.username}"></span><span th:text="${item.content}"></span>
+                    <a href="javascript:;" th:onclick="deleteComment([[${item.id}]])" th:class="'user-'+${item.user.id}" style="display: none;" >删除</a>
+                    <a href="javascript:;"  >回复</a>
+                </dd>
+            </dl>
+        </div>
 
-            <div class="row mb-2">
-                <div class="col-md-5">
-                    <input type="text" class="form-control" placeholder="请输入你的昵称" id="username">
-                </div>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" placeholder="请输入你的电子邮箱" id="email">
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary" id="submit" onclick="addComment()">发布</button>
-
-                </div>
+        <div class="list-group-item list-group-item-light">
+    
+            <div class="form-group flex" >
+         
+                <textarea class="form-control mb-2" rows="3" placeholder="输入你的评论内容" id="content"></textarea>
+                <button cms:if="${#sets.isEmpty(roles)}" type="submit" class="btn btn-secondary" id="submit" onclick="login()">登录评论</button>
+                <button cms:if="${not #sets.isEmpty(roles)}" type="submit" class="btn btn-primary" id="submit" onclick="addComment()">评论</button>    
             </div>
-            <textarea class="form-control mb-2" rows="3" placeholder="输入你的评论内容" id="content"></textarea>
-
         </div>
     </div>
+    
+</section>
+</body>
 
-    <div id="comment-list">
-        <a th:each="item : ${view.content}" class="list-group-item list-group-item-action"
-            th:text="${item.content}"></a>
-    </div>
-</div>
+</html>
