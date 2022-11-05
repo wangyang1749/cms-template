@@ -61,7 +61,7 @@ function uploadImg(file, Editor) {
 
             var url = msg.data.path;
             if (/\.(png|jpg|jpeg|gif|bmp|ico)$/.test(url)) {
-                Editor.insertValue("![图片alt](" + url + ")");
+                Editor.insertValue("![html=(width=100%,height=auto)生信小木屋](" + url + ")");
             } else {
                 Editor.insertValue("[下载附件](" +url + ")");
             }
