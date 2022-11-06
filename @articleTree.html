@@ -329,7 +329,7 @@
     <script src="/templates/resources/js/search_engine.js"></script>
     <script src="/templates/resources/js/axios.min.js"></script>
     <script src="/templates/resources/js/service.js?1.0"></script>
-    <script>
+    <script cms:inline="javascript">
         // let viewName = "[[${view.category.viewName}]]"
         var url = location.hostname;
         var protocol = window.location.protocol;
@@ -356,24 +356,9 @@
 
         }
     </script>
-    <script  cms:inline="javascript">
-        $(function () {
-            $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
-        });
 
-        increaseViewCount([[${ view.id }]])
-        likeStatus([[${ view.id }]])
-
-        $("#likeOption").click(function () {
-            increaseLikeCount([[${ view.id }]])
-        })
-
-
-
-
-
-        // $('#test1').load("/[[${view.path}]]/comment-[[${view.viewName}]].html ")
-
+    <script cms:inline="javascript">
+        
         /*************************评论代码****************************/
         let userId = $("#userId").val()
 
@@ -381,49 +366,7 @@
             $(".user-"+userId).css("display", "inline")
         }
 
-        // let submit = $('#submit')
-        // let pathname = window.location.pathname
-        // if (userId == "") {
-        //     $('#content').val('');
-        //     $("#content").attr("placeholder", "请登录");
-        //     $("#content").attr("disabled", true);
-
-        //     submit.text('请登录');
-        //     submit.click(function () {
-        //         window.open("/login?redirect=" + pathname, "_self")
-        //     })
-        // } else {
-        //     $("#content").removeAttr("disabled");
-        // }
-        // function addComment() {
-
-        //     let content = $("#content").val()
-
-        //     console.log(userId == "")
-        //     var data = {
-        //         "userId": userId,
-        //         "content": content,
-        //         "articleId": [[${view.id}]]
-        //     }
-        //     console.log(data)
-        //     // console.log(jm.get_data("node_array").data)
-        //     fetch('http://localhost:8080/api/comment', {
-        //         body: JSON.stringify(data),
-        //         headers: {
-        //             'user-agent': 'Mozilla/4.0 MDN Example',
-        //             'content-type': 'application/json',
-        //             'Accept': 'application/json,text/plain,*/*',
-        //             'AuthorizeType': 'Cookie'
-        //         },
-        //         method: 'POST',
-        //     }).then(function (response) {
-        //         return response.json();
-        //     })
-        //         .then(function (myJson) {
-        //             console.log(myJson);
-        //         });
-        // }
-
+     
 
         function addComment(reply,docId) {
             console.log(reply)
@@ -518,6 +461,25 @@
             reply.appendChild(div);
             console.log(reply)
         }
+    </script>
+    <script  cms:inline="javascript">
+        $(function () {
+            $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
+        });
+
+        increaseViewCount([[${ view.id }]])
+        likeStatus([[${ view.id }]])
+
+        $("#likeOption").click(function () {
+            increaseLikeCount([[${ view.id }]])
+        })
+
+
+
+
+
+        // $('#test1').load("/[[${view.path}]]/comment-[[${view.viewName}]].html ")
+
     </script>
 
     <!-- <script>
