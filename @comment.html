@@ -13,16 +13,78 @@
 
     <div class="list-group list-group-flush mb-3 shadow  bg-white rounded" id="comment">
 
-     
-    
+
+      
+       
+        <th:block th:fragment="row(commentsVar)">
+            <ul th:each="item,index:${commentsVar}">
+                <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+                    <div class="comment-row ">
+        
+                        <div style="width: 1.8rem;" class="mr-2">
+                            <img th:src="${item.user.avatar}" alt="" class="img-fluid rounded-circle" />
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between text-secondary flex-1">
+                                <div>
+                                    <span th:text="${item.user.username}"></span>
+                                    <span th:if="${item.replyUser}">
+                                        回复：<span  th:text="${item.replyUser.username}"></span><i class="bi bi-reply"></i>
+                                    </span>
+                                </div>
+                                <div>
+                                    <span  th:text="${#dates.format( item.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                </div>
+                            </div>
+                            
+                        
+                            <div th:text="${item.content}"></div>
+                            <div >
+                                <a href="javascript:;" th:onclick="deleteComment([[${item.id}]])" th:class="'text-secondary user-'+${item.user.id}" >删除</a>
+                                 <a href="javascript:;" th:onclick="reply([[${item.id}]])"  class="text-secondary">回复</a>
+                            </div>
+                            <div th:id="'comment-reply-id-'+${item.id}"> </div> 
+                        </div>
+                    </div>
+                </li>
+                <li th:if="not ${#lists.isEmpty(item.children)}"  class="list-unstyled">
+                    <div class="comment-row ">
+        
+                        <div style="width: 1.8rem;" class="mr-2">
+                            <img th:src="${item.user.avatar}" alt="" class="img-fluid rounded-circle" />
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between text-secondary flex-1">
+                                <div>
+                                    <span th:text="${item.user.username}"></span>
+                                    <span th:if="${item.replyUser}">
+                                        回复：<span  th:text="${item.replyUser.username}"></span><i class="bi bi-reply"></i>
+                                    </span>
+                                </div>
+                                <div>
+                                    <span  th:text="${#dates.format( item.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                </div>
+                            </div>
+                            
+                        
+                            <div th:text="${item.content}"></div>
+                            <div >
+                                <a href="javascript:;" th:onclick="deleteComment([[${item.id}]])" th:class="'text-secondary user-'+${item.user.id}" >删除</a>
+                                 <a href="javascript:;" th:onclick="reply([[${item.id}]])"  class="text-secondary">回复</a>
+                            </div>
+                            <div th:id="'comment-reply-id-'+${item.id}"> </div> 
+                        </div>
+                    </div>
+
+                    <th:block  th:include="this::row(${item.children})"></th:block>
+                </li>
+            </ul>
+        </th:block>
+
+
+
         <div id="comment-list">
-            <dl>
-                <dd th:each="item : ${comments}" class="list-group-item list-group-item-action">
-                    <span th:text="${item.user.username}"></span><span th:text="${item.content}"></span>
-                    <a href="javascript:;" th:onclick="deleteComment([[${item.id}]])" th:class="'user-'+${item.user.id}" style="display: none;" >删除</a>
-                    <a href="javascript:;"  >回复</a>
-                </dd>
-            </dl>
+            <div th:include="this::row(${comments})"/ class="mt-3">
         </div>
 
         <div class="list-group-item list-group-item-light">
@@ -31,10 +93,15 @@
          
                 <textarea class="form-control mb-2" rows="3" placeholder="输入你的评论内容" id="content"></textarea>
                 <button cms:if="${#sets.isEmpty(roles)}" type="submit" class="btn btn-secondary" id="submit" onclick="login()">登录评论</button>
-                <button cms:if="${not #sets.isEmpty(roles)}" type="submit" class="btn btn-primary" id="submit" onclick="addComment()">评论</button>    
+                <button cms:if="${not #sets.isEmpty(roles)}" type="submit" class="btn btn-primary" id="submit" onclick="addComment(0,'content')">评论</button>    
             </div>
         </div>
     </div>
+
+
+
+  
+
     
 </section>
 </body>

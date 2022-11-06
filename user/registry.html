@@ -27,26 +27,27 @@
 
     <div class=" container ">
         <div class="row justify-content-md-center login">
-            <!-- <form method="POST"> -->
+            <form>
             <div>
                 <!-- <input type="text" id="redirectURL"> -->
                 <div class="form-group ">
                     <label for="exampleInputEmail1">用户名</label>
-                    <input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp">
+                    <input type="text" name="username" class="form-control" id="username" required>
                     <small id="emailHelp" class="form-text text-muted">输入你的用户名</small>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">用户密码</label>
-                    <input type="password" name="password" class="form-control" id="password">
+                    <input type="password" name="password" class="form-control" id="password"  required>
                 </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1"> 记住我</label>
+    
+                <div class="form-group ">
+                    <label for="exampleInputEmail1">邮箱</label>
+                    <input type="text" name="email" class="form-control" id="email" required>
                 </div>
-                <button id="submit" class="btn btn-primary">登录</button>
-                <a id="register" href="/registry" class="btn btn-outline-secondary">注册</a>
-                <!-- </form> -->
+                <button id="submit" class="btn btn-primary">注册并登录</button>
+                
             </div>
+            </form>
         </div>
     </div>
     <script src="/templates/resources/js/jquery-3.4.1.min.js"></script>
@@ -68,9 +69,9 @@
         }
         var url = location.hostname;
         var protocol = window.location.protocol;
-        function login(jsonData) {
+        function registry(jsonData) {
             $.ajax({
-                url: protocol + "//" + url + ":8080/api/user/login",
+                url: protocol + "//" + url + ":8080/api/user/registry",
                 headers: {
                     'Content-Type': 'application/json;charset=utf8',
                     'Accept': 'application/json'
@@ -82,29 +83,40 @@
                     // console.log(token)
                     localStorage.setItem("Authorization",token);
                     $.cookie('Authorization',token)
-                    let href = window.location.search.replace("?","")
-                    if(href.search("http")!=-1){
-                        window.location.href =href
-                    }else{
-                        window.location.href = "/"
-                    }
-                    // alert(href)
-                  
-
+                    window.location.href = "/"
+                    
                 },error: function(data){
                     console.log(data.responseJSON.message)
                     alert(data.responseJSON.message)
                 }
             });
         }
-
+        function emailCheck (emailStr) {
+            if(emailStr=="")return true;
+            var emailPat=/^(.+)@(.+)$/;
+            var matchArray=emailStr.match(emailPat);
+            if (matchArray==null) {
+                alert("电子邮件地址必须包括 ( @ 和 . )")
+                return true;
+            }
+            return false;
+        }
         $("#submit").click(function () {
             let username = $("#username").val()
             let password = $("#password").val()
+            let email = $("#email").val()
+            if(username=="" || password=="" || emailCheck(email)){
+                // alert("用户名不能为空!!")
+                return
+            }
             // alert(username + password)
-            let jsonData = JSON.stringify({username:username,password,password})
+            let jsonData = JSON.stringify({username:username,password,password,email:email})
             
-            login(jsonData)
+            registry(jsonData)
+        })
+        
+        $("form").on("submit",function(event){
+            event.preventDefault();
         })
 
 

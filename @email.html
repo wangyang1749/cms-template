@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回复邮件</title>
+</head>
+<body>
+    <a href="${hostname}">
+        <img src="http://bioinfo.online/logo.png" alt="">
+    </a>
+ 
+    <p th:text="${comment.content}"></p>
+    点击在文章[<a th:href="${hostname}+'/html_article_'+${article.viewName}+'.html'" th:text="${article.title}"></a>]中查看详细信息
+</body>
+</html>
