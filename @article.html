@@ -18,7 +18,16 @@
     <div class="container ">
         <div class="row">
             <div class="col-lg-9 mb-3">
-
+                <div class="left-side">
+                    <ul>
+                        <li class="list-unstyled">
+                            <p id="support" class="mr-3">支持</p>
+                            <div class="left-side-img">
+                                <img id="weixin" data-slide="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20221106232619_1667748522270.jpg" alt="">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 <!-- <div>
                 <img th:src="${view.picPath}" class="rounded-pill"/>
             </div> -->
@@ -148,13 +157,49 @@
 
     <script src="/templates/resources/js/axios.min.js"></script>
     <script src="/templates/resources/js/service.js?1.0"></script>
-    <script  cms:inline="javascript">
+        
+    <script>
+        function loadImage(obj,url,callback){
+            var img = new Image();
+            img.src = url;
+ 
+            // 判断图片是否在缓存中
+            if(img.complete){
+                callback.call(img,obj);
+                return;
+            }
+ 
+            // 图片加载到浏览器的缓存中回调函数
+            img.onload = function(){
+                callback.call(img,obj);
+            }
+        }
+ 
+        function showImage(obj){
+            obj.src = this.src;
+        }
+        let weixin = document.getElementById("weixin");
+
+        let support = document.getElementById("support");
+        support.onmouseover = function(){ 
+            loadImage(weixin,weixin.dataset.slide,showImage);
+            weixin.setAttribute("style","display:inline")
+        }
+        support.onmouseout = function(){  
+            console.log("bbb")
+            weixin.setAttribute("style","display:none")
+        }
+    </script>
+    
+    <script cms:inline="javascript">
         
         /*************************评论代码****************************/
         let userId = $("#userId").val()
 
         if (userId != -1) {
             $(".user-"+userId).css("display", "inline")
+        }else{
+            $("#login").css("display","inline")
         }
 
      
@@ -193,6 +238,7 @@
 
             })
         }
+
 
         function deleteComment(id) {
             commentApi.delete(id).then(response => {
@@ -251,6 +297,15 @@
             // reply.appendChild(textarea);
             reply.appendChild(div);
             console.log(reply)
+
+            $("#comment-reply-butten-id-"+id).css("display","none")
+            $("#comment-canclereply-butten-id-"+id).css("display","inline")
+        }
+        function cancleReply (id){
+            let reply = document.getElementById("comment-reply-id-"+id);
+            reply.innerHTML=""
+            $("#comment-reply-butten-id-"+id).css("display","inline")
+            $("#comment-canclereply-butten-id-"+id).css("display","none")
         }
     </script>
     <script cms:inline="javascript">

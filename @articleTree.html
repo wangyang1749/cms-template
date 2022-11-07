@@ -19,21 +19,7 @@
 
 <body >
     <style>
-        .comment-row{
-            margin-right: 30px;
-            padding: 1rem 0;
-            border-top: 2px #e7e7e7 solid;
-            /* height: 2px;
-            padding: 0;
-            margin: 16px 0;
-            background-color: #e7e7e7;
-            border: 0 none;
-            overflow: hidden;
-            box-sizing: content-box; */
-        }
-        .comment-row hr{
-            margin: 0.5rem 0 !important;
-        }
+       
     </style>
     <script async  cms:inline="javascript">
 
@@ -164,10 +150,21 @@
     <div cms:replace="/html/components/header :: #fragment"></div>
 
     <div class="container ">
+    
+
         <div class="row">
 
             <div class="col-lg-9 mb-3">
-
+                <div class="left-side">
+                    <ul>
+                        <li class="list-unstyled">
+                            <p id="support" class="mr-3">支持</p>
+                            <div class="left-side-img">
+                                <img id="weixin" data-slide="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20221106232619_1667748522270.jpg" alt="">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 <!-- <div>
                 <img th:src="${view.picPath}" class="rounded-pill"/>
             </div> -->
@@ -329,6 +326,41 @@
     <script src="/templates/resources/js/search_engine.js"></script>
     <script src="/templates/resources/js/axios.min.js"></script>
     <script src="/templates/resources/js/service.js?1.0"></script>
+    
+    <script>
+        function loadImage(obj,url,callback){
+            var img = new Image();
+            img.src = url;
+ 
+            // 判断图片是否在缓存中
+            if(img.complete){
+                callback.call(img,obj);
+                return;
+            }
+ 
+            // 图片加载到浏览器的缓存中回调函数
+            img.onload = function(){
+                callback.call(img,obj);
+            }
+        }
+ 
+        function showImage(obj){
+            obj.src = this.src;
+        }
+        let weixin = document.getElementById("weixin");
+
+        let support = document.getElementById("support");
+        support.onmouseover = function(){ 
+            loadImage(weixin,weixin.dataset.slide,showImage);
+            weixin.setAttribute("style","display:inline")
+        }
+        support.onmouseout = function(){  
+            console.log("bbb")
+            weixin.setAttribute("style","display:none")
+        }
+    </script>
+    
+    
     <script cms:inline="javascript">
         // let viewName = "[[${view.category.viewName}]]"
         var url = location.hostname;
@@ -364,6 +396,8 @@
 
         if (userId != -1) {
             $(".user-"+userId).css("display", "inline")
+        }else{
+            $("#login").css("display","inline")
         }
 
      
@@ -402,6 +436,7 @@
 
             })
         }
+
 
         function deleteComment(id) {
             commentApi.delete(id).then(response => {
@@ -460,8 +495,19 @@
             // reply.appendChild(textarea);
             reply.appendChild(div);
             console.log(reply)
+
+            $("#comment-reply-butten-id-"+id).css("display","none")
+            $("#comment-canclereply-butten-id-"+id).css("display","inline")
+        }
+        function cancleReply (id){
+            let reply = document.getElementById("comment-reply-id-"+id);
+            reply.innerHTML=""
+            $("#comment-reply-butten-id-"+id).css("display","inline")
+            $("#comment-canclereply-butten-id-"+id).css("display","none")
         }
     </script>
+
+    
     <script  cms:inline="javascript">
         $(function () {
             $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });

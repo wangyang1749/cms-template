@@ -41,7 +41,9 @@
                             <div th:text="${item.content}"></div>
                             <div >
                                 <a href="javascript:;" th:onclick="deleteComment([[${item.id}]])" th:class="'text-secondary user-'+${item.user.id}" >删除</a>
-                                 <a href="javascript:;" th:onclick="reply([[${item.id}]])"  class="text-secondary">回复</a>
+                                 <a href="javascript:;" th:onclick="reply([[${item.id}]])"  class="text-secondary" th:id="'comment-reply-butten-id-'+${item.id}">回复</a>
+                                 <a href="javascript:;" th:onclick="cancleReply([[${item.id}]])"  class="text-secondary" th:id="'comment-canclereply-butten-id-'+${item.id}" style="display: none;">取消回复</a>
+
                             </div>
                             <div th:id="'comment-reply-id-'+${item.id}"> </div> 
                         </div>
@@ -70,7 +72,9 @@
                             <div th:text="${item.content}"></div>
                             <div >
                                 <a href="javascript:;" th:onclick="deleteComment([[${item.id}]])" th:class="'text-secondary user-'+${item.user.id}" >删除</a>
-                                 <a href="javascript:;" th:onclick="reply([[${item.id}]])"  class="text-secondary">回复</a>
+                                 <a href="javascript:;" th:onclick="reply([[${item.id}]])"  class="text-secondary" th:id="'comment-reply-butten-id-'+${item.id}" >回复</a>
+                                 <a href="javascript:;" th:onclick="cancleReply([[${item.id}]])"  class="text-secondary" th:id="'comment-canclereply-butten-id-'+${item.id}" style="display: none;">取消回复</a>
+
                             </div>
                             <div th:id="'comment-reply-id-'+${item.id}"> </div> 
                         </div>
@@ -92,7 +96,7 @@
             <div class="form-group flex" >
          
                 <textarea class="form-control mb-2" rows="3" placeholder="输入你的评论内容" id="content"></textarea>
-                <button cms:if="${#sets.isEmpty(roles)}" type="submit" class="btn btn-secondary" id="submit" onclick="login()">登录评论</button>
+                <button cms:if="${#sets.isEmpty(roles)}" type="submit" class="btn btn-secondary" id="login" onclick="login()" style="display: none;">登录评论</button>
                 <button cms:if="${not #sets.isEmpty(roles)}" type="submit" class="btn btn-primary" id="submit" onclick="addComment(0,'content')">评论</button>    
             </div>
         </div>
