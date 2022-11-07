@@ -494,7 +494,7 @@ function save() {
         // console.log(jsonData)
         if (cmsWrite.articleId) {
             $.ajax({
-                url: protocol + "//" + url + ":8080/api/article/save/" + cmsWrite.articleId,
+                url: protocol + "//" + url + ":8080/api/article/save/" + cmsWrite.articleId+"?more=true",
                 headers: {
                     'Content-Type': 'application/json;charset=utf8',
                     'Authorization': 'Bearer ' + token,
@@ -503,6 +503,7 @@ function save() {
                 type: 'POST',
                 data: jsonData,
                 success: function (data) {
+                    console.log(data.data)
                     // console.log(data.data.id)
                     cmsWrite.articleId = data.data.id
                     Toast("更新文章" + data.data.title + "成功！", 'success')
@@ -511,7 +512,7 @@ function save() {
             });
         } else {
             $.ajax({
-                url: protocol + "//" + url + ":8080/api/article/save",
+                url: protocol + "//" + url + ":8080/api/article/save?more=true",
                 headers: {
                     'Content-Type': 'application/json;charset=utf8',
                     'Authorization': 'Bearer ' + token,
@@ -521,7 +522,7 @@ function save() {
                 type: 'POST',
                 data: jsonData,
                 success: function (data) {
-                    // console.log(data.data.id)
+                    
                     cmsWrite.articleId = data.data.id
                     Toast("添加文章" + data.data.title + "成功！", 'success')
                     history.pushState("state", "", "/user/edit/" + cmsWrite.articleId)
