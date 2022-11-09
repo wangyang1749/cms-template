@@ -487,14 +487,15 @@ $("#attachment").click(function () { attachmentPanel(); })
 /**
  * 保存文章
  */
-function save() {
+function save(more) {
+    console.log(more)
     let article = createArticle();
     if (article) {
         let jsonData = JSON.stringify(article)
         // console.log(jsonData)
         if (cmsWrite.articleId) {
             $.ajax({
-                url: protocol + "//" + url + ":8080/api/article/save/" + cmsWrite.articleId+"?more=true",
+                url: more? protocol + "//" + url + ":8080/api/article/save/" + cmsWrite.articleId+"?more=true":protocol + "//" + url + ":8080/api/article/save/" + cmsWrite.articleId,
                 headers: {
                     'Content-Type': 'application/json;charset=utf8',
                     'Authorization': 'Bearer ' + token,
@@ -504,6 +505,8 @@ function save() {
                 data: jsonData,
                 success: function (data) {
                     console.log(data.data)
+                    $("#markdown-preview").html(data.data.formatContent)
+                    readerlatex()
                     // console.log(data.data.id)
                     cmsWrite.articleId = data.data.id
                     Toast("更新文章" + data.data.title + "成功！", 'success')
@@ -512,7 +515,7 @@ function save() {
             });
         } else {
             $.ajax({
-                url: protocol + "//" + url + ":8080/api/article/save?more=true",
+                url: more? protocol + "//" + url + ":8080/api/article/save?more=true": protocol + "//" + url + ":8080/api/article/save",
                 headers: {
                     'Content-Type': 'application/json;charset=utf8',
                     'Authorization': 'Bearer ' + token,
@@ -522,7 +525,8 @@ function save() {
                 type: 'POST',
                 data: jsonData,
                 success: function (data) {
-                    
+                    $("#markdown-preview").html(data.data.formatContent)
+                    readerlatex()
                     cmsWrite.articleId = data.data.id
                     Toast("添加文章" + data.data.title + "成功！", 'success')
                     history.pushState("state", "", "/user/edit/" + cmsWrite.articleId)
@@ -536,16 +540,35 @@ function save() {
 
 }
 
+function readerlatex(){
+    var mathElems = document.getElementsByClassName("katex");
+    var elems = [];
+    for (const i in mathElems) {
+        if (mathElems.hasOwnProperty(i)) elems.push(mathElems[i]);
+    }
+
+    elems.forEach(elem => {
+        katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
+    });
+    loadImg()
+    mermaid.init({ noteMargin: 10 },$(".mermaid"));
+}
+
 
 $("#save").click(function () {
-    save()
+    save(true)
 })
 
-
+document.addEventListener("keydown", function (event) {
+    if (event.altKey && event.keyCode === 83) {
+        event.preventDefault();
+        save(true)
+    }
+})
 document.addEventListener("keydown", function (event) {
     if (event.ctrlKey && event.keyCode === 83) {
         event.preventDefault();
-        save()
+        save(false)
     }
 })
 

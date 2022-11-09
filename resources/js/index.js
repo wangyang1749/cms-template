@@ -180,6 +180,37 @@ function previewArticle(articleId, viewName) {
 
 }
 
+function loadImage(obj,url,callback){
+    var img = new Image();
+    img.src = url;
+
+    // 判断图片是否在缓存中
+    if(img.complete){
+        callback.call(img,obj);
+        return;
+    }
+
+    // 图片加载到浏览器的缓存中回调函数
+    img.onload = function(){
+        callback.call(img,obj);
+    }
+}
+
+function showImage(obj){
+    obj.src = this.src;
+}
+
+function loadImg(id){
+    var root = document.getElementById(id)
+    var lazys = root.querySelectorAll(".lazy");
+    var arr=[...lazys]
+    arr.forEach((val)=>{
+        console.log(val.dataset.original)
+        loadImage(val,val.dataset.original,showImage);
+    })
+}
+
+
 function previewArticleHTML(path, viewName) {
     let httpUrl = protocol + "//" + url ;
     if(port){
@@ -195,16 +226,26 @@ function previewArticleHTML(path, viewName) {
             },
             type: "get",
             success: function (data) {
+                // console.log(data);
                 // console.log($(data).find(".markdown").html())
+                $("#article-expand-"+viewName).css("display","none")
+                $("#article-shrink-"+viewName).css("display","inline")
+                $("#article-shrink-bottom-"+viewName).css("display","inline")
+                $("#" + viewName).html("<div class='p-3 ' style='box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;border: 3px #e7e7e7 solid;'> <hr>" + $(data).find(".markdown").html() + "<hr></div>")
 
-                $("#" + viewName).html("<div class='p-3'>" + $(data).find(".markdown").html() + "</div>")
+                loadImg(viewName)
+                
             },error: function (e) {
                 // console.log(e)
+                
                 console.log(e.status);
                 console.log(e.responseJSON.message);
             }
         });
     } else {
+        $("#article-expand-"+viewName).css("display","inline")
+        $("#article-shrink-"+viewName).css("display","none")
+        $("#article-shrink-bottom-"+viewName).css("display","none")
         $("#" + viewName).html(" ")
     }
 

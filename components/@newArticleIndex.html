@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="templates/fragment/header :: common_header(~{},~{},~{})">
+    <title>Document</title>
+</head>
+
+<body>
+    <div cms:replace="/html/components/header :: #fragment"></div>
+
+    <div class="container ">
+        <section id="fragment" class="mb-3">
+            <ul class="list-group list-group-flush shadow">
+                <div class="list-group-item list-group-item-light d-flex justify-content-between">
+                    <span> <i class="bi bi-journal-bookmark"></i> <span th:text="${name}"></span></span>
+                    <a class="text-secondary" th:href="${showUrl}">
+                        更多<i class="bi bi-three-dots-vertical"></i>
+                    </a>
+                </div>
+
+
+                <li class="list-group-item" th:each="item : ${view}">
+                    <!-- th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'" -->
+                    <a th:href="${item.linkPath}" class="text-secondary text-decoration-none ">
+
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1 title" th:text="${item.title}"></h5>
+                        </div>
+                        <div class="d-flex mobile-summary">
+                            <div class="mr-3 mobile-img" th:if="${item.picPath!=null}">
+                                <div class="img-summary">
+                                    <img class=" lazy" th:data-original="${item.picPath}" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <p class="mb-1 text-break" th:text="${item.summary}"></p>
+                            </div>
+                        </div>
+
+                    </a>
+                    <small>
+                        <div class="d-flex flex-row bd-highlight ">
+                            <div class="p-2 bd-highlight" style="width: 2.3rem;">
+                                <img th:src="${item.user.avatar}" alt="" class="img-avatar rounded-circle">
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <!-- <span th:text="${item.user.username}"></span>&nbsp;&nbsp; -->
+                                <span>发布于: </span>
+                                <span th:text="${#dates.format( item.updateDate, 'yyyy-MM-dd HH:mm:ss')}">3 days
+                                    ago</span>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <a href="javascript:;"
+                                    th:onclick="previewArticleHTML([[${item.path}]],[[${item.viewName}]])"
+                                    class="text-secondary preview">
+                                    <span th:id="'article-expand-'+${item.viewName}">阅读全文<i
+                                            class="bi bi-arrows-expand"></i></span>
+                                    <span th:id="'article-shrink-'+${item.viewName}" style="display: none;">收起<i
+                                            class="bi bi-arrows-collapse"></i></span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </small>
+                    <div th:id="${item.viewName}" class="bg-white markdown">
+                    </div>
+                    <div class="mt-2">
+                        <a href="javascript:;" th:onclick="previewArticleHTML([[${item.path}]],[[${item.viewName}]])"
+                        class="text-secondary preview">
+                        <span th:id="'article-shrink-bottom-'+${item.viewName}" style="display: none;">收起<i
+                                class="bi bi-arrows-collapse"></i></span> </a>
+                    </div>
+                </li>
+
+
+                <!-- <a th:href="${item.linkPath}" th:each="item : ${view}"
+                    class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+    
+                    <span th:text="${item.title}" class="text-truncate" style="max-width: 12rem;"></span>
+                    <span style="font-size: 0.6rem;" class="badge badge-secondary badge-pill"
+                        th:text="${item.visits}"></span>
+    
+                </a> -->
+            </ul>
+        </section>
+    </div>
+
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+    <div th:replace="templates/fragment/footer"></div>
+    <script>
+        $(function () {
+            $("img.lazy").lazyload({ effect: "fadeIn" });
+        });
+    </script>
+</body>
+
+</html>

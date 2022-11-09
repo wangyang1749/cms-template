@@ -25,20 +25,24 @@
                       
                     </div> -->
                     <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
+                    
+                    <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
 
+                    <div cms:replace="/html/components/hotArticle :: #fragment"></div>
 
-                    <div class="row">
+                    
+                    <!-- <div class="row">
                         <div class="col-sm mb-3">
-                            <div cms:replace="/html/components/hotArticle :: #fragment"></div>
+                            
                         </div>
-                        <!-- <div class="col-sm mb-3">
+                        <div class="col-sm mb-3">
                             <div cms:replace="/html/components/likeArticle.html"></div>
-                        </div> -->
+                        </div>
                         <div class="col-sm  mb-3">
-                            <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
+                            
                         </div>
                         
-                    </div>
+                    </div> -->
 
 
                     <div th:each="item : ${category}" class="mb-3 list-group-flush">

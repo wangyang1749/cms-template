@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="/templates/resources/css/user.css">
     <link rel="stylesheet" href="/templates/resources/css/pagination.css">
     <link rel="stylesheet" href="/templates/resources/css/editormd.css">
+    <link rel="stylesheet" href="/templates/resources/css/highlight.css">
+    <link rel="stylesheet" href="/templates/resources/css/katex.min.css" >
+    <link rel="stylesheet" href="/templates/resources/css/admonition.css">
 
     <title th:text="${view==null? '发布文章':view.title}"></title>
     <style>
@@ -55,24 +58,36 @@
 
         .edit-input {
             z-index: 9999;
+            margin: 0;
 
+        }
+        #markdown-preview{
+            max-width: 69rem;
+            overflow-y: auto;
+            max-height: 39rem;
+            overflow-x: auto;
         }
     </style>
 </head>
 
 <body>
     <div th:insert="templates/user/header"></div>
-    <div class="  ">
 
-        <div id="test-editormd" class="edit-input">
-            <textarea style="display:none;" id="textInput" th:text="${view==null?'':view.originalContent}">
-            </textarea>
-        </div>
-
-
-
+    <div>
 
         <form class="article-option">
+            <div class="row bg-white">
+                <div class="col">
+                    <div id="test-editormd" class="edit-input ">
+                        <textarea style="display:none;" id="textInput" th:text="${view==null?'':view.originalContent}">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="col p-3 ">
+                    <div id="markdown-preview" th:utext="${view==null?'':view.formatContent}" class="markdown" ></div>
+
+                </div>
+              </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">文章标题</label>
                 <input class="form-control" th:value="${view==null?'':view.title}" id="title" type="text" placeholder="请输入文章标题" />
@@ -171,9 +186,28 @@
     </div>
 
     <div th:insert="html/components/footer :: #footer" class="mt-3"></div>
-
-
+    
     <script src="/templates/resources/js/jquery-3.4.1.min.js"></script>
+
+    
+    <script src="/templates/resources/js/mermaid.min.js"></script>
+    <script>
+      mermaid.init({ noteMargin: 10 },$(".mermaid"));
+    // mermaid.mermaidAPI.initialize({ startOnLoad: false });
+
+    // mermaid.initialize({ startOnLoad: true });
+
+    //   mermaid.init({
+    //     theme: 'forest',
+    //     // themeCSS: '.node rect { fill: red; }',
+    //     logLevel: 3,
+    //     securityLevel: 'loose',
+    //     flowchart: { curve: 'basis' },
+    //     gantt: { axisFormat: '%m/%d/%Y' },
+    //     sequence: { actorMargin: 50 },
+    //     // sequenceDiagram: { actorMargin: 300 } // deprecated
+    //   },$('.mermaid'));
+    </script>
 
     <script>
 
@@ -211,7 +245,7 @@
 
 
     </script>
-
+ 
     <script src="/templates/resources/js/jquery.cookie.js"></script>
 
     <script src="/templates/resources/js/markdown-it.min.js"></script>
@@ -219,10 +253,77 @@
     <script src='/templates/resources/js/bootstrap-tags.min.js'></script>
     <script src="/templates/resources/js/index.js"></script>
     <script src="/templates/resources/js/user.js"></script>
-    <script src="/templates/resources/js/mermaid.min8.5.1.js"></script>
     <script src="/templates/resources/js/jquery.pagination.js"></script>
     <script src="/templates/resources/js/editormd.min.js"></script>
     <script src="/templates/resources/js/uploadImg.js?v=1.1"></script>
+    <script src="/templates/resources/js/article.js?v=1.06"></script>
+    <script>
+        function loadImage(obj,url,callback){
+            var img = new Image();
+            img.src = url;
+    
+            // 判断图片是否在缓存中
+            if(img.complete){
+                callback.call(img,obj);
+                return;
+            }
+    
+            // 图片加载到浏览器的缓存中回调函数
+            img.onload = function(){
+                callback.call(img,obj);
+            }
+        }
+    
+        function showImage(obj){
+            obj.src = this.src;
+        }
+
+        function loadImg(){
+            var lazys = document.querySelectorAll(".lazy");
+            var arr=[...lazys]
+            arr.forEach((val)=>{
+                console.log(val.dataset.original)
+                loadImage(val,val.dataset.original,showImage);
+            })
+        }
+        loadImg()
+
+        // let weixin = document.getElementById("weixin");
+
+        // let support = document.getElementById("support");
+        // support.onmouseover = function(){ 
+        //     loadImage(weixin,weixin.dataset.slide,showImage);
+        //     weixin.setAttribute("style","display:inline")
+        // }
+        // support.onmouseout = function(){  
+        //     console.log("bbb")
+        //     weixin.setAttribute("style","display:none")
+        // }
+    </script>
+
+    <!-- <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script> -->
+    <script  src="/templates/resources/js/highlight.min.js" ></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script> -->
+    <script defer src="/templates/resources/js/katex.min.js" ></script>
+    <script>
+
+        (function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                var mathElems = document.getElementsByClassName("katex");
+                var elems = [];
+                for (const i in mathElems) {
+                    if (mathElems.hasOwnProperty(i)) elems.push(mathElems[i]);
+                }
+
+                elems.forEach(elem => {
+                    katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
+                });
+            });
+        })();
+    </script>
     <script>
         var testEditor;
 
@@ -230,12 +331,17 @@
             testEditor = editormd("test-editormd", {
                 width: "90%",
                 height: 640,
+                watch: false,
+                toolbar: false,
+                codeFold:false,
                 syncScrolling: "single",
                 path: "/templates/resources/lib/editor/",
                 htmlDecode: true,
-                imageUpload: true,
+                imageUpload: false,
                 onload: function () {
                     initPasteDragImg(this); //必须
+                },onchange(){
+                    // console.log("aa")
                 }
                 // emoji:true
             });
@@ -251,7 +357,7 @@
             */
         });
     </script>
-    <script src="/templates/resources/js/write.js?v=1.4"></script>
+    <script src="/templates/resources/js/write.js?v=1.7"></script>
 
     <script>
 
