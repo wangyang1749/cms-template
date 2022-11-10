@@ -63,13 +63,6 @@ body {
 .markdown a{
     word-wrap: break-word;
 }
-/* 代码块的样式 */
-.markdown pre{
-    background: #f3f4f4;
-    border: 1px solid #e7eaed;
-    padding: 1rem; 
-    /* overflow: auto; */
-}
 
 .markdown  video{
     width: 100%;
@@ -82,14 +75,6 @@ body {
     overflow: auto;
 }
 
-.markdown pre code{
-    background: none;
-    border: none;
-}
-
-.markdown code{
-    color: black;
-}
 .footnote-backref, .footnote-ref{
     display: inline !important; 
      /* overflow: auto; */
@@ -274,7 +259,7 @@ table tr td:last-child {
     border-top: 1px solid #eef2f2;
 }
 
-.md-fences,
+/* .md-fences,
 code,
 tt {
     border: 1px solid #e7eaed;
@@ -288,7 +273,7 @@ tt {
 code {
     background-color: #f3f4f4;
     padding: 0 2px 0 2px;
-}
+} */
 
 .md-fences {
     margin-bottom: 15px;

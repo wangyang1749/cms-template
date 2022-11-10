@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="/templates/resources/css/katex.min.css" >
+    <link rel="stylesheet" href="/templates/resources/css/code.css?v=1.0">
+    <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
 </head>
 
 <body cms:inline="none">
@@ -42,13 +44,19 @@
                                 <span class="mr-2  ">最后发布时间:<strong
                                         th:text="${#dates.format( view.updateDate, 'yyyy-MM-dd HH:mm:ss')}">时间</strong></span>
                                 <span class="mr-2">浏览量:<strong id="visits"></strong></span>
-                                <a  th:href="@{'~/user/edit/'+${view.id}}" class="text-secondary justify-content-end text-right">编辑</a>
+                                <span cms:if="${#sets.contains(roles, 'ADMIN')}" >
+                                    <a  th:href="@{'~/user/edit/'+${view.id}}" class="text-secondary justify-content-end text-right">编辑</a>
+                                    <a class=" text-secondary justify-content-end text-right" href="javascript:;"
+                                    th:onclick="deleteArticle([[${view.id}]],[[${view.category.viewName}]])" th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
+                                    <a  href="javascript:;" onclick="loadImgCall(copyContent,'markdown')" class="text-secondary justify-content-end text-right">拷贝</a>
+                                </span>
+                         
                             </div>
                         </div>
                      
 
 
-                        <div class="markdown pt-2 pl-3 pr-3 pb-3" th:utext="${view.formatContent}">
+                        <div id="markdown" class="markdown pt-2 pl-3 pr-3 pb-3" th:utext="${view.formatContent}">
 
                         </div>
                         <div class="  p-3  d-flex justify-content-around">
@@ -172,7 +180,7 @@
     //     // sequenceDiagram: { actorMargin: 300 } // deprecated
     //   },$('.mermaid'));
     </script>
-    <script src="/templates/resources/js/article.js?v=1.06"></script>
+    <script src="/templates/resources/js/article.js?v=1.09"></script>
     <script src="/templates/resources/js/admonition.js"></script>
     <script src="/templates/resources/js/search_engine.js"></script>
 
@@ -349,9 +357,23 @@
     </script> -->
     <!-- 代码高亮 -->
     <!-- <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script> -->
-    <script  src="/templates/resources/js/highlight.min.js" ></script>
+    <script src="/templates/resources/js/highlight/highlight.min.js"></script>
 
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+        // hljs.addPlugin({
+        //     'after:highlight': (result) => {
+        //         result.value = result.value.replace(/^/gm, '<span class="line-num"></span>')
+        //     }
+        // });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
+            });
+        });
+
+
+    </script>
 
     <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script> -->
     <script defer src="/templates/resources/js/katex.min.js" ></script>

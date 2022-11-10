@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="/templates/resources/css/katex.min.css" >
-
+    <link rel="stylesheet" href="/templates/resources/css/code.css?v=1.0">
+    <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
 </head>
 
 <body >
@@ -183,7 +184,8 @@
                                     <a th:href="@{'~/user/edit/'+${view.id}}"
                                         class=" text-secondary justify-content-end text-right"><i class="bi bi-pencil-square"></i> 编辑</a>
                                     <a class=" text-secondary justify-content-end text-right" href="javascript:;"
-                                        th:onclick="deleteArticle([[${view.id}]])" th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
+                                        th:onclick="deleteArticle([[${view.id}]],[[${view.category.viewName}]])" th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
+                                    <a  href="javascript:;"  onclick="loadImgCall(copyContent,'markdown')" class="text-secondary justify-content-end text-right">拷贝</a>
                                 </span>
 
                                 <!-- <div cms:if="${userId}!=null">11 </div> -->
@@ -192,7 +194,7 @@
 
                         <!-- <span  cms:if="${#sets.contains(roles, 'ADMIN')}" cms:value="${roles}">greh</span> -->
             
-                        <div cms:inline="none" class="markdown pt-2 pl-3 pr-3 pb-3" th:utext="${view.formatContent}">
+                        <div id="markdown" cms:inline="none" class="markdown pt-2 pl-3 pr-3 pb-3" th:utext="${view.formatContent}">
 
                         </div>
                         <div class="  p-3  d-flex justify-content-around">
@@ -321,7 +323,7 @@
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
     <div th:replace="templates/fragment/footer"></div>
-    <script src="/templates/resources/js/article.js?v=1.07"></script>
+    <script src="/templates/resources/js/article.js?v=1.09"></script>
     <script src="/templates/resources/js/admonition.js"></script>
     <script src="/templates/resources/js/search_engine.js"></script>
     <script src="/templates/resources/js/axios.min.js"></script>
@@ -382,30 +384,7 @@
     
     <script cms:inline="javascript">
         // let viewName = "[[${view.category.viewName}]]"
-        var url = location.hostname;
-        var protocol = window.location.protocol;
-        var token = $.cookie('Authorization')
-        function deleteArticle(id) {
 
-            if (confirm("确定删除该文章?")) {
-                $.ajax({
-                    url: protocol + "//" + url + ":8080/api/article/delete/" + id,
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf8',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    type: "get",
-                    success: function (data) {
-                        // console.log(data.data)
-                        var datas = data.data
-                        // Toast("删除文章" + data.data.title + "成功！", 'success')
-                        window.location.href = "/html_articleList_" + viewName + ".html";
-                    }
-                });
-
-            }
-
-        }
     </script>
 
     <script cms:inline="javascript">
@@ -552,9 +531,23 @@
     </script> -->
     <!-- 代码高亮 -->
     <!-- <script  src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script> -->
-    <script  src="/templates/resources/js/highlight.min.js" ></script>
+    <script src="/templates/resources/js/highlight/highlight.min.js"></script>
 
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+        // hljs.addPlugin({
+        //     'after:highlight': (result) => {
+        //         result.value = result.value.replace(/^/gm, '<span class="line-num"></span>')
+        //     }
+        // });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
+            });
+        });
+
+
+    </script>
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script> -->
     <script defer src="/templates/resources/js/katex.min.js" ></script>

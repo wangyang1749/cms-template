@@ -202,6 +202,7 @@ function showImage(obj){
 
 function loadImg(id){
     var root = document.getElementById(id)
+    // console.log(root)
     var lazys = root.querySelectorAll(".lazy");
     var arr=[...lazys]
     arr.forEach((val)=>{
@@ -249,4 +250,35 @@ function previewArticleHTML(path, viewName) {
         $("#" + viewName).html(" ")
     }
 
+}
+
+
+const msg = "我是弹框消息";
+// 弹窗消息
+function handleMessage(message = msg) {
+    // console.log(message)
+    const parentDiv = document.createElement("div");
+    const div = document.createElement("div");
+    div.className = "message-content";
+    div.innerHTML = message;
+    parentDiv.appendChild(div);
+    parentDiv.className = "message-notice";
+    document.getElementById("message").appendChild(parentDiv);
+
+    setTimeout(() => {
+        parentDiv.remove();
+    }, 2000);
+}
+
+
+
+function copyContent(id) {
+    let editor = document.getElementById(id);//要复制的结点
+    let range = document.createRange();
+    window.getSelection().removeAllRanges();//先清除掉选中区域
+    range.selectNode(editor);
+    window.getSelection().addRange(range);
+    let res = document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+    handleMessage("拷贝成功!")
 }

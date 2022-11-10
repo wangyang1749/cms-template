@@ -504,13 +504,16 @@ function save(more) {
                 type: 'POST',
                 data: jsonData,
                 success: function (data) {
-                    console.log(data.data)
+                    // console.log(data.data)
                     $("#markdown-preview").html(data.data.formatContent)
                     readerlatex()
                     // console.log(data.data.id)
                     cmsWrite.articleId = data.data.id
-                    Toast("更新文章" + data.data.title + "成功！", 'success')
+                    // Toast("更新文章" + data.data.title + "成功！", 'success')
+                    handleMessage("更新文章" + data.data.title + ", "+data.message)
 
+                },error:function(data){
+                    handleMessage("更新文章" + data.data.title + ", "+data.message)
                 }
             });
         } else {
@@ -528,7 +531,8 @@ function save(more) {
                     $("#markdown-preview").html(data.data.formatContent)
                     readerlatex()
                     cmsWrite.articleId = data.data.id
-                    Toast("添加文章" + data.data.title + "成功！", 'success')
+                    // Toast("添加文章" + data.data.title + "成功！", 'success')
+                    handleMessage("添加文章" + data.data.title + "成功！")
                     history.pushState("state", "", "/user/edit/" + cmsWrite.articleId)
                     $("#submitCreate").css("display", "none")
                     $("#submitUpdate").css("display", "inline-block")
@@ -550,7 +554,7 @@ function readerlatex(){
     elems.forEach(elem => {
         katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
     });
-    loadImg()
+    loadImg('markdown-preview')
     mermaid.init({ noteMargin: 10 },$(".mermaid"));
 }
 
@@ -562,13 +566,13 @@ $("#save").click(function () {
 document.addEventListener("keydown", function (event) {
     if (event.altKey && event.keyCode === 83) {
         event.preventDefault();
-        save(true)
+        save(false)
     }
 })
 document.addEventListener("keydown", function (event) {
     if (event.ctrlKey && event.keyCode === 83) {
         event.preventDefault();
-        save(false)
+        save(true)
     }
 })
 

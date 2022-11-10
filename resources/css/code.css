@@ -1,0 +1,39 @@
+/* 代码块的样式 */
+/* .markdown pre{
+    background: #f3f4f4;
+    border: 1px solid #e7eaed;
+    padding: 1rem; 
+} */
+
+
+/* .markdown pre code{
+    background: none;
+    border: none;
+} */
+
+.markdown pre code{
+    color: #ddd;
+    background: #303030;
+    border-radius: 5px;
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+}
+
+
+
+pre code::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;  
+}
+pre code::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);
+}
+pre code::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+
+}

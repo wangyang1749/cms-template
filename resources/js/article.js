@@ -220,12 +220,12 @@ function setContentTableHeight() {
     let documentHeight = $(document).height()
     let mainContentHeight = $("#main-content").outerHeight(true)
     let scrollTop = $(document).scrollTop()
-    let bottom = footerHeight-(documentHeight - windowHeight )
-   
+    let bottom = footerHeight - (documentHeight - windowHeight)
+
     // console.log(mainContentHeight > siderbarHeight)
-    let contentTableHeight = windowHeight - headerHeight - userCard - 18 
-    if(bottom>0){
-        contentTableHeight=contentTableHeight - bottom
+    let contentTableHeight = windowHeight - headerHeight - userCard - 18
+    if (bottom > 0) {
+        contentTableHeight = contentTableHeight - bottom
     }
     // console.log(contentTableHeight)
     $("#content-table").css("max-height", contentTableHeight + "px");
@@ -234,3 +234,82 @@ function setContentTableHeight() {
 if (document.body.clientWidth >= 977) {
     setContentTableHeight()
 }
+
+
+var url = location.hostname;
+var protocol = window.location.protocol;
+var token = $.cookie('Authorization')
+function deleteArticle(id, viewName) {
+
+    if (confirm("确定删除该文章?")) {
+        $.ajax({
+            url: protocol + "//" + url + ":8080/api/article/delete/" + id,
+            headers: {
+                'Content-Type': 'application/json;charset=utf8',
+                'Authorization': 'Bearer ' + token
+            },
+            type: "get",
+            success: function (data) {
+                // console.log(data.data)
+                var datas = data.data
+                // Toast("删除文章" + data.data.title + "成功！", 'success')
+                window.location.href = "/html_articleList_" + viewName + ".html";
+            }
+        });
+
+    }
+
+}
+
+
+
+
+
+function loadImage(obj, url, callback) {
+    var img = new Image();
+    img.src = url;
+
+    // 判断图片是否在缓存中
+    if (img.complete) {
+        callback.call(img, obj);
+        return;
+    }
+
+    // 图片加载到浏览器的缓存中回调函数
+    img.onload = function () {
+        callback.call(img, obj);
+    }
+}
+
+function showImage(obj) {
+    obj.src = this.src;
+}
+
+function loadImg() {
+    var lazys = document.querySelectorAll(".lazy");
+    var arr = [...lazys]
+    arr.forEach((val) => {
+        console.log(val.dataset.original)
+        loadImage(val, val.dataset.original, showImage);
+    })
+}
+
+
+// const onAllImgLoaded = async (root) => { 
+//     const imgNodes = root instanceof HTMLImageElement ? [root] : root.querySelectorAll('img');         
+//     let imgArr = Array.prototype.slice.call(imgNodes);         
+//     return await Promise.all(imgArr.map(img=> {  new Promise(resolve=>{ img.addEventListener('load',()=> resolve(img)) })  })  ) 
+// }
+function loadImgCall(fun, id) {
+    var lazys = document.querySelectorAll(".lazy");
+    var arr = [...lazys]
+    arr.forEach((val) => {
+        console.log(val.dataset.original)
+        loadImage(val, val.dataset.original, showImage);
+    })
+    fun(id)
+    // onAllImgLoaded(document.getElementById(id)).then(()=>{  }).catch(()=>{console.log(1111111)})
+    
+}
+
+
