@@ -506,10 +506,9 @@ display: none;
 
  
 }
-.left-side-img{
+/* .left-side-img{
     width: 13rem;
-   
-}
+} */
 
 .left-side-img img{
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;

@@ -26,7 +26,7 @@
                     <ul>
                         <li class="list-unstyled">
                             <p id="support" class="mr-3">支持</p>
-                            <div class="left-side-img">
+                            <div id="support-img">
                                 <img id="weixin" data-slide="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20221106232619_1667748522270.jpg" alt="">
                             </div>
                         </li>
@@ -213,10 +213,12 @@
         let support = document.getElementById("support");
         support.onmouseover = function(){ 
             loadImage(weixin,weixin.dataset.slide,showImage);
-            weixin.setAttribute("style","display:inline")
+            $("#support-img").css("width","13rem") 
+            weixin.setAttribute("style","display:inline;;")
         }
         support.onmouseout = function(){  
             console.log("bbb")
+            $("#support-img").css("width","0") 
             weixin.setAttribute("style","display:none")
         }
     </script>
