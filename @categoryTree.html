@@ -11,15 +11,17 @@
 
 <body cms:inline="none">
     <style>
-          #components a{
+        #components a {
             display: block;
-          }
-        #components a:hover{
-            background: #6c757d!important;
-            color: white!important;
         }
-        #components li{
-            list-style:none;
+
+        #components a:hover {
+            background: #6c757d !important;
+            color: white !important;
+        }
+
+        #components li {
+            list-style: none;
         }
     </style>
     <div cms:replace="/html/components/header :: #fragment"></div>
@@ -45,7 +47,7 @@
                             </div> -->
                         </div>
                         <hr>
-                    
+
                         <div class="bg-light p-3">
                             <div th:utext="${view.category.description}"></div>
                             <ul class="list-group list-group-flush">
@@ -53,25 +55,58 @@
                                     parser></div>
                             </ul>
                         </div>
-           
+
 
                     </div>
-             
-                  
-                  
+
+
+
                     <!-- 文章列表 -->
                     <!-- <ul class="list-group list-group-flush mb-3 text-center"> -->
 
                     <div id="components" class="mb-3 bg-white card">
-                        <div class="card-body shadow ">
-                            <ul th:each="item : ${view.contents}" class="list-group ">
 
-                                <!-- <li style="font-size: 1.2rem;" class="list-group-item  list-group-item-success font-weight-bold shadow-sm" th:text="${item.title}" >A disabled item</li> -->
+                        <th:block th:fragment="row(commentsVar)">
+                            <ul th:each="item,index:${commentsVar}">
+                                <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+                                    <h4 th:if="${item.parentId==0}">
+                                        </i><a th:href="${item.linkPath}" class="text-muted">
+                                            <i class="bi bi-layout-text-sidebar-reverse"></i> <span
+                                                th:text="${item.title}"></span>
+                                        </a>
+                                    </h4>
+                                    <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                                        <i class="bi  bi-file-earmark-text"></i> <span
+                                            th:text="${item.title}"></span>
+                                    </a>
+                                </li>
+                                <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
+                                    <h4 th:if="${item.parentId==0}">
+                                        </i><a th:href="${item.linkPath}" class="text-muted">
+                                            <i class="bi bi-layout-text-sidebar-reverse"></i> <span
+                                                th:text="${item.title}"></span>
+                                        </a>
+                                    </h4>
+                                    <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                                        <i class="bi  bi-file-earmark-text"></i> <span
+                                            th:text="${item.title}"></span>
+                                    </a>
+                                    <th:block th:include="this::row(${item.children})"></th:block>
+                                </li>
+                            </ul>
+                        </th:block>
+
+
+                        <div class="card-body shadow ">
+                            <div th:include="this::row(${view.contents})"></div>
+                            <!-- <ul th:each="item : ${view.contents}" class="list-group ">
+
                                 <h4>
                                     </i><a th:href="${item.linkPath}"  class="text-muted">
                                         <i class="bi bi-layout-text-sidebar-reverse"></i> <span th:text="${item.title}"></span>
                                     </a>
                                 </h4>
+
 
                                 <ul>
                                     <li th:each="child : ${item.children}">
@@ -82,11 +117,12 @@
 
                                 </ul>
 
+                            </ul> -->
 
-                            </ul>
                         </div>
-
                     </div>
+
+
 
                     <!-- </ul> -->
 
@@ -127,11 +163,10 @@
                         <dl>
                             <dt class="text-muted">快捷入口</dt>
                             <dd>
-                                <a class=" badge badge-success"
-                                th:href="@{'~'+${view.linkPath}+'-mind.html'}">
-                                <!-- <span th:text="${view.category.name}"></span> -->
-                                思维导图
-                            </a>
+                                <a class=" badge badge-success" th:href="@{'~'+${view.linkPath}+'-mind.html'}">
+                                    <!-- <span th:text="${view.category.name}"></span> -->
+                                    思维导图
+                                </a>
                             </dd>
                         </dl>
                         <hr>
