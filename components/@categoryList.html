@@ -13,14 +13,48 @@
 
            
         <section id="fragment">
-            <div class="category-horizontal mb-3 shadow" th:each="item : ${view}" >
+            
+            <th:block th:fragment="row(commentsVar)">
+                <ul th:each="item,index:${commentsVar}">
+                    <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+                        <h4 th:if="${item.parentId==0}">
+                            </i><a th:href="${item.linkPath}" class="text-muted">
+                                <i class="bi  bi-book" th:class="${item.icon}"></i> <span
+                                    th:text="${item.name}"></span>
+                            </a>
+                        </h4>
+                        <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                            <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
+                                th:text="${item.name}"></span>
+                        </a>
+                    </li>
+                    <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
+                        <h4 th:if="${item.parentId==0}">
+                            </i><a th:href="${item.linkPath}" class="text-muted">
+                                <i class="bi  bi-book" th:class="${item.icon}"></i> <span
+                                    th:text="${item.name}"></span>
+                            </a>
+                        </h4>
+                        <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                            <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
+                                th:text="${item.name}"></span>
+                        </a>
+                        <th:block th:include="this::row(${item.children})"></th:block>
+                    </li>
+                </ul>
+            </th:block>
+            <div th:include="this::row(${view})"></div>
+
+
+
+            <!-- <div class="category-horizontal mb-3 shadow" th:each="item : ${view}" >
                 <div class="category-title"><span th:text="${item.name}">所有文章分类</span></div>
                 <div class="category-list"  >
-                    <!-- [[${item.name}]] -->
+                
                     <a th:each="child : ${item.children}" th:href="${child.linkPath}" th:text="${child.name}"
                         th:class="'css-'+${child.viewName}">Dapibus ac facilisis in</a>
                 </div>
-            </div>
+            </div> -->
         </section>
     
     </div>

@@ -24,7 +24,6 @@
                         <div class="category-title"><span>所有文章分类</span></div>
                       
                     </div> -->
-                    <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
                     
                     <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
 
@@ -55,6 +54,7 @@
                                 <div cms:replace="@{'~/html/components/'+${item.viewName}+'.html'}" parser></div>
 
                         </div>
+                        
                     </div>
 
                     <!-- <div class="row">
@@ -91,11 +91,12 @@
                             <hr>
                             <div cms:replace="~{/html/components/myArticle :: #fragment} ?:_"></div>
                         </div>
-                        
-
-                        
                     </div>
-                    
+                    <div class="card mb-3  bg-white">
+                        <div class="shadow">
+                            <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
+                        </div>
+                    </div>
                     
                      <!-- <div class="card mb-3  bg-white p-4">
                         <h5><span class="badge badge-danger ">21考研倒计时:</span></h5>
