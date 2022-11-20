@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>å¤´éƒ¨ç»„ä»¶</title>
+  <title>head</title>
  
 </head>
 <body>
@@ -52,7 +52,10 @@
           <div class=" navbar-collapse " id="mobile-nav1">
             <ul class="nav navbar-nav mr-auto">
               <li class="nav-item" th:each="item : ${view}">
-                <a th:class="'nav-link '+'css-'+${item.name}" th:href="${item.urlName}" th:text="${item.name}"></a>
+                
+                <a th:class="'nav-link '+'css-'+${item.name}" th:href="${item.urlName}" >
+                  <i th:class="'bi '+${item.icon}"></i><span> </span><span th:text="${item.name}"></span>
+                </a>
               </li>
         
             </ul>

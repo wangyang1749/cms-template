@@ -14,12 +14,26 @@
             <div cms:replace="/html/components/collectionTree :: #fragment"></div>
         </div>
         <div class="col-lg-8 bg-white">
+            <button class="btn btn-outline-secondary" type="button"  id="sync">同步</button>
+
+            <form action="/user/literature">
+                <div class="input-group mb-3">
+
+                    <input type="text" class="form-control" placeholder="请输入文献名称" name="keywords">
+                    <div class="input-group-append">
+                        <input type="submit"class="btn btn-outline-secondary" value="搜索">
+        
+                    </div>
+                </div>
+            </form>
+
             <ul >
                 <li th:each="item,index:${view}" class="list-unstyled">
                     <!-- <a  th:href="'/html_literature_'+${item.key}+'.html'" class="text-secondary">
                         <i class="bi  bi-file-earmark-text"></i>  <span th:text="${item.name}"></span>
                     </a> -->
                     <span th:text="${item.title}"></span>
+                    <span th:text="${item.key}"></span>
                     <hr>
                 </li>
               
@@ -29,5 +43,23 @@
 
     </div>
     <div cms:replace="/html/components/footer :: #fragment"></div>
+
+    <div th:replace="templates/fragment/footer"></div>
+    <script src="/templates/resources/js/axios.min.js"></script>
+    <script src="/templates/resources/js/service.js?v=1.2"></script>
+    <script>
+        $("#sync").click(function(){
+            literatureApi.syncLiterature().then(resp=>{
+                handleMessage(resp.data.message)
+            }).catch(function (error) {
+                // handle error
+                console.log(error.response.data.message);
+                handleMessage(error.response.data.message)
+
+                // alert(error.response.data.message)
+
+            })
+        })
+    </script>
 </body>
 </html>

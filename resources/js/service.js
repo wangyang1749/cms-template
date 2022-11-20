@@ -64,3 +64,12 @@ commentApi.delete=(id)=>{
         method:'delete',
     })
 }
+
+
+const literatureApi = {}
+literatureApi.syncLiterature = () => {
+    return service({
+        url: `/api/literature/sync`,
+        method: 'get'
+    })
+}
