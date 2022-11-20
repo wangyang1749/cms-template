@@ -9,48 +9,66 @@
 </head>
 
 <body>
+    <style>
+        .card-height {
+            height: calc(60vh);
+            overflow-y: auto;
+        }
+    </style>
     <div cms:replace="/html/components/header :: #fragment"></div>
     <div class="container" id="app">
 
-
         <div class="row mb-3 ">
-            <div class="col-lg-3  bg-white p-1 mr-1">
+            <div class="col-lg-3">
                 <section id="fragment">
-                    <a href="/html/components/collectionTree.html" class="text-secondary">
-                        <span>Literature</span>
-                    </a>
-                    <th:block th:fragment="row(commentsVar)">
-                        <ul th:each="item,index:${commentsVar}">
-                            <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
-                                <a th:href="'/html_literature_'+${item.key}+'.html'" class="text-secondary">
-                                    <i class="bi  bi-file-earmark-text"></i> <span th:text="${item.name}"></span>
-                                </a>
-                            </li>
-                            <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
-                                <a th:href="'/html_literature_'+${item.key}+'.html'" class="text-secondary">
-                                    <i class="bi  bi-file-earmark-text"></i> <span th:text="${item.name}"></span>
-                                </a>
-                                <th:block th:include="this::row(${item.children})"></th:block>
-                            </li>
-                        </ul>
-                    </th:block>
-                    <div th:include="this::row(${view})"></div>
+                    <div class="card mb-3  bg-white shadow">
+                        <div class="card-header d-flex justify-content-between">
+                            <a href="/html/components/collectionTree.html" class="text-secondary">
+                                <span>Literature</span>
+                            </a>
+                            <a href="javascript:;" id="sync" class="text-secondary">同步</a>
+                        </div>
+                        <div class="card-body card-height">
+
+
+                            <th:block th:fragment="row(commentsVar)">
+                                <ul th:each="item,index:${commentsVar}">
+                                    <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+                                        <a th:href="'/html_literature_'+${item.key}+'.html'" class="text-secondary">
+                                            <i class="bi  bi-file-earmark-text"></i> <span
+                                                th:text="${item.name}"></span>
+                                        </a>
+                                    </li>
+                                    <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
+                                        <a th:href="'/html_literature_'+${item.key}+'.html'" class="text-secondary">
+                                            <i class="bi  bi-file-earmark-text"></i> <span
+                                                th:text="${item.name}"></span>
+                                        </a>
+                                        <th:block th:include="this::row(${item.children})"></th:block>
+                                    </li>
+                                </ul>
+                            </th:block>
+                            <div th:include="this::row(${view})"></div>
+                        </div>
+                    </div>
+
                 </section>
+
             </div>
-            <div class="col-lg-8 bg-white">
-                <button class="btn btn-outline-secondary" type="button"  id="sync">同步</button>
+            <div class="col-lg-8 bg-white shadow pt-3">
+
 
                 <form action="/user/literature">
                     <div class="input-group mb-3">
 
                         <input type="text" class="form-control" placeholder="请输入文献名称" name="keywords">
                         <div class="input-group-append">
-                            <input type="submit"class="btn btn-outline-secondary" value="搜索">
-            
+                            <input type="submit" class="btn btn-outline-secondary" value="搜索">
                         </div>
+                       
                     </div>
                 </form>
-                <h2>Zotero Literature</h2>
+                <hr>
             </div>
         </div>
 
@@ -62,8 +80,8 @@
     <script src="/templates/resources/js/axios.min.js"></script>
     <script src="/templates/resources/js/service.js?v=1.2"></script>
     <script>
-        $("#sync").click(function(){
-            literatureApi.syncLiterature().then(resp=>{
+        $("#sync").click(function () {
+            literatureApi.syncLiterature().then(resp => {
                 handleMessage(resp.data.message)
             }).catch(function (error) {
                 // handle error
