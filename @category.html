@@ -58,23 +58,24 @@
 
                     <div class="pb-3">
 
-                        <div class="row row-cols-4" id="categoryChildren">
-                            <div class="col" th:each=" item :${view.children}">
-                                <div class="card  text-white ">
-                                    <a th:href="${item.linkPath}" class="text-secondary">
-                                        <img th:if="${item.picThumbPath==''|| item.picThumbPath==null}"
-                                           class="card-img" src="/templates/resources/img/logo_category.png">
-                                        <img th:if="${item.picThumbPath!=null && item.picThumbPath!=''}"
-                                            th:src="${item.picThumbPath}"class="card-img">
-                                        <div class="card-img-overlay">
-                                            <h5 th:text="${item.name}">Card title</h5>
-                                            <!-- <p th:text="${item.name}">Last updated 3 mins ago</p> -->
-                                        </div>
-                                    </a>
+                        <div id="categoryChildren">
+                            <div class="row row-cols-4">
+                                <div class="col" th:each=" item :${view.children}">
+                                    <div class="card  text-white ">
+                                        <a th:href="${item.linkPath}" class="text-secondary">
+                                            <img th:if="${item.picThumbPath==''|| item.picThumbPath==null}"
+                                                class="card-img" src="/templates/resources/img/logo_category.png">
+                                            <img th:if="${item.picThumbPath!=null && item.picThumbPath!=''}"
+                                                th:src="${item.picThumbPath}" class="card-img">
+                                            <div class="card-img-overlay">
+                                                <h5 th:text="${item.name}">Card title</h5>
+                                                <!-- <p th:text="${item.name}">Last updated 3 mins ago</p> -->
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
 
                         <div th:if="${view.parentCategory}">
                             <div cms:replace="~{'html/articleList/categoryChildren/'+${view.parentCategory.viewName}} ?:_"
