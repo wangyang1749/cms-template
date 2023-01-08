@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="templates/fragment/header :: common_header(~{},~{},~{})">
+<head th:replace="template/templates/fragment/header :: common_header(~{},~{},~{})">
     <title>Document</title>
 </head>
 
@@ -86,7 +86,7 @@
     </div>
 
     <div cms:replace="/html/components/footer :: #fragment"></div>
-    <div th:replace="templates/fragment/footer"></div>
+    <div th:replace="template/templates/fragment/footer"></div>
     <script>
         $(function () {
             $("img.lazy").lazyload({ effect: "fadeIn" });

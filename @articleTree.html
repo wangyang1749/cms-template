@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
+<head th:replace="template/templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
     <title th:text="${view.title} +' - 生信小木屋'">文章详情</title>
     <meta name="keywords" content="生命科学知识分享,生物技术,生物信息学" th:content="${view.title}">
     <meta name="description" content="分享生命科学方面相关文章" th:content="${view.summary}">
@@ -350,7 +350,7 @@
     <input type="hidden" th:value="${view.tocJSON}" id="tocJSON">
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
-    <div th:replace="templates/fragment/footer"></div>
+    <div th:replace="template/templates/fragment/footer"></div>
     <script src="/templates/resources/js/article.js?v=1.09"></script>
     <script src="/templates/resources/js/admonition.js"></script>
     <script src="/templates/resources/js/search_engine.js"></script>
