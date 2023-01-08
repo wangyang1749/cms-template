@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head  th:replace="template/templates/fragment/header :: common_header(~{::title},~{::link},~{})">
+<head  th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{})">
 
     <link rel="stylesheet" href="/templates/resources/css/pdf.css">
     <!-- markdown扩展 -->
@@ -12,7 +12,7 @@
 <body cms:inline="none">
     <div class="markdown container" th:utext="${view.formatContent}">
     </div>
-    <div th:replace="template/templates/fragment/footer"></div>
+    <div th:replace="templates/templates/fragment/footer"></div>
     <script>
         // 图片居中
         $('.markdown p').find('> img').parent().css({ "display": 'flex', "justify-content": "center", "align-items": "center" });

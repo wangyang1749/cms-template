@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="template/templates/fragment/header :: common_header(~{::title},~{::link},~{})">
+<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{})">
     <title th:text="${view.title}"></title>
 
     <link rel="stylesheet" href="/templates/resources/css/sheet.css">
@@ -26,7 +26,7 @@
     <script src="/templates/resources/js/search_engine.js"></script>
 
     <div cms:replace="/html/components/footer :: #fragment"></div>
-    <div th:replace="template/templates/fragment/footer"></div>
+    <div th:replace="templates/templates/fragment/footer"></div>
 
 </body>
 

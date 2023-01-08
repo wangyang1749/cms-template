@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="template/templates/fragment/header :: common_header(~{::title},~{::link},~{})">
+<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{})">
     <title th:text="${view.category.name}">分类页面</title>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         crossorigin="anonymous"> -->
@@ -253,7 +253,7 @@
     </div>
 
     <div cms:replace="/html/components/footer :: #fragment"></div>
-    <div th:replace="template/templates/fragment/footer"></div>
+    <div th:replace="templates/templates/fragment/footer"></div>
 
     <script>
         $(function () {
