@@ -24,8 +24,8 @@
             <div class="col-lg-9 mb-3">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" ><a href="/">首页 </a></li>
-                    <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}">
-                        <a th:each="item : ${view.parentCategory}" th:href="${item.linkPath}" th:text="${item.name}"></a>
+                    <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}" th:each="item : ${view.parentCategory}" >
+                        <a th:href="${item.linkPath}" th:text="${item.name}"></a>
                     </li>
                     <li  class="breadcrumb-item">
                         <a th:href="${view.category.linkPath}" th:text="${view.category.name}"></a>

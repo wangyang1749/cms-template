@@ -47,8 +47,8 @@
 
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">首页 </a></li>
-                        <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategories)}">
-                            <a th:each="item : ${view.parentCategories}" th:href="${item.linkPath}" th:text="${item.name}"></a>
+                        <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategories)}" th:each="item : ${view.parentCategories}">
+                            <a  th:href="${item.linkPath}" th:text="${item.name}"></a>
                         </li>
                         <li class="breadcrumb-item active" >
                             <span th:text="${view.category.name}"></span>
@@ -57,9 +57,14 @@
 
 
                     <div class="pb-3">
+                        <div th:if="${view.parentCategory}">
+                            <div cms:replace="~{'html/articleList/categoryChildren/'+${view.parentCategory.viewName}} ?:_"
+                                parser></div>
+                        </div>
+                        <hr>
 
-                        <div id="categoryChildren">
-                            <div class="row row-cols-4">
+                        <div id="categoryChildren" th:if=${view.parentCategory==null}>
+                            <div class="row row-cols-6">
                                 <div class="col" th:each=" item :${view.children}">
                                     <div class="card  text-white ">
                                         <a th:href="${item.linkPath}" class="text-secondary">
@@ -76,11 +81,8 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div th:if="${view.parentCategory}">
-                            <div cms:replace="~{'html/articleList/categoryChildren/'+${view.parentCategory.viewName}} ?:_"
-                                parser></div>
-                        </div>
+                        
+                   
                     </div>
 
 
