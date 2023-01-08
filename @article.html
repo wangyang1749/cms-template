@@ -22,6 +22,18 @@
     <div class="container ">
         <div class="row">
             <div class="col-lg-9 mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" ><a href="/">首页 </a></li>
+                    <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}">
+                        <a th:each="item : ${view.parentCategory}" th:href="${item.linkPath}" th:text="${item.name}"></a>
+                    </li>
+                    <li  class="breadcrumb-item">
+                        <a th:href="${view.category.linkPath}" th:text="${view.category.name}"></a>
+                    </li>
+                    <li class="breadcrumb-item active" >
+                        <span th:text="${view.title}"></span>
+                    </li>
+                </ol>
                 <div class="left-side">
                     <ul>
                         <li class="list-unstyled">

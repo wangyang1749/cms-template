@@ -45,6 +45,15 @@
                         <p th:text="${view.category.description}"></p>
                     </div>
 
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">首页 </a></li>
+                        <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategories)}">
+                            <a th:each="item : ${view.parentCategories}" th:href="${item.linkPath}" th:text="${item.name}"></a>
+                        </li>
+                        <li class="breadcrumb-item active" >
+                            <span th:text="${view.category.name}"></span>
+                        </li>
+                    </ol>
 
 
                     <!-- 文章列表 -->
