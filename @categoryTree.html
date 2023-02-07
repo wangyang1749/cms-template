@@ -25,8 +25,7 @@
         }
     </style>
     <div cms:replace="/html/components/header :: #fragment"></div>
-
-    <div class="container" id="app">
+    <div class="container margin-top-72" id="app">
 
         <div class="row">
             <div class="col-lg-9 ">
@@ -46,7 +45,7 @@
                         <div class="img">
                             <img th:if="${view.category.picPath==''||view.category.picPath==null}" class="mb-1"
                                 src="/templates/resources/img/logo_category.png">
-                            <img th:if="${view.category.picPath!=null||view.category.picPath!=''}"
+                            <img th:if="${view.category.picPath!=null && view.category.picPath!=''}"
                                 th:src="${view.category.picPath}" class="mb-1">
                             <!-- <div class="d-flex title">
                                 <a class="text-secondary"
@@ -169,7 +168,7 @@
             </div>
 
             <div class="col-lg-3"  id="siderbar" >
-                <div class="card">
+                <div class="card mb-3">
                     <div class="card-body shadow">
                         <dl>
                             <dt class="text-muted">快捷入口</dt>
@@ -192,60 +191,47 @@
                     </div>
                 </div>
 
-
                 <div class="pb-3">
-                    <div th:if="${view.parentCategory}">
-                        <div cms:replace="~{'html/articleList/categoryChildren/'+${view.parentCategory.viewName}} ?:_"
-                            parser></div>
-                    </div>
-            
-
-                    <div id="categoryChildren" th:if=${view.parentCategory==null}>
-                        <!-- <ul class="list-group">
-                            <li th:each=" item :${view.children}" class="list-group-item">
-                                <a th:href="${item.linkPath}" class="text-secondary" th:text="${item.name}"></a>
+                 
+                    <th:block th:fragment="category(commentsVar)">
+                        <ul th:each="item,index:${commentsVar}">
+                            <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+                                <h4 th:if="${item.parentId==0}">
+                                    </i><a th:href="${item.linkPath}" class="text-muted">
+                                        <i class="bi  bi-book" th:class="${item.icon}"></i> <span
+                                            th:text="${item.name}"></span>
+                                    </a>
+                                </h4>
+                                <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                                    <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
+                                        th:text="${item.name}"></span>
+                                </a>
                             </li>
-                        </ul> -->
-
-
-                        <th:block th:fragment="category(commentsVar)">
-                            <ul th:each="item,index:${commentsVar}">
-                                <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
-                                    <h4 th:if="${item.parentId==0}">
-                                        </i><a th:href="${item.linkPath}" class="text-muted">
-                                            <i class="bi  bi-book" th:class="${item.icon}"></i> <span
-                                                th:text="${item.name}"></span>
-                                        </a>
-                                    </h4>
-                                    <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
-                                        <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
+                            <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
+                                <h4 th:if="${item.parentId==0}">
+                                    </i><a th:href="${item.linkPath}" class="text-muted">
+                                        <i class="bi  bi-book" th:class="${item.icon}"></i> <span
                                             th:text="${item.name}"></span>
                                     </a>
-                                </li>
-                                <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
-                                    <h4 th:if="${item.parentId==0}">
-                                        </i><a th:href="${item.linkPath}" class="text-muted">
-                                            <i class="bi  bi-book" th:class="${item.icon}"></i> <span
-                                                th:text="${item.name}"></span>
-                                        </a>
-                                    </h4>
-                                    <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
-                                        <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
-                                            th:text="${item.name}"></span>
-                                    </a>
-                                    <th:block th:include="this::category(${item.children})"></th:block>
-                                </li>
-                            </ul>
-                        </th:block>
-                        <div class="card mb-3  bg-white">
-                            <div class="shadow">
-                                <div th:include="this::category(${view.children})"></div>
-                            </div>
+                                </h4>
+                                <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                                    <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
+                                        th:text="${item.name}"></span>
+                                </a>
+                                <th:block th:include="this::category(${item.children})"></th:block>
+                            </li>
+                        </ul>
+                    </th:block>
+                    <div class="card mb-3  bg-white">
+                        <div class="shadow">
+                            <div th:include="this::category(${view.partner})"></div>
                         </div>
                     </div>
 
 
                 </div>
+
+                <div cms:replace="/html/components/form :: #fragment"></div>
 
             </div>
         </div>

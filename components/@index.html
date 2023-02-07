@@ -4,8 +4,7 @@
 <head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
     <meta charset="UTF-8">
     <meta name="keywords" content="生物信息学,生信,生信小木屋,生物信息分析,r语言,python">
-    <meta name="description"
-        content="生信小木屋，用数据科学的知识，探索生命科学的奥秘">
+    <meta name="description" content="生信小木屋，用数据科学的知识，探索生命科学的奥秘">
     <title>生信小木屋</title>
     <link rel="stylesheet" href="/templates/resources/css/home.css">
 
@@ -13,23 +12,26 @@
 
 <body cms:inline="none">
     <div cms:replace="/html/components/header :: #fragment"></div>
-
-    <div class="container">
+    <div class="container margin-top-72">
         <div class="row ">
             <div class="col-lg-9">
                 <div id="main-content">
-                    <div cms:replace="/html/components/carousel :: #fragment" ></div>
-                        
+                    <div cms:replace="/html/components/carousel :: #fragment"></div>
+
+
+                    <div cms:replace="/html/components/categoryComponent :: #fragment"></div>
+
                     <!-- <div class="category-horizontal mb-3">
                         <div class="category-title"><span>所有文章分类</span></div>
                       
                     </div> -->
-                    
+                
+
                     <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
 
                     <div cms:replace="/html/components/hotArticle :: #fragment"></div>
 
-                    
+
                     <!-- <div class="row">
                         <div class="col-sm mb-3">
                             
@@ -51,10 +53,10 @@
                             </a>
                         </div>
                         <div class=" index-article  ">
-                                <div cms:replace="@{'~/html/components/'+${item.viewName}+'.html'}" parser></div>
+                            <div cms:replace="@{'~/html/components/'+${item.viewName}+'.html'}" parser></div>
 
                         </div>
-                        
+
                     </div>
 
                     <!-- <div class="row">
@@ -75,30 +77,42 @@
             <div class="col-lg-3">
 
 
-                <div id="siderbar">
+                <div>
                     <div class="card mb-3  bg-white ">
                         <div class="card-body shadow">
                             <a href="/user/write" target="_blank" class="mb-1">
-                                <button type="button" class="btn btn-outline-secondary btn-lg btn-block">写文章 <i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-outline-secondary btn-lg btn-block">写文章 <i
+                                        class="bi bi-pencil"></i></button>
                             </a>
                             <div>
                                 <div cms:if="${username}" class="bd-search d-flex align-items-center">
-                                    <a  class="nav-link text-secondary" cms:text="'欢迎'+${#request.getAttribute('username')+'登录'}" href="/user/info"></a>
+                                    <a class="nav-link text-secondary"
+                                        cms:text="'欢迎'+${#request.getAttribute('username')+'登录'}" href="/user/info"></a>
                                     <a class="text-secondary" href="javascript:;" id="exit">退出</a>
                                 </div>
-                                <a  cms:if="!${username}"  class="nav-link text-secondary" href="/login">请登录</a>
+                                <a cms:if="!${username}" class="nav-link text-secondary" href="/login">请登录</a>
                             </div>
                             <hr>
                             <div cms:replace="~{/html/components/myArticle :: #fragment} ?:_"></div>
                         </div>
                     </div>
-                    <div class="card mb-3  bg-white">
-                        <div class="shadow">
-                            <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
+
+                    <div id="siderbar-flexd">
+                        <div class="card mb-3  bg-white  overflow-auto" id="siderbar-main">
+                            <div class="shadow">
+                                <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
+                            </div>
+                        </div>
+    
+    
+                        <div id="siderbar-box">
+                            <div cms:replace="/html/components/form :: #fragment"></div>
                         </div>
                     </div>
-                    
-                     <!-- <div class="card mb-3  bg-white p-4">
+
+                   
+
+                    <!-- <div class="card mb-3  bg-white p-4">
                         <h5><span class="badge badge-danger ">21考研倒计时:</span></h5>
                         <h5><strong id="timer">&nbsp;</strong></h5>
                     </div> -->
@@ -148,8 +162,8 @@
             //document.getElementById("timer").innerHTML = days + "天" + hours + "小时" + minutes + "分" + seconds + "秒";
         }
 
-      //  leftTimer(2020, 12, 26, 0, 0, 0)
-       // setInterval(function () { leftTimer(2020, 12, 26, 0, 0, 0) }, 1000);
+        //  leftTimer(2020, 12, 26, 0, 0, 0)
+        // setInterval(function () { leftTimer(2020, 12, 26, 0, 0, 0) }, 1000);
 
 
         function checkTime(i) { //将0-9的数字前面加上0，例1变为01 
@@ -160,10 +174,10 @@
         }
         // https://www.cnblogs.com/kuiyeit/p/4785539.html
         // https://www.cnblogs.com/miny-simp/p/9555498.html
-        $("#exit").click(function(){
+        $("#exit").click(function () {
             localStorage.removeItem("Authorization");
             localStorage.removeItem("user");
-            $.cookie("Authorization",null,{path:"/"});
+            $.cookie("Authorization", null, { path: "/" });
             window.location.href = "/"
         })
 

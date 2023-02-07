@@ -157,6 +157,8 @@ function createArticle() {
     let textInput = $("#textInput").val()
     let categories = $("#categories").val()
     let title = $("#title").val()
+    let picPath = $("#picPath").val()
+    let picThumbPath = $("#picThumbPath").val()
     if (title == "") {
         // alert("文章标题不能为空")
         Toast("文章标题不能为空", 'error')
@@ -179,7 +181,8 @@ function createArticle() {
         categoryId: categories,
         title: title,
         summary: summary,
-        pathPic: "",
+        picPath:picPath,
+        picThumbPath:picThumbPath
     };
 }
 

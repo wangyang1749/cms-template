@@ -172,9 +172,10 @@
                             </form>
                     </div>
                 </div>
+                <div cms:replace="/html/components/form :: #fragment"></div>
 
                 <div class="pb-3">
-               
+                    
                     <th:block th:fragment="category(commentsVar)">
                         <ul th:each="item,index:${commentsVar}">
                             <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
@@ -204,14 +205,15 @@
                             </li>
                         </ul>
                     </th:block>
-                    <div class="card  bg-white">
+                    <div class="card mb-3  bg-white">
                         <div class="shadow">
-                            <div th:include="this::category(${view.partner})"></div>
+                            <div th:include="this::category(${view.children})"></div>
                         </div>
                     </div>
-                </div>
-                <div cms:replace="/html/components/form :: #fragment"></div>
 
+                </div>
+
+            
             </div>
         </div>
     

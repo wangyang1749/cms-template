@@ -95,12 +95,20 @@ function move(header, panel, closeBtn) {
 }
 
 
+function setHeight(id) {
+    let siderbarHeight = $(id).outerHeight(true);
+    let windowHeight = $(window).height()
+    var divtop = $(id).offset().top
+    // console.log(siderbarHeight+divtop)
+    // console.log(windowHeight)
+    if((siderbarHeight+divtop) > windowHeight){
+        $(id).height(windowHeight - divtop);
+    }
+  
+}
 
 
-
-
-
-function siderBar(id) {
+function siderBar(id,divtop,siderbarBoxTop,siderbarBoxH,siderbarWidth) {
     // console.log("siderbarHeight" + $("#siderbar").outerHeight(true))
     // console.log("siderbarWidth" + $("#siderbar").width())
     // console.log("window" + $(window).height())
@@ -110,43 +118,92 @@ function siderBar(id) {
     // console.log("document height" + $(document).height());
     // console.log($("#main-content").outerHeight(true))
 
-    let siderbarHeight = $(id).outerHeight(true);
-    let siderbarWidth = $(id).width()
+    
+   
     let headerHeight = $("#header").outerHeight(true)
     let footerHeight = $("#footer").outerHeight(true)
     let windowHeight = $(window).height()
     let scrollTop = $(document).scrollTop()
     let documentHeight = $(document).height()
     let mainContentHeight = $("#main-content").outerHeight(true)
+    let siderbarHeight = $(id).outerHeight(true);
+   
+
+
+    // console.log(divtop-headerHeight )
+    // console.log(headerHeight )
+
+    // console.log(scrollTop )
+    if(divtop-headerHeight-scrollTop<0  ){
+        if( documentHeight-windowHeight-scrollTop-footerHeight > 0){
+            // console.log("aaaaaaaaaaa")
+            $("#siderbar-flexd").css({ "position": "fixed", "top": headerHeight + "px" ,"width":siderbarWidth+"px"})
+            if((siderbarHeight+divtop) > windowHeight){
+                $(id).height(windowHeight - headerHeight-siderbarBoxH-3);
+            }
+           
+           
+        }else{
+            if((siderbarHeight+divtop) > windowHeight){
+                $("#siderbar-flexd").css({ "position": "absolute", "bottom": "0", "top": "auto" })
+            }
+            // console.log("aaaaaaaaaaa")
+            
+        }
+      
+        // if()
+    }else{
+      
+        setHeight("#siderbar-main")
+        $("#siderbar-flexd").css({ "position": "relative","top":"auto" })
+    }
+    // console.log(divtop)
+    // console.log(divtop - headerHeight - scrollTop)
+
+    // if ((divtop - headerHeight - scrollTop) <= 0) {
+    //     $(id).css({ "position": "fixed", "top": headerHeight + "px" })
+
+    // } else {
+    //     $(id).css({ "position": "relative","top":"auto" })
+    // }
     // console.log(documentHeight - windowHeight - scrollTop > footerHeight)
     // console.log(windowHeight - headerHeight - footerHeight > siderbarHeight)
     // 底部导航是否出现并且 浏览器窗口不能同时显示头部侧栏和底部
-    if (mainContentHeight > siderbarHeight) {
-        if (documentHeight - windowHeight - scrollTop < footerHeight && windowHeight - headerHeight - footerHeight < siderbarHeight) {
-            $(id).css({ "position": "absolute", "bottom": "0", "top": "" })
-        } else {
-            // 窗口高度是否大于左侧面板高度
-            if (windowHeight > siderbarHeight + headerHeight) {
-                $(id).css({ "position": "fixed", "top": headerHeight + "px", "width": siderbarWidth + "px" })
-            } else {
-                // console.log("2222")
-                // 窗口大小+滚动的距离是否=左侧面板的距离
-                if (scrollTop + windowHeight > siderbarHeight + headerHeight) {
-                    // console.log("ok")
-                    $(id).css({ "position": "fixed", "bottom": "0", "width": siderbarWidth + "px" })
-                } else {
-                    $(id).css({ "position": "", "bottom": "" })
+    // if (mainContentHeight > siderbarHeight) {
+    //     if (documentHeight - windowHeight - scrollTop < footerHeight && windowHeight - headerHeight - footerHeight < siderbarHeight) {
+    //         $(id).css({ "position": "absolute", "bottom": "0", "top": "" })
+    //     } else {
+    //         // 窗口高度是否大于左侧面板高度
+    //         if (windowHeight > siderbarHeight + headerHeight) {
+    //             $(id).css({ "position": "fixed", "top": headerHeight + "px", "width": siderbarWidth + "px" })
+    //         } else {
+    //             // console.log("2222")
+    //             // 窗口大小+滚动的距离是否=左侧面板的距离
+    //             if (scrollTop + windowHeight > siderbarHeight + headerHeight) {
+    //                 // console.log("ok")
+    //                 $(id).css({ "position": "fixed", "bottom": "0", "width": siderbarWidth + "px" })
+    //             } else {
+    //                 $(id).css({ "position": "", "bottom": "" })
 
-                }
-            }
-        }
-    }
+    //             }
+    //         }
+    //     }
+    // }
 
 }
 if (document.body.clientWidth >= 977) {
-    siderBar("#siderbar")
+    setHeight("#siderbar-main")
+    var divtop = $("#siderbar-main").offset().top
+
+
+
+    let siderbarBoxTop = $("#siderbar-box").offset().top
+    let siderbarWidth = $("#siderbar-box").width()
+    let siderbarBoxH = $("#siderbar-box").outerHeight(true);
+    siderBar("#siderbar-main",divtop,siderbarBoxTop,siderbarBoxH,siderbarWidth)
+   
     $(document).scroll(function () {
-        siderBar("#siderbar")
+        siderBar("#siderbar-main",divtop,siderbarBoxTop,siderbarBoxH,siderbarWidth)
     })
 }
 
@@ -160,13 +217,13 @@ var port = window.location.port
 function previewArticle(articleId, viewName) {
     // console.log(articleId + viewName)
     // console.log($("#"+viewName).html().replace(/\s+/g,"")=="")
-    let httpUrl = protocol + "//" + url ;
-    if(port){
-        httpUrl+=":"+port;
+    let httpUrl = protocol + "//" + url;
+    if (port) {
+        httpUrl += ":" + port;
     }
     if ($("#" + viewName).html().replace(/\s+/g, "") == "") {
         $.ajax({
-            url: httpUrl+"/preview/simpleArticle/" + articleId,
+            url: httpUrl + "/preview/simpleArticle/" + articleId,
             type: "get",
             success: function (data) {
                 // console.log(data)
@@ -180,42 +237,42 @@ function previewArticle(articleId, viewName) {
 
 }
 
-function loadImage(obj,url,callback){
+function loadImage(obj, url, callback) {
     var img = new Image();
     img.src = url;
 
     // 判断图片是否在缓存中
-    if(img.complete){
-        callback.call(img,obj);
+    if (img.complete) {
+        callback.call(img, obj);
         return;
     }
 
     // 图片加载到浏览器的缓存中回调函数
-    img.onload = function(){
-        callback.call(img,obj);
+    img.onload = function () {
+        callback.call(img, obj);
     }
 }
 
-function showImage(obj){
+function showImage(obj) {
     obj.src = this.src;
 }
 
-function loadImg(id){
+function loadImg(id) {
     var root = document.getElementById(id)
     // console.log(root)
     var lazys = root.querySelectorAll(".lazy");
-    var arr=[...lazys]
-    arr.forEach((val)=>{
+    var arr = [...lazys]
+    arr.forEach((val) => {
         console.log(val.dataset.original)
-        loadImage(val,val.dataset.original,showImage);
+        loadImage(val, val.dataset.original, showImage);
     })
 }
 
 
 function previewArticleHTML(path, viewName) {
-    let httpUrl = protocol + "//" + url ;
-    if(port){
-        httpUrl+=":"+port;
+    let httpUrl = protocol + "//" + url;
+    if (port) {
+        httpUrl += ":" + port;
     }
     // console.log(httpUrl + "/" + path + "/" + viewName + ".html")
     if ($("#" + viewName).html().replace(/\s+/g, "") == "") {
@@ -229,24 +286,24 @@ function previewArticleHTML(path, viewName) {
             success: function (data) {
                 // console.log(data);
                 // console.log($(data).find(".markdown").html())
-                $("#article-expand-"+viewName).css("display","none")
-                $("#article-shrink-"+viewName).css("display","inline")
-                $("#article-shrink-bottom-"+viewName).css("display","inline")
+                $("#article-expand-" + viewName).css("display", "none")
+                $("#article-shrink-" + viewName).css("display", "inline")
+                $("#article-shrink-bottom-" + viewName).css("display", "inline")
                 $("#" + viewName).html("<div class='p-3 ' style='box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;border: 3px #e7e7e7 solid;'> <hr>" + $(data).find(".markdown").html() + "<hr></div>")
 
                 loadImg(viewName)
-                
-            },error: function (e) {
+
+            }, error: function (e) {
                 // console.log(e)
-                
+
                 console.log(e.status);
                 console.log(e.responseJSON.message);
             }
         });
     } else {
-        $("#article-expand-"+viewName).css("display","inline")
-        $("#article-shrink-"+viewName).css("display","none")
-        $("#article-shrink-bottom-"+viewName).css("display","none")
+        $("#article-expand-" + viewName).css("display", "inline")
+        $("#article-shrink-" + viewName).css("display", "none")
+        $("#article-shrink-bottom-" + viewName).css("display", "none")
         $("#" + viewName).html(" ")
     }
 
@@ -282,3 +339,109 @@ function copyContent(id) {
     window.getSelection().removeAllRanges();
     handleMessage("拷贝成功!")
 }
+
+
+
+// let weixin = document.getElementById("weixin");
+
+// let support = document.getElementById("support");
+
+
+
+
+(function ($) {
+    var status = false;
+    $.fn.scrollQ = function (options) {
+        var defaults = {
+            line: 2,
+            scrollNum: 1,
+            scrollTime: 6000
+        }
+        var options = jQuery.extend(defaults, options);
+        var _self = this;
+        return this.each(function () {
+            $("li", this).each(function () {
+                $(this).css("display", "none");
+            })
+            $("li:lt(" + options.line + ")", this).each(function () {
+                $(this).css("display", "block");
+            })
+            function scroll() {
+                for (i = 0; i < options.scrollNum; i++) {
+                    var start = $("li:first", _self);
+                    start.fadeOut(100);
+                    start.css("display", "none");
+                    start.appendTo(_self);
+                    $("li:eq(" + (options.line - 1) + ")", _self).each(function () {
+                        $(this).fadeIn(500);
+                        $(this).css("display", "block");
+                    })
+                }
+            }
+            var timer;
+            timer = setInterval(scroll, options.scrollTime);
+            _self.bind("mouseover", function () {
+                clearInterval(timer);
+            });
+            _self.bind("mouseout", function () {
+                timer = setInterval(scroll, options.scrollTime);
+            });
+
+        });
+    }
+})(jQuery);
+
+
+
+
+$(document).on("mouseover", ".support", function () {
+
+    function loadImage(obj, url, callback) {
+        var img = new Image();
+        img.src = url;
+
+        // console.log(url)
+
+        // 判断图片是否在缓存中
+        if (img.complete) {
+            callback.call(img, obj);
+            return;
+        }
+
+        // 图片加载到浏览器的缓存中回调函数
+        img.onload = function () {
+            callback.call(img, obj);
+        }
+    }
+
+    function showImage(obj) {
+        obj.attr("src", this.src)
+    }
+    var targetId = $(this).data("target")
+    // loadImage($(targetId + ' img'), $(targetId + ' img').data("slide"), showImage);
+    // console.log($(targetId + ' img').data("slide"))
+    loadImage($(targetId + ' img'), $(targetId + ' img').data("slide"), showImage);
+    $(targetId).css("width", "13rem")
+});
+// $(".support").mouseover(function () {
+
+//     var targetId = $(".support").data("target")
+//     loadImage($(targetId + ' img'), $(targetId + ' img').data("slide"), showImage);
+//     console.log(targetId)
+//     $(targetId).css("width", "13rem")
+//     // weixin.setAttribute("style","display:inline;;")
+// })
+$(document).on("mouseleave", ".support", function () {
+    var targetId = $(this).data("target")
+    $(targetId).css("width", "0")
+    // weixin.attr("style","display:none")
+})
+
+
+$(document).ready(function () {
+    if ($("#sItem")) {
+        $("#sItem").scrollQ();
+    }
+
+});
+

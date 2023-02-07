@@ -98,7 +98,7 @@ a:focus {
 }
 
 .container{
-    margin-top: 72px;
+    /* margin-top: 72px; */
     flex: 1;
 }
 
@@ -212,7 +212,7 @@ a:focus {
 /* 分类头部样式 */
 .catrgory-header {
     /* display: flex; */
-    padding: 1rem;
+    /* padding: 1rem; */
     border: 1px solid rgba(0, 0, 0, .125);
     margin-bottom: 0.5rem;
     background: #fff;
@@ -479,11 +479,22 @@ a:focus {
     transform: translateX(-270%);
 }
 .left-side li {
-    position: absolute;
+    /* position: absolute; */
     display: flex;
 }
+.left-side ul {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    right: 0px;
+}
 
-#support{
+.support-img{
+
+    left: 87px;
+    position: absolute;
+}
+.support{
     color: #fff;
     background-color: #28a745;
     width: 2.5rem;
@@ -585,4 +596,185 @@ display: none;
 .data-original{
     display: flex;
     justify-content: center;
+}
+
+.margin-top-72{
+    margin-top:72px;
+} 
+
+@media (min-width: 1110px)  {
+    .container-side{
+        max-width: 1120px;
+    }
+}
+
+
+
+
+.container-side{
+    /* max-width: 1140px; */
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.shop{
+    height: 10rem;
+    /* background: red; */
+    overflow-y: auto;
+    overflow-x: auto;
+    /* padding: 1rem; */
+}
+.shop ul{
+    padding-left:0;
+}
+
+.shop a{
+    /* white-space: nowrap; */
+}
+
+.img-caption{
+    text-align: center;
+    color: rgb(160, 160, 160);
+    margin-top: 0!important;
+}
+
+.vh-69{
+    height: 69vh;
+}
+
+.card-img-height{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 8rem;
+}
+.category-card .card-img{
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    transition: all .5s ease;
+}
+.category-card .card-img-overlay{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: rgba(0,0,0,.6);
+    transition: all 0.5s ease;
+}
+.no-border{
+    border: none !important;
+}
+
+.category-card:hover img{
+    transform: translate( -50%, -50%) scale(1.1);
+}
+.category-card:hover .card-img-overlay{
+    opacity: 1;
+}
+
+
+.category-card-show{
+    
+    text-align: center;
+    color: #fff;
+
+}
+.category-card-show .card-img-overlay{ 
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.6); 
+    
+}
+
+.category-card-show  img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    transition: all 0.5s ease;
+}
+.category-card-show:hover img {
+    transform: translate( -50%, -50%) scale(1.1);
+}
+
+
+.catrgory-header .img{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 15rem;
+}
+.catrgory-header img{
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+.breadcrumb{
+    background-color: #fff !important;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.carousel-item{
+    height: 25rem;
+}
+.carousel-item img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.carousel-caption-warp{
+    width: 100%;
+    display: table;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    padding-top: 20px;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+.carousel-caption-box{
+    position: relative;
+    /* z-index: 2; */
+    /* max-width: 1400px; */
+    padding: 0 90px;
+    display: block;
+    margin: 20px auto;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.carousel-caption{
+    position: initial !important;
+    text-align: initial  !important;
+}
+.carousel-caption-box h1{
+    color: #ffffff;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 30px;
+    cursor: pointer;
+
+}
+.carousel-caption-box a{
+    color: #ffffff;
 }
