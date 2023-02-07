@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
+    <title th:text="${view.title} +' - 生信小木屋'">文章详情</title>
+    <meta name="keywords" content="生命科学知识分享,生物技术,生物信息学" th:content="${view.title}">
+    <meta name="description" content="分享生命科学方面相关文章" th:content="${view.summary}">
+
+    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/styles/default.min.css">
+     -->
+    <link rel="stylesheet" href="/templates/resources/css/highlight.css">
+
+    <!-- markdown扩展 -->
+    <link rel="stylesheet" href="/templates/resources/css/admonition.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="/templates/resources/css/katex.min.css">
+    <link rel="stylesheet" href="/templates/resources/css/code.css?v=1.0">
+    <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
+
+
+</head>
+
+<body>
+    <style>
+        .container-61 {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 85rem;
+        }
+    </style>
+    <script async cms:inline="javascript">
+
+        function listContents(contents, id, jsonObj) {
+            // contents.forEach(row => {
+            //     map[row.id] = {title: row.title, children: row.children}
+            // })
+            // console.log(contents)
+            for (i in contents) {
+                // item = contents[i]
+                // console.log(item)
+                if (contents[i].id == id) {
+                    // console.log(contents[i])
+                    // if(contents[i].parentId)
+                    // const newItem = { ...jsonObj }
+
+                    contents[i].children = jsonObj.concat(contents[i].children)
+
+                }
+                if (contents[i].children.length > 0) {
+                    // console.log()
+                    listContents(contents[i].children, id, jsonObj)
+                }
+            }
+
+
+        }
+        // console.log($("#thisToc"))
+
+
+        function createMenu(data, root, id) {
+            if (!data.length) throw new Error('粗错啦');
+
+            data.forEach(item => {
+                const detailsEle = document.createElement('ul');
+                const summaryEle = document.createElement('li');
+                // if(item.parentId==0){
+                //     const span = document.createElement('span');
+                //     span.innerHTML = item.title;
+                //     summaryEle.appendChild(span);
+                // }else{
+
+                // }
+                const a = document.createElement('a');
+                a.innerHTML = item.title;
+                a.href = item.linkPath
+                // a.className="nav-link"
+                summaryEle.appendChild(a);
+
+
+
+                detailsEle.appendChild(summaryEle);
+                root.appendChild(detailsEle);
+                // if(item.id==id){
+                //     // console.log(item)
+                //     detailsEle.innerHTML=$("#thisToc").html()
+                //     // createMenu(item.children, detailsEle,id)
+                // }
+
+                if (item.children?.length) createMenu(item.children, detailsEle, id);
+            });
+        }
+        // console.log($("#toc"))
+
+
+
+        let viewName = [[${ view.category.viewName }]]
+        let id = parseInt([[${ view.id }]])
+        fetch('/html/articleList/articleListJs/' + viewName + ".json")
+            .then((response) => response.json())
+            .then((json) => {
+                // console.log(json)
+                // console.log(json.contents)
+                // let map = {}
+
+                // let strJSON = $("#tocJSON").val()
+                let tocJSON = document.getElementById('tocJSON')
+                if (tocJSON) {
+                    strJSON = tocJSON.value
+                    if (strJSON) {
+                        jsonObj = JSON.parse(strJSON)
+                        listContents(json.contents, id, jsonObj)
+                    }
+                    const root = document.getElementById('toc');
+                    if (!root) {
+                        window.onload = function () {
+                            createMenu(json.contents, root, id)
+                        }
+                        // console.log("window.onload")
+                    } else {
+                        // console.log("createMenu")
+                        createMenu(json.contents, root, id)
+                    }
+                } else {
+                    window.onload = function () {
+                        tocJSON = document.getElementById('tocJSON')
+                        strJSON = tocJSON.value
+                        if (strJSON) {
+                            jsonObj = JSON.parse(strJSON)
+                            listContents(json.contents, id, jsonObj)
+                        }
+                        const root = document.getElementById('toc');
+                        if (!root) {
+                            window.onload = function () {
+                                root = document.getElementById('toc');
+                                createMenu(json.contents, root, id)
+                            }
+                            // console.log("window.onload")
+                        } else {
+                            // console.log("createMenu")
+                            createMenu(json.contents, root, id)
+                        }
+                    }
+                }
+
+
+
+                // createMenu(json.contents,root,id)
+
+
+                // console.log(json.contents)
+                // console.log(map)
+
+
+            })
+    </script>
+
+    <div cms:replace="/html/components/header :: #fragment"></div>
+    <div class="container-61 margin-top-72 ">
+
+        <div class="row">
+            <div class="col-lg-2 mb-3">
+                <div>
+                    <div class="d-flex user-info">
+                        <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
+                        <div class="align-self-center ml-3">
+                            <i class="bi bi-person"></i>: <strong th:text="${view.user.username}"> </strong>
+                        </div>
+                    </div>
+                    <a class=" badge badge-success" th:href="'/html_articleList_'+${view.category.viewName}+'.html'">
+                        <i class="bi bi-bookmarks"></i> <span th:text="${view.category.name}"></span>
+                    </a>
+                    <a class=" badge badge-success"
+                        th:href="'/html_articleList_'+${view.category.viewName}+'-mind.html'">
+                        <i class="bi bi-layers"></i> 思维导图</a>
+                    <div cms:replace="~{${view.category.firstTitleList}} ?:_" parser></div>
+
+                    <dl>
+                        <dt class="text-muted">
+                            <i class="bi bi-tags"></i> 标签
+                        </dt>
+                        <dd th:if="${view.tags!=null}">
+                            <a th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
+                                th:each="item : ${view.tags}" th:text="${item.name}"></a>
+                        </dd>
+
+                    </dl>
+                </div>
+
+
+
+            </div>
+            <div class="col-lg-8 mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">首页 </a></li>
+                    <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}"
+                        th:each="item : ${view.parentCategory}">
+                        <a th:href="${item.linkPath}" th:text="${item.name}"></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a th:href="${view.category.linkPath}" th:text="${view.category.name}"></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <span th:text="${view.title}"></span>
+                    </li>
+                </ol>
+
+                <!-- <div>
+                <img th:src="${view.picPath}" class="rounded-pill"/>
+            </div> -->
+
+
+                <div id="main-content">
+                    <div class=" shadow bg-white">
+                        <div class="content-header border-bottom pl-3 pr-3 pt-3 pb-3">
+                            <h1 class="m-0 title" th:text="${view.title}">标题</h1>
+                            <div class="info text-secondary">
+
+                                <span class="mr-2  "><i class="bi bi-clock"></i> 最后发布时间 : <strong
+                                        th:text="${#dates.format( view.updateDate, 'yyyy-MM-dd HH:mm:ss')}">时间</strong></span>
+                                <span class="mr-2"> <i class="bi bi-eye"></i> 浏览量 : <strong id="visits"></strong></span>
+                                <span cms:if="${#sets.contains(roles, 'ADMIN')}">
+                                    <a th:href="@{'~/user/edit/'+${view.id}}"
+                                        class=" text-secondary justify-content-end text-right"><i
+                                            class="bi bi-pencil-square"></i> 编辑</a>
+                                    <a class=" text-secondary justify-content-end text-right" href="javascript:;"
+                                        th:onclick="deleteArticle([[${view.id}]],[[${view.category.viewName}]])"
+                                        th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
+                                    <a href="javascript:;" onclick="loadImgCall(copyContent,'markdown')"
+                                        class="text-secondary justify-content-end text-right">拷贝</a>
+                                </span>
+
+                                <!-- <div cms:if="${userId}!=null">11 </div> -->
+                            </div>
+                        </div>
+
+                        <!-- <span  cms:if="${#sets.contains(roles, 'ADMIN')}" cms:value="${roles}">greh</span> -->
+
+                        <div id="markdown" cms:inline="none" class="markdown pt-2 pl-3 pr-3 pb-3"
+                            th:utext="${view.formatContent}">
+
+                        </div>
+                        <div class="  p-3  d-flex justify-content-around">
+
+                            <a id="likeOption" href="javascript:;" style="width: 1.5rem;"
+                                class="d-flex align-items-center text-secondary"><img id="like-img"
+                                    src="/templates/resources/img/like.svg" alt=""><span id="like"></span></a>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <div cms:replace="~{${view.category.recommendPath}} ?:_" parser></div>
+                    </div>
+
+                    <div id="article-comment" class="mt-3" th:if="${view.openComment}">
+                        <!-- <div cms:replace="@{'html/comment/'+${view.viewName} :: #fragment}" parser></div> -->
+                        <div cms:replace="~{'html/comment/'+${view.viewName} :: #fragment} ?:_" parser></div>
+
+                    </div>
+
+
+
+
+                    <!-- <div class="mt-3">
+
+                        <div cms:replace="~{'html/components/recommend-'+${view.category.viewName}} ?:_" parser></div>
+                    </div> -->
+
+                </div>
+
+
+            </div>
+
+            <div class="col-lg-2 ">
+
+                <div th:if="${view.toc!=''}" id="content-table">
+                    <!-- 文章目录 -->
+                    <div class="  card shadow  bd-links ">
+                        <div id="content-table-header" class="card-header d-flex justify-content-between">
+                            <span>本文列表</span>
+                            <a href="javascript:;" id="close-content-table">&times;</a>
+                        </div>
+                        <div id="toc" class="card-body " th:utext="${view.toc}">
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <div cms:replace="/html/components/form :: #fragment"></div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" cms:value="${userId}" id="userId">
+    <input type="hidden" th:value="${view.tocJSON}" id="tocJSON">
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+    <!-- <div th:replace="templates/templates/fragment/side"></div> -->
+
+    <div th:replace="templates/templates/fragment/footer"></div>
+
+    <script src="/templates/resources/js/article.js?v=1.09"></script>
+    <script src="/templates/resources/js/admonition.js"></script>
+    <script src="/templates/resources/js/search_engine.js"></script>
+    <script src="/templates/resources/js/axios.min.js"></script>
+    <script src="/templates/resources/js/service.js?1.0"></script>
+
+    <script src="/templates/resources/js/mermaid.min.js"></script>
+    <script>
+        mermaid.init({ noteMargin: 10 }, $(".mermaid"));
+    // mermaid.mermaidAPI.initialize({ startOnLoad: false });
+
+    // mermaid.initialize({ startOnLoad: true });
+
+    //   mermaid.init({
+    //     theme: 'forest',
+    //     // themeCSS: '.node rect { fill: red; }',
+    //     logLevel: 3,
+    //     securityLevel: 'loose',
+    //     flowchart: { curve: 'basis' },
+    //     gantt: { axisFormat: '%m/%d/%Y' },
+    //     sequence: { actorMargin: 50 },
+    //     // sequenceDiagram: { actorMargin: 300 } // deprecated
+    //   },$('.mermaid'));
+    </script>
+
+    <script>
+
+    </script>
+
+
+    <script cms:inline="javascript">
+        // let viewName = "[[${view.category.viewName}]]"
+
+    </script>
+
+    <script cms:inline="javascript">
+
+        /*************************评论代码****************************/
+        let userId = $("#userId").val()
+
+        if (userId != -1) {
+            $(".user-" + userId).css("display", "inline")
+        } else {
+            $("#login").css("display", "inline")
+        }
+
+
+
+        function addComment(reply, docId) {
+            console.log(reply)
+            // let username = $("#username").val()
+            // let email = $("#email").val()
+            let content = $("#" + docId).val()
+            if (content == "") {
+                alert("请输入评论内容!!")
+                return
+            }
+            // console.log(username + email + content)
+            var data = {
+                "parentId": reply,
+                "content": content,
+                "articleId": [[${ view.id }]]
+            }
+            // console.log("/components/[[${view.viewName}]].html")
+            commentApi.add(data).then(response => {
+                // console.log(response)
+                $("#" + docId).val("")
+                let userId = $("#userId").val()
+                // if (userId != -1) {
+                //     $(".user-"+userId).css("display", "inline")
+                // }
+                alert("成功添加评论" + response.data.message)
+                $('#comment-list').load("/comment/" + [[${ view.viewName }]] + ".html #comment-list")
+                $(".user-" + userId).css("display", "inline")
+
+            }).catch(function (error) {
+                // handle error
+                // console.log(error.response.data.message);
+                alert(error.response.data.message)
+
+            })
+        }
+
+
+        function deleteComment(id) {
+            commentApi.delete(id).then(response => {
+                // console.log(response)
+                // alert("成功删除评论" + response.data.message)
+                $('#comment-list').load("/comment/" + [[${ view.viewName }]] + ".html #comment-list")
+            }).catch(function (error) {
+                // handle error
+                // console.log(error.response.data.message);
+                alert(error.response.data.message)
+
+            })
+        }
+        function login() {
+            let href = window.location.href
+            // console.log(href)
+            window.open("/login?" + href)
+        }
+
+
+        function reply(id) {
+            // let reply = $("comment-reply-id-"+id)
+            let reply = document.getElementById("comment-reply-id-" + id);
+            const div = document.createElement('div');
+            const textarea = document.createElement('textarea');
+            const button = document.createElement('button');
+            button.setAttribute("class", "btn btn-primary")
+            textarea.setAttribute("class", "form-control")
+            textarea.setAttribute("id", "comment-reply-content-id-" + id)
+
+            button.addEventListener("click", function () {
+                addComment(id, "comment-reply-content-id-" + id)
+            })
+
+            button.innerHTML = "发布"
+            div.appendChild(textarea)
+            div.appendChild(button)
+            // if(item.parentId==0){
+            //     const span = document.createElement('span');
+            //     span.innerHTML = item.title;
+            //     summaryEle.appendChild(span);
+            // }else{
+
+            // }
+            // const a = document.createElement('a');
+            // a.innerHTML = "sss";
+            // // a.href = item.linkPath
+            // // a.className="nav-link"
+            // summaryEle.appendChild(a);
+
+
+
+            // detailsEle.appendChild(summaryEle);
+            // reply.appendChild(detailsEle);
+            // reply.insertBefore(detailsEle)
+            // reply.appendChild(textarea);
+            reply.appendChild(div);
+            console.log(reply)
+
+            $("#comment-reply-butten-id-" + id).css("display", "none")
+            $("#comment-canclereply-butten-id-" + id).css("display", "inline")
+        }
+        function cancleReply(id) {
+            let reply = document.getElementById("comment-reply-id-" + id);
+            reply.innerHTML = ""
+            $("#comment-reply-butten-id-" + id).css("display", "inline")
+            $("#comment-canclereply-butten-id-" + id).css("display", "none")
+        }
+    </script>
+
+
+    <script cms:inline="javascript">
+        $(function () {
+            $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
+        });
+
+        increaseViewCount([[${ view.id }]])
+        likeStatus([[${ view.id }]])
+
+        $("#likeOption").click(function () {
+            increaseLikeCount([[${ view.id }]])
+        })
+
+
+
+
+
+        // $('#test1').load("/[[${view.path}]]/comment-[[${view.viewName}]].html ")
+
+    </script>
+
+    <!-- <script>
+        move("content-table-header", "content-table", "close-content-table");
+    </script> -->
+    <!-- 代码高亮 -->
+    <!-- <script  src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script> -->
+    <script src="/templates/resources/js/highlight/highlight.min.js"></script>
+
+    <script>
+        // hljs.addPlugin({
+        //     'after:highlight': (result) => {
+        //         result.value = result.value.replace(/^/gm, '<span class="line-num"></span>')
+        //     }
+        // });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
+            });
+        });
+
+
+    </script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script> -->
+    <script defer src="/templates/resources/js/katex.min.js"></script>
+
+    <script>
+
+        (function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                var mathElems = document.getElementsByClassName("katex");
+                var elems = [];
+                for (const i in mathElems) {
+                    if (mathElems.hasOwnProperty(i)) elems.push(mathElems[i]);
+                }
+
+                elems.forEach(elem => {
+                    katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
+                });
+            });
+        })();
+    </script>
+
+</body>
+
+</html>

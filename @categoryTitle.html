@@ -1,1 +1,20 @@
-空模板
+<th:block th:fragment="row(commentsVar)">
+    <ul th:each="item,index:${commentsVar}">
+        <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+           
+            <a  th:href="${item.linkPath}" class="text-secondary">
+                <span th:text="${item.title}"></span>
+            </a>
+        </li>
+        <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
+         
+            <a  th:href="${item.linkPath}" class="text-secondary">
+                <span th:text="${item.title}"></span>
+            </a>
+            <th:block th:include="this::row(${item.children})"></th:block>
+        </li>
+    </ul>
+</th:block>
+
+
+<div th:include="this::row(${view})"></div>
