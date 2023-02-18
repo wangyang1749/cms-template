@@ -20,25 +20,23 @@
             </div>
 
             <div class="col-lg-3">
-               
-                <div class="card mb-3  bg-white " id="fragment">
-              
-                    <div class="card-body shadow">
-                        <div class="shop">
-                            <ul id="sItem">
-                                <p class="mb-1"><a class="text-secondary" href="/html_articleList_shop.html">淘宝商品</a></p>
-                                <li th:each="item : ${@articleServiceImpl.listVoByCategoryViewName('shop')}"
-                                    class="list-unstyled">
-                                    <div class="row mr-0 ml-0">
-                                        <div class="col-4 pl-0 pr-1"> <a target="_blank" th:href="${item.picThumbPath}"><img th:src="${item.picPath}" alt=""></a></div>
-                                        <div class="col-8 pr-0 pl-0"><a th:href="${item.linkPath}" th:text="${item.title}"
-                                                class="text-secondary"></a></div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="shop" id="fragment">
+                    <ul id="sItem">
+                        <p class="mb-1"><a class="text-secondary" href="/html_articleList_shop.html">淘宝商品</a></p>
+                        <!-- ${@articleServiceImpl.listVoByCategoryViewName('shop')} -->
+                        <li  th:each="item : ${view}"
+                            class="list-unstyled shop-item">
+                            <div class="row mr-0 ml-0">
+                                <div class="col-4 pl-0 pr-1"> <a target="_blank" th:href="${item.picThumbPath}" class="shop-img"><img
+                                            th:src="${item.picPath}" alt=""></a></div>
+                                <div class="col-8 pr-0 pl-0"><a th:href="${item.linkPath}" th:text="${item.title}"
+                                        class="text-secondary"></a></div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
+
+                
             </div>
         </div>
 

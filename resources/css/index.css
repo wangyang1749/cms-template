@@ -245,8 +245,8 @@ a:focus {
 
 /* 文章用户信息 */
 .user-info img {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
 }
 
 /* 文章内容标注换行 */
@@ -620,10 +620,11 @@ display: none;
     margin-left: auto;
 }
 .shop{
-    height: 10rem;
+    height: 11rem;
+    overflow-y: hidden;
     /* background: red; */
-    overflow-y: auto;
-    overflow-x: auto;
+    /* overflow-y: auto;
+    overflow-x: auto; */
     /* padding: 1rem; */
 }
 .shop ul{
@@ -727,8 +728,8 @@ display: none;
     width: 100%;
 }
 .breadcrumb{
-    background-color: #fff !important;
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    background-color: #fff ;
+    /* box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; */
 }
 
 .carousel-item{
@@ -777,4 +778,108 @@ display: none;
 }
 .carousel-caption-box a{
     color: #ffffff;
+}
+.flex-table-box{
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* height: 100%; */
+}
+
+*::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  *::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+    display: none;
+  }
+  *::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    border: 4px solid rgba(0, 0, 0, 0);
+    height: 6px;
+    border-radius: 25px;
+    background-clip: padding-box;
+    background-color: rgba(0, 0, 0, 0.30);
+  }
+  @media (min-width: 1400px) {
+    .container-xl {
+        max-width: 1340px;
+        flex: 1;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .container-xl {
+        margin-top: 0px !important;
+        overflow-x: hidden;
+        padding: 0;
+        flex: 1;
+    }
+
+    .md-left,
+    .md-right {
+        display: none;
+    }
+
+}
+
+.category-table>div>ul,
+.content-table>ul {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.category-table>div>ul a,
+.content-table>ul a {
+    margin-top: 0.625em;
+    display: block;
+    line-height: 1.3rem;
+}
+
+.content-table a {
+    color: #6c757d !important;
+}
+
+.content-table li {
+    padding-left: 0;
+    list-style: none;
+}
+
+.content-table a:focus,
+.content-table a:hover {
+    color: #494f54 !important;
+}
+
+#main-content .breadcrumb{
+    margin: 0;
+    background-color: transparent;
+    /* border: solid #6c757d 0.5px; */
+    /* padding: 0;
+    padding-top: 0.5rem; */
+}
+.markdown-course{
+    background: transparent;
+}
+
+.shop-img{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 3.5rem;
+    display: block;
+}
+.shop-img img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    transition: all 0.5s ease;
+}
+.shop-item{
+    border-bottom: 1px solid #6c757d;
+    padding: 0.5rem 0;
 }

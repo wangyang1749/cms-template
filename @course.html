@@ -21,188 +21,51 @@
 </head>
 
 <body>
-    <style>
-        .container-61 {
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 85rem;
-        }
-    </style>
-    <script async cms:inline="javascript">
-
-        function listContents(contents, id, jsonObj) {
-            // contents.forEach(row => {
-            //     map[row.id] = {title: row.title, children: row.children}
-            // })
-            // console.log(contents)
-            for (i in contents) {
-                // item = contents[i]
-                // console.log(item)
-                if (contents[i].id == id) {
-                    // console.log(contents[i])
-                    // if(contents[i].parentId)
-                    // const newItem = { ...jsonObj }
-
-                    contents[i].children = jsonObj.concat(contents[i].children)
-
-                }
-                if (contents[i].children.length > 0) {
-                    // console.log()
-                    listContents(contents[i].children, id, jsonObj)
-                }
-            }
 
 
-        }
-        // console.log($("#thisToc"))
-
-
-        function createMenu(data, root, id) {
-            if (!data.length) throw new Error('粗错啦');
-
-            data.forEach(item => {
-                const detailsEle = document.createElement('ul');
-                const summaryEle = document.createElement('li');
-                // if(item.parentId==0){
-                //     const span = document.createElement('span');
-                //     span.innerHTML = item.title;
-                //     summaryEle.appendChild(span);
-                // }else{
-
-                // }
-                const a = document.createElement('a');
-                a.innerHTML = item.title;
-                a.href = item.linkPath
-                // a.className="nav-link"
-                summaryEle.appendChild(a);
-
-
-
-                detailsEle.appendChild(summaryEle);
-                root.appendChild(detailsEle);
-                // if(item.id==id){
-                //     // console.log(item)
-                //     detailsEle.innerHTML=$("#thisToc").html()
-                //     // createMenu(item.children, detailsEle,id)
-                // }
-
-                if (item.children?.length) createMenu(item.children, detailsEle, id);
-            });
-        }
-        // console.log($("#toc"))
-
-
-
-        let viewName = [[${ view.category.viewName }]]
-        let id = parseInt([[${ view.id }]])
-        fetch('/html/articleList/articleListJs/' + viewName + ".json")
-            .then((response) => response.json())
-            .then((json) => {
-                // console.log(json)
-                // console.log(json.contents)
-                // let map = {}
-
-                // let strJSON = $("#tocJSON").val()
-                let tocJSON = document.getElementById('tocJSON')
-                if (tocJSON) {
-                    strJSON = tocJSON.value
-                    if (strJSON) {
-                        jsonObj = JSON.parse(strJSON)
-                        listContents(json.contents, id, jsonObj)
-                    }
-                    const root = document.getElementById('toc');
-                    if (!root) {
-                        window.onload = function () {
-                            createMenu(json.contents, root, id)
-                        }
-                        // console.log("window.onload")
-                    } else {
-                        // console.log("createMenu")
-                        createMenu(json.contents, root, id)
-                    }
-                } else {
-                    window.onload = function () {
-                        tocJSON = document.getElementById('tocJSON')
-                        strJSON = tocJSON.value
-                        if (strJSON) {
-                            jsonObj = JSON.parse(strJSON)
-                            listContents(json.contents, id, jsonObj)
-                        }
-                        const root = document.getElementById('toc');
-                        if (!root) {
-                            window.onload = function () {
-                                root = document.getElementById('toc');
-                                createMenu(json.contents, root, id)
-                            }
-                            // console.log("window.onload")
-                        } else {
-                            // console.log("createMenu")
-                            createMenu(json.contents, root, id)
-                        }
-                    }
-                }
-
-
-
-                // createMenu(json.contents,root,id)
-
-
-                // console.log(json.contents)
-                // console.log(map)
-
-
-            })
-    </script>
 
     <div cms:replace="/html/components/header :: #fragment"></div>
-    <div class="container-61 margin-top-72 ">
+    <div class="container-xl margin-top-72 ">
 
         <div class="row">
-            <div class="col-lg-2 mb-3">
-                <div>
+            <div class="col-xl-2 mb-3 md-left">
+                <div class="flex-table">
                     <div class="d-flex user-info">
                         <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
                         <div class="align-self-center ml-3">
-                            <i class="bi bi-person"></i>: <strong th:text="${view.user.username}"> </strong>
+                            <i class="bi bi-person"></i>: <strong th:text="${view.user.username}"> </strong><br>
+                            <i class="bi bi-envelope"></i>: <strong > 联系作者</strong>
+
                         </div>
                     </div>
+                    <hr>
                     <a class=" badge badge-success" th:href="'/html_articleList_'+${view.category.viewName}+'.html'">
                         <i class="bi bi-bookmarks"></i> <span th:text="${view.category.name}"></span>
                     </a>
                     <a class=" badge badge-success"
                         th:href="'/html_articleList_'+${view.category.viewName}+'-mind.html'">
                         <i class="bi bi-layers"></i> 思维导图</a>
-                    <div cms:replace="~{${view.category.firstTitleList}} ?:_" parser></div>
 
-                    <dl>
-                        <dt class="text-muted">
-                            <i class="bi bi-tags"></i> 标签
-                        </dt>
-                        <dd th:if="${view.tags!=null}">
-                            <a th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
-                                th:each="item : ${view.tags}" th:text="${item.name}"></a>
-                        </dd>
 
-                    </dl>
+                    <!-- <dl>
+                            <dt class="text-muted">
+                                <i class="bi bi-tags"></i> 标签
+                            </dt>
+                            <dd th:if="${view.tags!=null}">
+                                <a th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
+                                    th:each="item : ${view.tags}" th:text="${item.name}"></a>
+                            </dd>
+
+                        </dl> -->
+
+                    <div class="category-table flex-table-box">
+                        <div cms:replace="~{${view.category.firstTitleList}} ?:_" parser></div>
+                    </div>
                 </div>
-
-
-
             </div>
-            <div class="col-lg-8 mb-3">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">首页 </a></li>
-                    <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}"
-                        th:each="item : ${view.parentCategory}">
-                        <a th:href="${item.linkPath}" th:text="${item.name}"></a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a th:href="${view.category.linkPath}" th:text="${view.category.name}"></a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        <span th:text="${view.title}"></span>
-                    </li>
-                </ol>
+
+            <div class="col-xl-8 mb-3">
+
 
                 <!-- <div>
                 <img th:src="${view.picPath}" class="rounded-pill"/>
@@ -210,8 +73,23 @@
 
 
                 <div id="main-content">
-                    <div class=" shadow bg-white">
-                        <div class="content-header border-bottom pl-3 pr-3 pt-3 pb-3">
+
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">首页 </a></li>
+                            <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}"
+                                th:each="item : ${view.parentCategory}">
+                                <a th:href="${item.linkPath}" th:text="${item.name}"></a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a th:href="${view.category.linkPath}" th:text="${view.category.name}"></a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                <span th:text="${view.title}"></span>
+                            </li>
+                        </ol>
+                        <div class="content-header  pl-3 pr-3 pt-3 pb-3">
+
                             <h1 class="m-0 title" th:text="${view.title}">标题</h1>
                             <div class="info text-secondary">
 
@@ -231,11 +109,13 @@
 
                                 <!-- <div cms:if="${userId}!=null">11 </div> -->
                             </div>
+
                         </div>
+
 
                         <!-- <span  cms:if="${#sets.contains(roles, 'ADMIN')}" cms:value="${roles}">greh</span> -->
 
-                        <div id="markdown" cms:inline="none" class="markdown pt-2 pl-3 pr-3 pb-3"
+                        <div id="markdown" cms:inline="none" class="markdown  markdown-course pt-2 pl-3 pr-3 pb-3"
                             th:utext="${view.formatContent}">
 
                         </div>
@@ -269,29 +149,27 @@
 
 
             </div>
-
-            <div class="col-lg-2 ">
-
-                <div th:if="${view.toc!=''}" id="content-table">
-                    <!-- 文章目录 -->
-                    <div class="  card shadow  bd-links ">
-                        <div id="content-table-header" class="card-header d-flex justify-content-between">
-                            <span>本文列表</span>
-                            <a href="javascript:;" id="close-content-table">&times;</a>
-                        </div>
-                        <div id="toc" class="card-body " th:utext="${view.toc}">
+            <div class="col-xl-2  md-right">
+                <div class="flex-table">
+                    <div cms:replace="/html/components/form :: #fragment"></div>
+                    <hr>
+                    <div  class="flex-table-box">
+                        <div th:utext="${view.toc}" class="content-table">
                         </div>
                     </div>
-                </div>
-                <div class="mt-3">
-                    <div cms:replace="/html/components/form :: #fragment"></div>
 
                 </div>
-
-
-
             </div>
         </div>
+
+
+
+
+
+
+
+
+
 
     </div>
     <input type="hidden" cms:value="${userId}" id="userId">

@@ -31,8 +31,8 @@
                     <div class="catrgory-header">
                         <div class="img mr-3">
                             <img th:if="${view.category.picPath==''||view.category.picPath==null}" class="mb-1"
-                                src="/templates/resources/img/logo_category.png">
-                            <img th:if="${view.category.picPath!=null||view.category.picPath!=''}"
+                                src="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/1676179378473_1676179634655.jpg?x-oss-process=image/resize,l_600,mfit">
+                            <img th:if="${view.category.picPath!=null && view.category.picPath!=''}"
                                 th:src="${view.category.picPath}" class="mb-1">
                             <div class="d-flex title">
                                 <a class="text-secondary"

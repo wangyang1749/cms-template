@@ -95,117 +95,7 @@ function move(header, panel, closeBtn) {
 }
 
 
-function setHeight(id) {
-    let siderbarHeight = $(id).outerHeight(true);
-    let windowHeight = $(window).height()
-    var divtop = $(id).offset().top
-    // console.log(siderbarHeight+divtop)
-    // console.log(windowHeight)
-    if((siderbarHeight+divtop) > windowHeight){
-        $(id).height(windowHeight - divtop);
-    }
-  
-}
 
-
-function siderBar(id,divtop,siderbarBoxTop,siderbarBoxH,siderbarWidth) {
-    // console.log("siderbarHeight" + $("#siderbar").outerHeight(true))
-    // console.log("siderbarWidth" + $("#siderbar").width())
-    // console.log("window" + $(window).height())
-    // console.log("document scrollTop" + $(document).scrollTop())
-    // console.log("header" + $("#header").outerHeight(true))
-    // console.log("footer" + $("#footer").outerHeight(true))
-    // console.log("document height" + $(document).height());
-    // console.log($("#main-content").outerHeight(true))
-
-    
-   
-    let headerHeight = $("#header").outerHeight(true)
-    let footerHeight = $("#footer").outerHeight(true)
-    let windowHeight = $(window).height()
-    let scrollTop = $(document).scrollTop()
-    let documentHeight = $(document).height()
-    let mainContentHeight = $("#main-content").outerHeight(true)
-    let siderbarHeight = $(id).outerHeight(true);
-   
-
-
-    // console.log(divtop-headerHeight )
-    // console.log(headerHeight )
-
-    // console.log(scrollTop )
-    if(divtop-headerHeight-scrollTop<0  ){
-        if( documentHeight-windowHeight-scrollTop-footerHeight > 0){
-            // console.log("aaaaaaaaaaa")
-            $("#siderbar-flexd").css({ "position": "fixed", "top": headerHeight + "px" ,"width":siderbarWidth+"px"})
-            if((siderbarHeight+divtop) > windowHeight){
-                $(id).height(windowHeight - headerHeight-siderbarBoxH-3);
-            }
-           
-           
-        }else{
-            if((siderbarHeight+divtop) > windowHeight){
-                $("#siderbar-flexd").css({ "position": "absolute", "bottom": "0", "top": "auto" })
-            }
-            // console.log("aaaaaaaaaaa")
-            
-        }
-      
-        // if()
-    }else{
-      
-        setHeight("#siderbar-main")
-        $("#siderbar-flexd").css({ "position": "relative","top":"auto" })
-    }
-    // console.log(divtop)
-    // console.log(divtop - headerHeight - scrollTop)
-
-    // if ((divtop - headerHeight - scrollTop) <= 0) {
-    //     $(id).css({ "position": "fixed", "top": headerHeight + "px" })
-
-    // } else {
-    //     $(id).css({ "position": "relative","top":"auto" })
-    // }
-    // console.log(documentHeight - windowHeight - scrollTop > footerHeight)
-    // console.log(windowHeight - headerHeight - footerHeight > siderbarHeight)
-    // 底部导航是否出现并且 浏览器窗口不能同时显示头部侧栏和底部
-    // if (mainContentHeight > siderbarHeight) {
-    //     if (documentHeight - windowHeight - scrollTop < footerHeight && windowHeight - headerHeight - footerHeight < siderbarHeight) {
-    //         $(id).css({ "position": "absolute", "bottom": "0", "top": "" })
-    //     } else {
-    //         // 窗口高度是否大于左侧面板高度
-    //         if (windowHeight > siderbarHeight + headerHeight) {
-    //             $(id).css({ "position": "fixed", "top": headerHeight + "px", "width": siderbarWidth + "px" })
-    //         } else {
-    //             // console.log("2222")
-    //             // 窗口大小+滚动的距离是否=左侧面板的距离
-    //             if (scrollTop + windowHeight > siderbarHeight + headerHeight) {
-    //                 // console.log("ok")
-    //                 $(id).css({ "position": "fixed", "bottom": "0", "width": siderbarWidth + "px" })
-    //             } else {
-    //                 $(id).css({ "position": "", "bottom": "" })
-
-    //             }
-    //         }
-    //     }
-    // }
-
-}
-if (document.body.clientWidth >= 977) {
-    setHeight("#siderbar-main")
-    var divtop = $("#siderbar-main").offset().top
-
-
-
-    let siderbarBoxTop = $("#siderbar-box").offset().top
-    let siderbarWidth = $("#siderbar-box").width()
-    let siderbarBoxH = $("#siderbar-box").outerHeight(true);
-    siderBar("#siderbar-main",divtop,siderbarBoxTop,siderbarBoxH,siderbarWidth)
-   
-    $(document).scroll(function () {
-        siderBar("#siderbar-main",divtop,siderbarBoxTop,siderbarBoxH,siderbarWidth)
-    })
-}
 
 // 增加浏览量
 var url = location.hostname;
@@ -445,3 +335,150 @@ $(document).ready(function () {
 
 });
 
+
+
+
+function setHeight(id) {
+    let siderbarHeight = $(id).outerHeight(true);
+    let windowHeight = $(window).height()
+    var divtop = $(id).offset().top
+    // console.log(siderbarHeight+divtop)
+    // console.log(windowHeight)
+    if ((siderbarHeight + divtop) > windowHeight) {
+        $(id).height(windowHeight - divtop);
+    }
+
+}
+
+
+function siderBar(id, divtop, siderbarBoxTop, siderbarBoxH, siderbarWidth) {
+    // console.log("siderbarHeight" + $("#siderbar").outerHeight(true))
+    // console.log("siderbarWidth" + $("#siderbar").width())
+    // console.log("window" + $(window).height())
+    // console.log("document scrollTop" + $(document).scrollTop())
+    // console.log("header" + $("#header").outerHeight(true))
+    // console.log("footer" + $("#footer").outerHeight(true))
+    // console.log("document height" + $(document).height());
+    // console.log($("#main-content").outerHeight(true))
+
+
+
+    let headerHeight = $("#header").outerHeight(true)
+    let footerHeight = $("#footer").outerHeight(true)
+    let windowHeight = $(window).height()
+    let scrollTop = $(document).scrollTop()
+    let documentHeight = $(document).height()
+    let mainContentHeight = $("#main-content").outerHeight(true)
+    let siderbarHeight = $(id).outerHeight(true);
+
+
+
+    // console.log(divtop-headerHeight )
+    // console.log(headerHeight )
+
+    // console.log(scrollTop )
+    if (divtop - headerHeight - scrollTop < 0) {
+        if (documentHeight - windowHeight - scrollTop - footerHeight > 0) {
+            // console.log("aaaaaaaaaaa")
+            $("#siderbar-flexd").css({ "position": "fixed", "top": headerHeight + "px", "width": siderbarWidth + "px" })
+            if ((siderbarHeight + divtop) > windowHeight) {
+                $(id).height(windowHeight - headerHeight - siderbarBoxH - 3);
+            }
+
+
+        } else {
+            if ((siderbarHeight + divtop) > windowHeight) {
+                $("#siderbar-flexd").css({ "position": "absolute", "bottom": "0", "top": "auto" })
+            }
+            // console.log("aaaaaaaaaaa")
+
+        }
+
+        // if()
+    } else {
+
+        setHeight("#siderbar-main")
+        $("#siderbar-flexd").css({ "position": "relative", "top": "auto" })
+    }
+
+
+}
+if ($("#siderbar-main").length>0) {
+    if (document.body.clientWidth >= 977) {
+        setHeight("#siderbar-main")
+        var divtop = $("#siderbar-main").offset().top
+
+
+
+        let siderbarBoxTop = $("#siderbar-box").offset().top
+        let siderbarWidth = $("#siderbar-box").width()
+        let siderbarBoxH = $("#siderbar-box").outerHeight(true);
+        siderBar("#siderbar-main", divtop, siderbarBoxTop, siderbarBoxH, siderbarWidth)
+
+        $(document).scroll(function () {
+            siderBar("#siderbar-main", divtop, siderbarBoxTop, siderbarBoxH, siderbarWidth)
+        })
+    }
+
+}
+
+
+$(".flex-table").each(function(){
+    let headerHeight = $("#header").outerHeight(true)
+   
+    let tableTop =$(this).offset().top
+    let tableWidth = $(this).width()
+    let tableHeight = $(this).outerHeight(true)
+    let windowHeight = $(window).height()
+    let documentHeight = $(document).height()
+    let footerHeight = $("#footer").outerHeight(true)
+    let footerTop = $("#footer").offset().top
+    let tableBox =  $(this).find(".flex-table-box")
+    let tableBoxTop = tableBox.offset().top
+    let setHight = windowHeight - tableBoxTop
+
+    let mainBox =  $("#main-content").outerHeight(true)
+   
+    // console.log(tableHeight+headerHeight+footerHeight)
+    // console.log(documentHeight)
+    // console.log(mainBox)
+
+    if(tableHeight+headerHeight>windowHeight &&  mainBox+headerHeight <windowHeight ){
+
+    }
+
+    if(tableHeight>setHight){
+        tableBox.height(setHight);
+    }
+    tableHeight = $(this).outerHeight(true)
+    // console.log(tableHeight)
+    let this_= this
+    
+    let scrollTop = $(document).scrollTop()
+    // let minusFooter = documentHeight-footerHeight-windowHeight
+
+    if( (scrollTop >tableTop || tableTop==headerHeight) && ( mainBox+headerHeight >windowHeight )){
+        if(documentHeight-scrollTop-tableHeight- headerHeight-footerHeight>0 ){
+            $(this_).css({ "position": "fixed", "top": headerHeight + "px","width": tableWidth + "px"})
+        }else{
+            $(this_).css({ "position": "absolute", "bottom": "0", "top": "auto" })
+        }
+    }
+
+    $(document).scroll(function () {
+        // console.log(scrollTop)
+        // console.log(tableTop)
+        documentHeight = $(document).height()
+        let scrollTop = $(document).scrollTop()
+        // console.log(documentHeight-scrollTop-tableHeight- headerHeight )
+        // console.log(footerTop-scrollTop-windowHeight)
+
+        if(scrollTop >tableTop  && ( mainBox+headerHeight >windowHeight )){
+            if(documentHeight-scrollTop-tableHeight- headerHeight-footerHeight>0 ){
+                $(this_).css({ "position": "fixed", "top": headerHeight + "px","width": tableWidth + "px"})
+            }else{
+                $(this_).css({ "position": "absolute", "bottom": "0", "top": "auto" })
+            }
+        }
+    })
+})
