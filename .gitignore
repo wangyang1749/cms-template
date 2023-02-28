@@ -3,3 +3,5 @@ nodejs/node_modules/
 *.pdf
 push.sh
 company/
+
+resources/pdf/

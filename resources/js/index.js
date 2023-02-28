@@ -33,7 +33,18 @@ $(function () {
     });
 });
 
+function login() {
+    let href = window.location.href
+    // console.log(href)
+    window.open("/login?" + href)
+}
 
+$("#exit").click(function () {
+    localStorage.removeItem("Authorization");
+    localStorage.removeItem("user");
+    $.cookie("Authorization", null, { path: "/" });
+    location.reload();
+})
 
 
 function move() {
@@ -425,7 +436,7 @@ if ($("#siderbar-main").length>0) {
 
 $(".flex-table").each(function(){
     let headerHeight = $("#header").outerHeight(true)
-   
+
     let tableTop =$(this).offset().top
     let tableWidth = $(this).width()
     let tableHeight = $(this).outerHeight(true)
@@ -472,7 +483,8 @@ $(".flex-table").each(function(){
         let scrollTop = $(document).scrollTop()
         // console.log(documentHeight-scrollTop-tableHeight- headerHeight )
         // console.log(footerTop-scrollTop-windowHeight)
-
+        // console.log(scrollTop)
+        // console.log(headerHeight)
         if(scrollTop >tableTop  && ( mainBox+headerHeight >windowHeight )){
             if(documentHeight-scrollTop-tableHeight- headerHeight-footerHeight>0 ){
                 $(this_).css({ "position": "fixed", "top": headerHeight + "px","width": tableWidth + "px"})

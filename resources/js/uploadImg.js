@@ -47,7 +47,7 @@ function uploadImg(file, Editor) {
     formData.append('file', file, fileName);
 
     $.ajax({
-        url: protocol + "//" + url + ":8080/api/attachment/upload",
+        url: protocol + "//" + url + "/api/attachment/upload",
         headers: {
 
             'Authorization': 'Bearer ' + token

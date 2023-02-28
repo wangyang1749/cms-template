@@ -1,8 +1,168 @@
-
 <div class="message" id="message"></div>
 <script src="/templates/resources/js/jquery-3.4.1.min.js"></script>
 <script src="/templates/resources/js/jquery.cookie.js"></script>
 <script src="/templates/resources/js/jquery.lazyload.min.js"></script>
-<script src="/templates/resources/js/index.js?v=1.20"></script>
-<script src="/templates/resources/js/statistics.js"></script>
+<script src="/templates/resources/js/index.js?v=1.22"></script>
+<!-- <script src="/templates/resources/js/statistics.js"></script> -->
+<script src="/templates/resources/js/bootstrap.min.js"></script>
 
+
+<script>
+    $(function () {
+        $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
+    });
+
+    $(function () {
+        if (document.body.clientWidth < 977) {
+            $(".navbar li.dropdown").click(function (e) {
+                // e.preventDefault()
+                $(this).removeAttr('href');
+                $(this).children(".dropdown-menu").fadeToggle();
+                // actiavte.push(  $(this).children(".dropdown-menu"))
+            });
+        } else {
+            // 2个函数，第一个是鼠标经过触发 第二个是鼠标离开触发
+            $(".navbar li.dropdown").hover(function () {
+
+                $(this).children(".dropdown-menu").stop().slideDown(100);
+                // actiavte.push(  $(this).children(".dropdown-menu"))
+            }, function () {
+
+                $(this).children(".dropdown-menu").stop().slideUp(100);
+                // console.log($(this).children(".dropdown-menu"))
+            });
+        }
+
+    })
+
+
+
+
+    function loadCarousel() {
+        var scrollTop = $(this).scrollTop();
+        // var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+
+        $(".carousel").each(function () {
+            var divtop = $(this).offset().top//是标签距离顶部高度
+            // console.log("---", divtop - windowHeight - scrollTop)
+
+            if ((divtop - windowHeight - scrollTop) < 500) {
+                var lazys = $(this).find(".carousel-lazy")
+                // console.log(lazys)
+                lazys.each(function () {
+                    loadImage(this, $(this).data("original"), showImage);
+                })
+            }
+        })
+    }
+
+    loadCarousel()
+    $(window).scroll(function () {
+        loadCarousel()
+    })
+
+    function showArticle(id) {
+        if (id == "none" || !id) {
+            return
+        }
+        // console.log(id)
+        // console.log(patentId)
+        $("#ID" + id).slideDown(50);
+        let patentId = $("#ID-current-" + id).data("parent")
+
+        showArticle(patentId)
+    }
+    function loadCategoryActivate() {
+        if ($("#viewName")) {
+            $("#ID-current-" + $("#viewName").val()).addClass("article-activate")
+            let id = $("#ID-current-" + $("#viewName").val()).data("parent")
+            if (id == "none") {
+
+                $("#ID" + $("#viewName").val()).slideDown(50);
+            } else {
+                showArticle(id)
+            }
+
+        }
+    }
+    loadCategoryActivate()
+
+    let aa;
+    // $('html,body').animate({ scrollTop: 500 }, 400);
+    var handler = function (hash) {
+        // console.log()
+        let id = decodeURI(hash)
+        var target = $(id);
+        if (!target) return;
+
+        var targetOffset = target.offset().top - $("#header").outerHeight(true);
+        $('html,body').animate({ scrollTop: targetOffset }, 200);
+    }
+    $(".thisToc a").click(function () {
+        handler(this.hash)
+
+    });
+    // if (location.hash) {
+    //     handler(location.hash)
+    // }
+    function loadTocscorll() {
+        let tocList_ = [];
+        $('.thisToc a').each(function () {
+            tocList_.push(decodeURI(this.hash))
+        })
+        // console.log(tocList_)
+        $(function () {
+            $(window).scroll(function () {
+                // $('.thisToc a').eq(0).addClass('active');
+                //左侧导航加active
+                tocList_.forEach(function (x) {
+                    var _target = parseInt($(x).offset().top - $(window).scrollTop() - $("#header").outerHeight(true));
+
+                    // var _i = $(x).index();
+                    // console.log(_i)
+                    if (_target <= 0) {
+                        $('.thisToc a').removeClass('active');
+                        $(".thisToc a[href='" + x + "']").addClass('active');
+                        // console.log(  )
+                        // let h_ = $(".thisToc a[href='"+x+"']").offset().top
+                        // $("#toc-box").animate({ scrollTop: h_ }, 200);
+
+                    }
+                    //如果到达页面底部，给左侧导航最后一个加active
+                    // else if ($(document).height() == $(window).scrollTop() + $(window).height()) {
+                    //     $('.thisToc a').removeClass('active');
+                    //     $('.thisToc a').eq($('.markdown li').length - 1).addClass('active');
+                    // }
+                });
+            });
+            // $('.fl_l li').click(function () {
+            //     $(this).addClass('active').siblings().removeClass('active');
+            //     var _i = $(this).index();
+            //     $('body, html').animate({ scrollTop: $('.fl_r li').eq(_i).offset().top }, 500);
+            // });
+        });
+    }
+    loadTocscorll()
+
+    // $('#category-table a').each(function () {
+    //     // console.log(this)
+    //     $(this).click(function (e) {
+    //         e.preventDefault()
+    //         let url_ = $(this).attr("href")
+    //         console.log(url_)
+    //         $('#main-content').load(url_ + " #main-content",function(){
+    //             $('#category-table a').removeClass('article-activate');
+    //             console.log($("#viewName").val())
+    //             $("#ID-current-" + $("#viewName").val()).addClass("article-activate")
+    //             loadCategoryActivate()
+    //         })
+    //         $('#toc-box').load(url_ + " #toc-box")
+    //         window.history.pushState("", "", url_);
+    //         loadTocscorll()
+         
+
+    //     })
+    // })
+
+</script>

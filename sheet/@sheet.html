@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{})">
+<head>
     <title th:text="${view.title}"></title>
+    <cms:block cms:replace="templates/templates/fragment/header" />
 
     <link rel="stylesheet" href="/templates/resources/css/sheet.css">
     <!-- markdown扩展 -->
@@ -17,7 +18,13 @@
                 <li class="breadcrumb-item active" aria-current="page" th:text="${view.title}">首页</li>
             </ol>
         </nav> -->
+        <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+ 
+            <a th:href="'/user/editSheet/'+${view.id}" class="btn btn-success ">编辑</a>
 
+        
+
+        </div>
         <div class="markdown shadow p-3 bg-white rounded mb-3" th:utext="${view.formatContent}">
         </div>
 
@@ -25,7 +32,7 @@
     <script src="/templates/resources/js/search_engine.js"></script>
 
     <div cms:replace="/html/components/footer :: #fragment"></div>
-    <div th:replace="templates/templates/fragment/footer"></div>
+    <div cms:replace="templates/templates/fragment/footer"></div>
 
 </body>
 

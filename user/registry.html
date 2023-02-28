@@ -71,7 +71,7 @@
         var protocol = window.location.protocol;
         function registry(jsonData) {
             $.ajax({
-                url: protocol + "//" + url + ":8080/api/user/registry",
+                url: protocol + "//" + url + "/api/user/registry",
                 headers: {
                     'Content-Type': 'application/json;charset=utf8',
                     'Accept': 'application/json'

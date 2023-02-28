@@ -1,40 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <cms:block cms:replace="templates/templates/fragment/header" />
 
-    <link rel="stylesheet" href="/templates/resources/css/bootstrap-tags.css" />
-    <link rel="stylesheet" href="/templates/resources/css/user.css">
-    <link rel="stylesheet" href="/templates/resources/css/pagination.css">
-    <link rel="stylesheet" href="/templates/resources/css/editormd.css">
-    <link rel="stylesheet" href="/templates/resources/css/katex.min.css">
-    <link rel="stylesheet" href="/templates/resources/css/admonition.css">
-    <link rel="stylesheet" href="/templates/resources/css/code.css?v=0.1">
-    <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
-
-    <title th:text="${view==null? '发布文章':view.title}"></title>
-
+    <title th:text="${view==null? '发布文章':view.name}"></title>
 </head>
 
 <body>
     <style>
-    
+        #header {
+            position: relative;
+        }
+
+
+        .article-option {
+            width: 90%;
+            margin: 0 auto;
+        }
 
 
 
-        
+        /*svg字符串上传面板*/
+        .fixed-card {
+            /* position: fixed; */
+            width: 60rem;
+            z-index: 99;
+            display: none;
+            width: 100%;
+            overflow-y: auto;
+        }
 
+        .edit-input {
+            z-index: 9999;
+            width: 100%;
+            /* margin: 0; */
 
+        }
 
+        #markdown-preview {
+            overflow-y: auto;
+            max-height: 39rem;
+            overflow-x: auto;
+        }
+
+        .col-50 {
+            width: 50%;
+        }
     </style>
-    <div cms:replace="/html/components/header :: #fragment"></div>
+    <!-- Start Header Area -->
+    <div th:replace="/html/components/header :: #fragment"></div>
+    <!-- end Header Area -->
 
-    <div   class="margin-top-72">
+    <div  class="margin-top-72">
 
 
-        <div class="article-option">
+        <form class="article-option">
             <div class="row bg-white">
+                <!-- <div class="summernote">站长素材（sc.chinaz.com） 1</div> -->
                 <div class="col col-50">
                     <div id="test-editormd" class="edit-input ">
                         <textarea style="display:none;" id="textInput" th:text="${view==null?'':view.originalContent}">
@@ -49,100 +72,67 @@
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">文章标题</label>
-                <input class="form-control" th:value="${view==null?'':view.title}" id="title" type="text"
+                <input class="form-control" th:value="${view==null?'':view.name}" id="name" type="text"
                     placeholder="请输入文章标题" />
             </div>
             <div class="form-group">
+                <label for="exampleFormControlInput1">css</label>
+                <input class="form-control" th:value="${view.cssClass}" id="cssClass" type="text" />
+            </div>
+            <div class="form-group">
                 <label for="exampleFormControlInput1">封面图片</label>
-                <img th:src="${view==null?'':view.picPath}" alt="">
+                <img th:src="${view==null?'':view.picPath}" alt="" class="width-50">
                 <p>
-                    picPath<input class="form-control" th:value="${view==null?'':view.picPath}" id="picPath" type="text" />
+                    picPath<input class="form-control" th:value="${view==null?'':view.picPath}" id="picPath"
+                        type="text" />
                 </p>
                 <p>
-                    picThumbPath<input class="form-control" th:value="${view==null?'':view.picThumbPath}" id="picThumbPath" type="text" />
+                    picThumbPath<input class="form-control" th:value="${view==null?'':view.picThumbPath}"
+                        id="picThumbPath" type="text" />
                 </p>
-                
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">文章分类</label>
-                <select id="categories" class=" form-control">
-                    <option selected disabled hidden>请选择一个分类</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlSelect2">文章标签</label>
-                <div id="my-tag-list" class=" tag-list  "></div>
 
             </div>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">文章摘要</label>
-                <textarea th:text="${view==null?'':view.summary}" id="summary" class="form-control"
-                    placeholder="请输入摘要（不输入，将自动从文章截取）" rows="3"></textarea>
+            <input type="text" th:value="${view.useHtml}" id="useHtml">
 
-            </div>
             <div class="d-flex justify-content-end form-group">
-                <button type="button" class="btn btn-success" id="copyHTML">拷贝HTML</button>
-                <button type="button" class="btn btn-success" id="attachment">附件</button>
-                <button type="button" class="btn btn-danger" id="save">保存</button>
-                <button type="button" class="btn btn-warning" id="previewNet">预览</button>
+                <!-- <button type="button" class="btn btn-all" id="copyHTML">拷贝HTML</button> -->
+                <button type="button" class="btn btn-all" id="attachment">附件</button>
+                <button type="button" class="btn btn-all" id="saveCategory">保存</button>
+                <!-- <button type="button" class="btn btn-all" id="previewNet">预览</button> -->
                 <!-- <button type="button" class="btn btn-warning" id="submitPanel">发布</button> -->
 
-                <button type="button" class="btn btn-info" id="submitCreate">首次发布</button>
-                <button type="button" class="btn btn-info" id="submitUpdate" style="display: none;">更新发布</button>
+                <!-- <button type="button" class="btn btn-all" id="submitCreate">首次发布</button> -->
+                <button type="button" class="btn btn-all" id="categoryUpdate">更新发布</button>
 
             </div>
 
-        </div>
+        </form>
 
 
 
-        <div id="uploadPanel" class="uploadPanel" style="display: none;">
-            <div class="p-2">
-                <div>
-                    <input type="file" name="file" id="file">
-                </div>
-                <div class="progress mt-2">
-                    <div class="progress-bar" style="width: 0%;"></div>
-                </div>
-                <!-- <progress value="22" max="100">
-                </progress> -->
-            </div>
-        </div>
+
 
         <div class="drawer-panel drawer-attachment">
             <div>
-                <a href="javascript:;" data-render="latex" class="openSvgPanel btn btn-light">latex</a>
-                <a href="javascript:;" data-render="mermaid" class="openSvgPanel btn btn-light">mermaid</a>
-                <a href="javascript:;" data-render="svg" class="openSvgPanel btn btn-light">svg</a>
-                <a href="javascript:;" id="uploadFile" class="btn btn-light">上传</a>
+                <a href="javascript:;" id="uploadFile" class="btn btn-all">上传</a>
 
             </div>
-            <div class="card fixed-card" id="fixed-card">
-                <div class="card-header d-flex justify-content-between">
+            <div id="uploadPanel" class="uploadPanel" style="display: none;">
+                <div class="p-2">
                     <div>
-                        <span id="svg-header">选择渲染js</span>
-                        <a href="javascript:;" onclick="saveSvg()">保存</a>
-                        <a href="javascript:;" onclick="updateSvg()">更新</a>
+                        <input type="file" name="file" id="file">
                     </div>
-
-                    <a href="javascript:;" id="closeBtn">&times;</a>
-                </div>
-                <div class="card-body ">
-                    <div class="">
-                        <textarea data-render="" class="form-control border border-primary" id="componentInput"
-                            rows="10"></textarea>
+                    <div class="progress mt-2">
+                        <div class="progress-bar" style="width: 0%;"></div>
                     </div>
-                    <div id="componentPreview" class="">
-
-                    </div>
+                    <!-- <progress value="22" max="100">
+                    </progress> -->
                 </div>
             </div>
-
             <div id="attachment-list"></div>
             <div class="attachment m-style "></div>
         </div>
 
-<!-- 
         <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <strong class="mr-auto">消息</strong>
@@ -153,18 +143,48 @@
             <div class="toast-body" id="toast-body">
                 Hello, world! This is a toast message.
             </div>
-        </div> -->
+        </div>
 
 
     </div>
 
-    <div th:insert="html/components/footer :: #footer" class="mt-3"></div>
+    <!-- <div cms:replace="/html/components/footer :: #fragment"></div> -->
+
     <div th:replace="templates/templates/fragment/footer"></div>
 
     <!-- <script src="/templates/resources/js/jquery-3.4.1.min.js"></script> -->
 
 
     <script src="/templates/resources/js/mermaid.min.js"></script>
+    <script src="/templates/resources/js/markdown-it.min.js"></script>
+    <script src='/templates/resources/js/bootstrap-tags.min.js'></script>
+    <script src="/templates/resources/js/user.js"></script>
+    <script src="/templates/resources/js/jquery.pagination.js"></script>
+    <script src="/templates/resources/js/uploadImg.js?v=1.1"></script>
+    <script src="/templates/resources/js/article.js?v=1.07"></script>
+    <script src="/templates/resources/js/highlight/highlight.min.js"></script>
+    <script defer src="/templates/resources/js/katex.min.js"></script>
+    <script src="/templates/resources/js/write.js?v=1.9"></script>
+    <!-- <script src="/templates/resources/js/attachment.js"></script> -->
+
+    <!-- <script src="/templates/resources/js/jquery.min.js"></script>
+    <script src="/templates/resources/js/bootstrap.min.js"></script>
+    <script src="/templates/resources/dist/summernote.js"></script>
+    <link href="/templates/resources/dist/summernote.css" rel="stylesheet"> -->
+
+    <script src="/templates/resources/js/editormd.min.js"></script>
+
+    <!-- <script>
+        $(function () {
+            $('.summernote').summernote({
+                height: 200,
+                tabsize: 2,
+                lang: 'zh-CN'
+            });
+        });
+    </script> -->
+
+
     <script>
         mermaid.init({ noteMargin: 10 }, $(".mermaid"));
     // mermaid.mermaidAPI.initialize({ startOnLoad: false });
@@ -222,15 +242,7 @@
 
     <!-- <script src="/templates/resources/js/jquery.cookie.js"></script> -->
 
-    <script src="/templates/resources/js/markdown-it.min.js"></script>
 
-    <script src='/templates/resources/js/bootstrap-tags.min.js'></script>
-    <!-- <script src="/templates/resources/js/index.js"></script> -->
-    <script src="/templates/resources/js/user.js"></script>
-    <script src="/templates/resources/js/jquery.pagination.js"></script>
-    <script src="/templates/resources/js/editormd.min.js"></script>
-    <script src="/templates/resources/js/uploadImg.js?v=1.1"></script>
-    <script src="/templates/resources/js/article.js?v=1.07"></script>
 
     <script>
         $("#copyHTML").click(function () {
@@ -256,7 +268,6 @@
     </script>
 
     <!-- <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script> -->
-    <script src="/templates/resources/js/highlight/highlight.min.js"></script>
 
     <script>
         // hljs.addPlugin({
@@ -274,8 +285,7 @@
 
     </script>
 
-    <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script> -->
-    <script defer src="/templates/resources/js/katex.min.js"></script>
+
     <script>
 
         (function () {
@@ -325,36 +335,26 @@
             */
         });
     </script>
-    <script src="/templates/resources/js/write.js?v=1.9"></script>
 
     <script>
 
-
-        
-        articleOption()
-        uploadFile()
-        cmsWrite.defaultCategoryId = [[${ view== null ? '' : view.categoryId }]]
-        setSelectTags([[${ view== null ? '' : view.tagIds }]])
         cmsWrite.articleId = null
         function setArticleId(param) {
             cmsWrite.articleId = param
         }
-        setArticleId([[${ view== null ? '' : view.id }]])
-       
+        categoryUpdate([[${ view.id }]])
+        saveCategory([[${ view.id }]])
+        // setArticleId([[${ view== null ? '' : view.id }]])
         /**
          * 判断是否在更新页面
          */
-        if (cmsWrite.articleId) {
-            $("#submitCreate").css("display", "none")
-            $("#submitUpdate").css("display", "inline-block")
-        }
+        // if (cmsWrite.articleId) {
+        //     $("#submitCreate").css("display", "none")
+        //     $("#submitUpdate").css("display", "inline-block")
+        // }
         cmsWriteInit()
 
         // formatHtml()
-
-
-
-
 
     </script>
 

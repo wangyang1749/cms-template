@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{})">
+<head>
     <title th:text="${view.category.name}">分类页面</title>
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-        crossorigin="anonymous"> -->
+
+    <cms:block cms:replace="templates/templates/fragment/header" />
+
     <link rel="stylesheet" href="templates/resources/css/category.css">
 </head>
 
@@ -30,7 +31,7 @@
         <div class="row">
             <div class="col-lg-9 ">
 
-                <div id="main-content">
+                <div id="main-content" class="bg-white">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">首页 </a></li>
                         <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategories)}"
@@ -41,7 +42,8 @@
                             <span th:text="${view.category.name}"></span>
                         </li>
                     </ol>
-                    <div class="catrgory-header shadow ">
+
+                    <div class="catrgory-header  " th:classappend="${view.category.cssClass}">
                         <div class="img">
                             <img th:if="${view.category.picPath==''||view.category.picPath==null}" class="mb-1"
                                 src="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/1676179378473_1676179634655.jpg?x-oss-process=image/resize,l_600,mfit">
@@ -57,48 +59,50 @@
                         <hr>
 
 
-
-                        <div class="bg-light p-3">
-                            <div th:utext="${view.category.description}"></div>
+                        <div class=" p-3">
+                            <!-- <div th:utext="${view.category.description}"></div> -->
+                            <div id="markdown" th:utext="${view.category.formatContent}"></div>
+                            <a cms:if="${#sets.contains(roles, 'ADMIN')}" class=" badge badge-success"
+                                th:href="@{'~/user/editCategory/'+${view.category.id}}">
+                                编辑</a>
                             <ul class="list-group list-group-flush">
                                 <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName} :: #fragment }   ?:_"
                                     parser></div>
                             </ul>
+
                         </div>
-
-
                     </div>
 
-            
+
 
 
 
                     <!-- 文章列表 -->
                     <!-- <ul class="list-group list-group-flush mb-3 text-center"> -->
 
-                    <div id="components" class="mb-3 bg-white card">
+                    <div id="components" class="mb-3 bg-white ">
 
                         <th:block th:fragment="row(commentsVar)">
                             <ul th:each="item,index:${commentsVar}">
                                 <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
                                     <h4 th:if="${item.parentId==0}">
-                                        </i><a th:href="${item.linkPath}" class="text-muted">
+                                        </i><a th:href="${item.linkPath}" class="text-primary">
                                             <i class="bi bi-layout-text-sidebar-reverse"></i> <span
                                                 th:text="${item.title}"></span>
                                         </a>
                                     </h4>
-                                    <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                                    <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-info">
                                         <i class="bi  bi-file-earmark-text"></i> <span th:text="${item.title}"></span>
                                     </a>
                                 </li>
                                 <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
                                     <h4 th:if="${item.parentId==0}">
-                                        </i><a th:href="${item.linkPath}" class="text-muted">
+                                        </i><a th:href="${item.linkPath}" class="text-primary">
                                             <i class="bi bi-layout-text-sidebar-reverse"></i> <span
                                                 th:text="${item.title}"></span>
                                         </a>
                                     </h4>
-                                    <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                                    <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-info">
                                         <i class="bi  bi-file-earmark-text"></i> <span th:text="${item.title}"></span>
                                     </a>
                                     <th:block th:include="this::row(${item.children})"></th:block>
@@ -107,7 +111,7 @@
                         </th:block>
 
 
-                        <div class="card-body shadow ">
+                        <div class="  ">
                             <div th:include="this::row(${view.contents})"></div>
                             <!-- <ul th:each="item : ${view.contents}" class="list-group ">
 
@@ -167,16 +171,21 @@
 
             </div>
 
-            <div class="col-lg-3"  id="siderbar" >
-                <div class="card mb-3">
-                    <div class="card-body shadow">
+            <div class="col-lg-3  mb-3" id="siderbar">
+                <div class="bg-white">
+                    <div>
                         <dl>
                             <dt class="text-muted">快捷入口</dt>
                             <dd>
                                 <a class=" badge badge-success" th:href="@{'~'+${view.linkPath}+'-mind.html'}">
                                     <!-- <span th:text="${view.category.name}"></span> -->
                                     思维导图
-                                </a>
+                                </a> &nbsp;
+
+                            </dd>
+                            <dd>
+
+
                             </dd>
                         </dl>
                         <hr>
@@ -189,49 +198,22 @@
                             </form>
                         </dl>
                     </div>
-                </div>
 
-                <div class="pb-3">
-                 
-                    <th:block th:fragment="category(commentsVar)">
-                        <ul th:each="item,index:${commentsVar}">
-                            <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
-                                <h4 th:if="${item.parentId==0}">
-                                    </i><a th:href="${item.linkPath}" class="text-muted">
-                                        <i class="bi  bi-book" th:class="${item.icon}"></i> <span
-                                            th:text="${item.name}"></span>
-                                    </a>
-                                </h4>
-                                <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
-                                    <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
-                                        th:text="${item.name}"></span>
-                                </a>
-                            </li>
-                            <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
-                                <h4 th:if="${item.parentId==0}">
-                                    </i><a th:href="${item.linkPath}" class="text-muted">
-                                        <i class="bi  bi-book" th:class="${item.icon}"></i> <span
-                                            th:text="${item.name}"></span>
-                                    </a>
-                                </h4>
-                                <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
-                                    <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
-                                        th:text="${item.name}"></span>
-                                </a>
-                                <th:block th:include="this::category(${item.children})"></th:block>
-                            </li>
-                        </ul>
-                    </th:block>
-                    <div class="card mb-3  bg-white">
-                        <div class="shadow">
-                            <div th:include="this::category(${view.partner})"></div>
+                    <div class="pb-3">
+
+                        <!-- <div cms:replace="~{'html/articleList/pingtaifuwuArticleMuLu/'+${view.category.viewName}} ?:_"
+                        parser></div> -->
+                        <div cms:replace="~{'html/articleList/CATEGORY_CHILD/'+${view.parentCategory.viewName}} ?:_"
+                            parser>
                         </div>
+                        <!-- <div th:text="${view.parentCategories}"></div> -->
                     </div>
 
-
+                    <div class="p-3">
+                        <div cms:replace="/html/components/form :: #fragment"></div>
+                    </div>
                 </div>
 
-                <div cms:replace="/html/components/form :: #fragment"></div>
 
             </div>
         </div>
@@ -239,7 +221,7 @@
     </div>
 
     <div cms:replace="/html/components/footer :: #fragment"></div>
-    <div th:replace="templates/templates/fragment/footer"></div>
+    <div cms:replace="templates/templates/fragment/footer"></div>
 
     <script>
         $(function () {

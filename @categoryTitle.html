@@ -1,20 +1,23 @@
-<th:block th:fragment="row(commentsVar)">
+<th:block th:fragment="row(commentsVar,viewName)">
     <ul th:each="item,index:${commentsVar}">
         <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
            
-            <a  th:href="${item.linkPath}" class="text-secondary">
+            <a  th:href="${item.linkPath}" class="text-secondary"  th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
                 <span th:text="${item.title}"></span>
-            </a>
+            </a><i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-caret-down text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
         </li>
         <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
          
-            <a  th:href="${item.linkPath}" class="text-secondary">
+            <a  th:href="${item.linkPath}" class="text-secondary"   th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
                 <span th:text="${item.title}"></span>
-            </a>
-            <th:block th:include="this::row(${item.children})"></th:block>
+            </a><i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-caret-down text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
+            <div class="child collapse" th:id="'ID'+${item.viewName}">
+                <th:block th:include="this::row(${item.children},${item.viewName})"></th:block>
+            </div>
+            
         </li>
     </ul>
 </th:block>
 
 
-<div th:include="this::row(${view})"></div>
+<div th:include="this::row(${view.contents},'none')"></div>

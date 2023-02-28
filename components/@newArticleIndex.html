@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="templates/templates/fragment/header :: common_header(~{},~{},~{})">
-    <title>Document</title>
+<head>
+    <title>组件</title>
+    <cms:block cms:replace="templates/templates/fragment/header" />
 </head>
+
 
 <body>
     <div cms:replace="/html/components/header :: #fragment"></div>
@@ -27,9 +29,9 @@
                             <h5 class="mb-1 title" th:text="${item.title}"></h5>
                         </div>
                         <div class="d-flex mobile-summary">
-                            <div class="mr-3 mobile-img" th:if="${item.picPath!=null}">
+                            <div class="mr-3 mobile-img" th:if="${item.picThumbPath!=null && item.picThumbPath!=''}">
                                 <div class="img-summary">
-                                    <img class=" lazy" th:data-original="${item.picPath}" alt="">
+                                    <img class=" lazy" th:data-original="${item.picThumbPath}" alt="">
                                 </div>
                             </div>
                             <div>

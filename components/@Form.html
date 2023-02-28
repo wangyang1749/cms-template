@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
-    <meta charset="UTF-8">
-    <meta name="keywords" content="生物信息学,生信,生信小木屋,生物信息分析,r语言,python">
-    <meta name="description" content="生信小木屋，用数据科学的知识，探索生命科学的奥秘">
-    <title>生信小木屋</title>
-    <link rel="stylesheet" href="/templates/resources/css/home.css">
-
+<head>
+    <title>组件</title>
+    <cms:block cms:replace="templates/templates/fragment/header" />
 </head>
+
 
 <body cms:inline="none">
 
@@ -27,8 +24,8 @@
                         <li  th:each="item : ${view}"
                             class="list-unstyled shop-item">
                             <div class="row mr-0 ml-0">
-                                <div class="col-4 pl-0 pr-1"> <a target="_blank" th:href="${item.picThumbPath}" class="shop-img"><img
-                                            th:src="${item.picPath}" alt=""></a></div>
+                                <div class="col-4 pl-0 pr-1"> <a target="_blank" th:href="${item.picPath}" class="shop-img"><img
+                                            th:src="${item.picThumbPath}" alt=""></a></div>
                                 <div class="col-8 pr-0 pl-0"><a th:href="${item.linkPath}" th:text="${item.title}"
                                         class="text-secondary"></a></div>
                             </div>

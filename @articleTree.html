@@ -1,153 +1,22 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
+<head>
     <title th:text="${view.title} +' - 生信小木屋'">文章详情</title>
     <meta name="keywords" content="生命科学知识分享,生物技术,生物信息学" th:content="${view.title}">
     <meta name="description" content="分享生命科学方面相关文章" th:content="${view.summary}">
+    <cms:block cms:replace="templates/templates/fragment/header" />
 
-    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/styles/default.min.css">
-     -->
     <link rel="stylesheet" href="/templates/resources/css/highlight.css">
 
     <!-- markdown扩展 -->
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="/templates/resources/css/katex.min.css">
     <link rel="stylesheet" href="/templates/resources/css/code.css?v=1.0">
     <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
 </head>
 
 <body>
-    <style>
-
-    </style>
-    <script async cms:inline="javascript">
-
-        function listContents(contents, id, jsonObj) {
-            // contents.forEach(row => {
-            //     map[row.id] = {title: row.title, children: row.children}
-            // })
-            // console.log(contents)
-            for (i in contents) {
-                // item = contents[i]
-                // console.log(item)
-                if (contents[i].id == id) {
-                    // console.log(contents[i])
-                    // if(contents[i].parentId)
-                    // const newItem = { ...jsonObj }
-
-                    contents[i].children = jsonObj.concat(contents[i].children)
-
-                }
-                if (contents[i].children.length > 0) {
-                    // console.log()
-                    listContents(contents[i].children, id, jsonObj)
-                }
-            }
-
-
-        }
-        // console.log($("#thisToc"))
-
-
-        function createMenu(data, root, id) {
-            if (!data.length) throw new Error('粗错啦');
-
-            data.forEach(item => {
-                const detailsEle = document.createElement('ul');
-                const summaryEle = document.createElement('li');
-                // if(item.parentId==0){
-                //     const span = document.createElement('span');
-                //     span.innerHTML = item.title;
-                //     summaryEle.appendChild(span);
-                // }else{
-
-                // }
-                const a = document.createElement('a');
-                a.innerHTML = item.title;
-                a.href = item.linkPath
-                // a.className="nav-link"
-                summaryEle.appendChild(a);
-
-
-
-                detailsEle.appendChild(summaryEle);
-                root.appendChild(detailsEle);
-                // if(item.id==id){
-                //     // console.log(item)
-                //     detailsEle.innerHTML=$("#thisToc").html()
-                //     // createMenu(item.children, detailsEle,id)
-                // }
-
-                if (item.children?.length) createMenu(item.children, detailsEle, id);
-            });
-        }
-        // console.log($("#toc"))
-
-
-
-        let viewName = [[${ view.category.viewName }]]
-        let id = parseInt([[${ view.id }]])
-        fetch('/html/articleList/articleListJs/' + viewName + ".json")
-            .then((response) => response.json())
-            .then((json) => {
-                // console.log(json)
-                // console.log(json.contents)
-                // let map = {}
-
-                // let strJSON = $("#tocJSON").val()
-                let tocJSON = document.getElementById('tocJSON')
-                if (tocJSON) {
-                    strJSON = tocJSON.value
-                    if (strJSON) {
-                        jsonObj = JSON.parse(strJSON)
-                        listContents(json.contents, id, jsonObj)
-                    }
-                    const root = document.getElementById('toc');
-                    if (!root) {
-                        window.onload = function () {
-                            createMenu(json.contents, root, id)
-                        }
-                        // console.log("window.onload")
-                    } else {
-                        // console.log("createMenu")
-                        createMenu(json.contents, root, id)
-                    }
-                } else {
-                    window.onload = function () {
-                        tocJSON = document.getElementById('tocJSON')
-                        strJSON = tocJSON.value
-                        if (strJSON) {
-                            jsonObj = JSON.parse(strJSON)
-                            listContents(json.contents, id, jsonObj)
-                        }
-                        const root = document.getElementById('toc');
-                        if (!root) {
-                            window.onload = function () {
-                                root = document.getElementById('toc');
-                                createMenu(json.contents, root, id)
-                            }
-                            // console.log("window.onload")
-                        } else {
-                            // console.log("createMenu")
-                            createMenu(json.contents, root, id)
-                        }
-                    }
-                }
-
-
-
-                // createMenu(json.contents,root,id)
-
-
-                // console.log(json.contents)
-                // console.log(map)
-
-
-            })
-    </script>
-
     <div cms:replace="/html/components/header :: #fragment"></div>
     <div class="container margin-top-72 ">
 
@@ -343,12 +212,13 @@
         </div>
 
     </div>
+    <input type="hidden" th:value="${view.viewName}" id="viewName">
     <input type="hidden" cms:value="${userId}" id="userId">
     <input type="hidden" th:value="${view.tocJSON}" id="tocJSON">
     <div cms:replace="/html/components/footer :: #fragment"></div>
-    <div th:replace="templates/templates/fragment/side"></div>
+    <div cms:replace="templates/templates/fragment/side"></div>
 
-    <div th:replace="templates/templates/fragment/footer"></div>
+    <div cms:replace="templates/templates/fragment/footer"></div>
 
     <script src="/templates/resources/js/article.js?v=1.09"></script>
     <script src="/templates/resources/js/admonition.js"></script>

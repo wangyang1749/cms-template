@@ -25,11 +25,36 @@ var token = $.cookie('Authorization')
 let selectTagsMap = {}
 let suggestionsTags = []
 
+Array.prototype.indexOf = function (val) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] == val) return i;
+    }
+    return -1;
+};
+Array.prototype.remove = function (val) {
+    var index = this.indexOf(val);
+    if (index > -1) {
+        this.splice(index, 1);
+    }
+};
+function readerlatex() {
+    var mathElems = document.getElementsByClassName("katex");
+    var elems = [];
+    for (const i in mathElems) {
+        if (mathElems.hasOwnProperty(i)) elems.push(mathElems[i]);
+    }
+
+    elems.forEach(elem => {
+        katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
+    });
+    loadImg('markdown-preview')
+    mermaid.init({ noteMargin: 10 }, $(".mermaid"));
+}
 
 
 function loadCategory() {
     $.ajax({
-        url: protocol + "//" + url + ":8080/api/category",
+        url: protocol + "//" + url + "/api/category",
         headers: {
             'Content-Type': 'application/json;charset=utf8',
             'Authorization': 'Bearer ' + token,
@@ -59,7 +84,7 @@ function showTags() {
             excludeList: ["not", "these", "words"],
             beforeAddingTag: function (tag) {
                 $.ajax({
-                    url: protocol + "//" + url + ":8080/api/tags",
+                    url: protocol + "//" + url + "/api/tags",
                     headers: {
                         'Content-Type': 'application/json;charset=utf8',
                         'Authorization': 'Bearer ' + token,
@@ -92,7 +117,7 @@ function showTags() {
 
 function loadTags() {
     $.ajax({
-        url: protocol + "//" + url + ":8080/api/tags",
+        url: protocol + "//" + url + "/api/tags",
         headers: {
             'Content-Type': 'application/json;charset=utf8',
             'Authorization': 'Bearer ' + token,
@@ -115,23 +140,12 @@ function loadTags() {
 }
 
 
-Array.prototype.indexOf = function (val) {
-    for (var i = 0; i < this.length; i++) {
-        if (this[i] == val) return i;
-    }
-    return -1;
-};
-Array.prototype.remove = function (val) {
-    var index = this.indexOf(val);
-    if (index > -1) {
-        this.splice(index, 1);
-    }
-};
+
 
 /***基于markdownit */
-var md = window.markdownit({
-    html: true,
-});
+// var md = window.markdownit({
+//     html: true,
+// });
 // function formatHtml() {
 
 //     var result = md.render($("#textInput").val());
@@ -150,128 +164,194 @@ var md = window.markdownit({
 // })
 
 
-
-
-
-function createArticle() {
-    let textInput = $("#textInput").val()
-    let categories = $("#categories").val()
-    let title = $("#title").val()
-    let picPath = $("#picPath").val()
-    let picThumbPath = $("#picThumbPath").val()
-    if (title == "") {
-        // alert("文章标题不能为空")
-        Toast("文章标题不能为空", 'error')
-        return
+function articleOption() {
+    function createArticle() {
+        let textInput = $("#textInput").val()
+        let categories = $("#categories").val()
+        let title = $("#title").val()
+        let picPath = $("#picPath").val()
+        let picThumbPath = $("#picThumbPath").val()
+        if (title == "") {
+            // alert("文章标题不能为空")
+            handleMessage("文章标题不能为空")
+            return
+        }
+        // if (categories == "" || categories == 0) {
+        //     // alert("文章分类不能为空")
+        //     Toast("文章分类不能为空", 'error')
+        //     return
+        // }
+        if (textInput == "") {
+            // alert("文章内容不能为空")
+            handleMessage("文章内容不能为空")
+            return
+        }
+        let summary = $("#summary").val()
+        return {
+            originalContent: textInput, // 输入的markdown
+            tagIds: cmsWrite.selectTags,
+            categoryId: categories,
+            title: title,
+            summary: summary,
+            picPath: picPath,
+            picThumbPath: picThumbPath
+        };
     }
-    // if (categories == "" || categories == 0) {
-    //     // alert("文章分类不能为空")
-    //     Toast("文章分类不能为空", 'error')
-    //     return
-    // }
-    if (textInput == "") {
-        // alert("文章内容不能为空")
-        Toast("文章内容不能为空", 'error')
-        return
+    $("#previewNet").click(function () {
+        if (cmsWrite.articleId) {
+            window.open("/preview/article/" + cmsWrite.articleId, "_blank");
+        } else {
+            handleMessage("没有任何文章不能预览！")
+        }
+    })
+    $("#submitUpdate").click(function () {
+        var params = createArticle()
+        if (params) {
+            // console.log(params.categoryId)
+            if (params.categoryId == "" || params.categoryId == null) {
+                // alert("文章分类不能为空")
+                handleMessage("发布文章时，文章分类不能为空")
+                return
+            }
+            jsonData = JSON.stringify(params)
+            // console.log(jsonData)
+
+            let address = protocol + "//" + url + "/api/article/update/" + cmsWrite.articleId
+
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'application/json;charset=utf8',
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                },
+                type: 'POST',
+                data: jsonData,
+                success: function (data) {
+                    // console.log(data)
+                    cmsWrite.articleId = data.data.id
+                    handleMessage("更新文章" + data.data.title + "成功！")
+                    window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+
+                }
+            });
+        }
+
+    })
+    $("#submitCreate").click(function () {
+
+        if (createArticle()) {
+
+            var params = createArticle()
+            // console.log(params.categoryId)
+            if (params.categoryId == "" || params.categoryId == null) {
+                // alert("文章分类不能为空")
+                handleMessage("发布文章时，文章分类不能为空")
+                return
+            }
+            let address = protocol + "//" + url + "/api/article"
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'application/json;charset=utf8',
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                },
+                type: 'POST',
+                data: JSON.stringify(params),
+                success: function (data) {
+                    // console.log(data.data.id)
+                    cmsWrite.articleId = data.data.id
+                    handleMessage("添加文章" + data.data.title + "成功！")
+                    window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+                }
+            });
+        }
+
+    })
+
+    /**
+         * 保存文章
+         */
+    function save(more) {
+        console.log(more)
+        let article = createArticle();
+        if (article) {
+            let jsonData = JSON.stringify(article)
+            // console.log(jsonData)
+            if (cmsWrite.articleId) {
+                $.ajax({
+                    url: more ? protocol + "//" + url + "/api/article/save/" + cmsWrite.articleId + "?more=true" : protocol + "//" + url + "/api/article/save/" + cmsWrite.articleId,
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf8',
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    },
+                    type: 'POST',
+                    data: jsonData,
+                    success: function (data) {
+                        // console.log(data.data)
+                        $("#markdown-preview").html(data.data.formatContent)
+                        readerlatex()
+                        // console.log(data.data.id)
+                        cmsWrite.articleId = data.data.id
+                        // Toast("更新文章" + data.data.title + "成功！", 'success')
+                        handleMessage("更新文章" + data.data.title + ", " + data.message)
+
+                    }, error: function (data) {
+                        handleMessage("更新文章" + data.data.title + ", " + data.message)
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: more ? protocol + "//" + url + "/api/article/save?more=true" : protocol + "//" + url + "/api/article/save",
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf8',
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    },
+                    // dataType: "json",
+                    type: 'POST',
+                    data: jsonData,
+                    success: function (data) {
+                        $("#markdown-preview").html(data.data.formatContent)
+                        readerlatex()
+                        cmsWrite.articleId = data.data.id
+                        // Toast("添加文章" + data.data.title + "成功！", 'success')
+                        handleMessage("添加文章" + data.data.title + "成功！")
+                        history.pushState("state", "", "/user/edit/" + cmsWrite.articleId)
+                        $("#submitCreate").css("display", "none")
+                        $("#submitUpdate").css("display", "inline-block")
+
+                    }
+                });
+            }
+        }
+
     }
-    let summary = $("#summary").val()
-    return {
-        originalContent: textInput, // 输入的markdown
-        tagIds: cmsWrite.selectTags,
-        categoryId: categories,
-        title: title,
-        summary: summary,
-        picPath:picPath,
-        picThumbPath:picThumbPath
-    };
+
+    $("#save").click(function () {
+        save(true)
+    })
+
+    document.addEventListener("keydown", function (event) {
+        if (event.altKey && event.keyCode === 83) {
+            event.preventDefault();
+            save(false)
+        }
+    })
+    document.addEventListener("keydown", function (event) {
+        if (event.ctrlKey && event.keyCode === 83) {
+            event.preventDefault();
+            save(true)
+        }
+    })
 }
 
-$("#previewNet").click(function () {
-    if (cmsWrite.articleId) {
-        window.open("/preview/article/" + cmsWrite.articleId, "_blank");
-    } else {
-        Toast("没有任何文章不能预览！", 'error')
-    }
-})
-$("#closeToast").click(function () {
-    $("#toast").animate({ opacity: '0' });
-})
 
 
 
-/**
- * 更新文章
- */
-$("#submitUpdate").click(function () {
-    var params = createArticle()
-    if (params) {
-        // console.log(params.categoryId)
-        if (params.categoryId == "" || params.categoryId == null) {
-            // alert("文章分类不能为空")
-            Toast("发布文章时，文章分类不能为空", 'error')
-            return
-        }
-        jsonData = JSON.stringify(params)
-        // console.log(jsonData)
 
-        let address = protocol + "//" + url + ":8080/api/article/update/" + cmsWrite.articleId
-
-        $.ajax({
-            url: address,
-            headers: {
-                'Content-Type': 'application/json;charset=utf8',
-                'Authorization': 'Bearer ' + token,
-                'Accept': 'application/json'
-            },
-            type: 'POST',
-            data: jsonData,
-            success: function (data) {
-                // console.log(data)
-                cmsWrite.articleId = data.data.id
-                Toast("更新文章" + data.data.title + "成功！", 'success')
-                window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
-
-            }
-        });
-    }
-
-})
-
-
-/**
- * 提交文章
- */
-$("#submitCreate").click(function () {
-
-    if (createArticle()) {
-
-        var params = createArticle()
-        // console.log(params.categoryId)
-        if (params.categoryId == "" || params.categoryId == null) {
-            // alert("文章分类不能为空")
-            Toast("发布文章时，文章分类不能为空", 'error')
-            return
-        }
-        let address = protocol + "//" + url + ":8080/api/article"
-        $.ajax({
-            url: address,
-            headers: {
-                'Content-Type': 'application/json;charset=utf8',
-                'Authorization': 'Bearer ' + token,
-                'Accept': 'application/json'
-            },
-            type: 'POST',
-            data: JSON.stringify(params),
-            success: function (data) {
-                // console.log(data.data.id)
-                cmsWrite.articleId = data.data.id
-                Toast("添加文章" + data.data.title + "成功！", 'success')
-                window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
-            }
-        });
-    }
-
-})
 
 
 
@@ -323,53 +403,105 @@ function handleType(attachment) {
 }
 
 
-$("#file").change(function () {
-    var fd = new FormData();
-    // 如果有多张图片一块上传，下面直接使用fd.append()继续追加即可
-    if (document.getElementById("file").files[0]) {
-        fd.append("file", document.getElementById("file").files[0]);
-        $.ajax({
-            url: protocol + "//" + url + ":8080/api/attachment/upload",
-            headers: {
-                'Content-Type': 'application/json;charset=utf8',
-                'Authorization': 'Bearer ' + token,
-                'Accept': 'application/json'
-            },
-            type: 'post',
-            data: fd,
-            dataType: 'json',
-            contentType: "application/json;charset=UTF-8",
-            processData: false,
-            contentType: false,
-            xhr: function () {
-                var xhr = new XMLHttpRequest();
-                //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
-                xhr.upload.addEventListener('progress', function (e) {
-                    console.log(e);
-                    //loaded代表上传了多少
-                    //total代表总数为多少
-                    var progressRate = (e.loaded / e.total) * 100;
-                    console.log(progressRate)
+// $("#file").change(function () {
+//     var fd = new FormData();
+//     // 如果有多张图片一块上传，下面直接使用fd.append()继续追加即可
+//     if (document.getElementById("file").files[0]) {
+//         fd.append("file", document.getElementById("file").files[0]);
+//         $.ajax({
+//             url: protocol + "//" + url + "/api/attachment/upload",
+//             headers: {
+//                 'Content-Type': 'application/json;charset=utf8',
+//                 'Authorization': 'Bearer ' + token,
+//                 'Accept': 'application/json'
+//             },
+//             type: 'post',
+//             data: fd,
+//             dataType: 'json',
+//             contentType: "application/json;charset=UTF-8",
+//             processData: false,
+//             contentType: false,
+//             xhr: function () {
+//                 var xhr = new XMLHttpRequest();
+//                 //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+//                 xhr.upload.addEventListener('progress', function (e) {
+//                     console.log(e);
+//                     //loaded代表上传了多少
+//                     //total代表总数为多少
+//                     var progressRate = (e.loaded / e.total) * 100;
+//                     console.log(progressRate)
 
-                    //通过设置进度条的宽度达到效果
-                    $('.progress > div').css('width', progressRate + '%');
-                    $('.progress > div').html(progressRate + '%')
-                    if (progressRate == 100) {
-                        $('.progress > div').html("上传服务器完成，请等待！")
-                    }
-                })
+//                     //通过设置进度条的宽度达到效果
+//                     $('.progress > div').css('width', progressRate + '%');
+//                     $('.progress > div').html(progressRate + '%')
+//                     if (progressRate == 100) {
+//                         $('.progress > div').html("上传服务器完成，请等待！")
+//                     }
+//                 })
 
-                return xhr;
-            },
-            success: function (data) {
-                testEditor.insertValue(handleType(data.data));
-                $('.progress > div').html("上传完成！")
-                uploadPanel();
-            }
-        });
-    }
+//                 return xhr;
+//             },
+//             success: function (data) {
+//                 testEditor.insertValue(handleType(data.data));
+//                 $('.progress > div').html("上传完成！")
+//                 uploadPanel();
+//             }
+//         });
+//     }
 
-})
+// })
+function uploadFile(){
+    $("#file").change(function () {
+        var fd = new FormData();
+        // 如果有多张图片一块上传，下面直接使用fd.append()继续追加即可
+        if (document.getElementById("file").files[0]) {
+            fd.append("file", document.getElementById("file").files[0]);
+            $.ajax({
+                url: protocol + "//" + url + ":"+port+"/api/attachment/upload",
+                headers: {
+    
+                    'Authorization': 'Bearer ' + token
+                },
+                type: 'post',
+                data: fd,
+                dataType: 'json',
+                contentType: "application/json;charset=UTF-8",
+                processData: false,
+                contentType: false,
+                xhr: function () {
+                    var xhr = new XMLHttpRequest();
+                    //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+                    xhr.upload.addEventListener('progress', function (e) {
+                        console.log(e);
+                        //loaded代表上传了多少
+                        //total代表总数为多少
+                        var progressRate = (e.loaded / e.total) * 100;
+                        console.log(progressRate)
+                     
+                        //通过设置进度条的宽度达到效果
+                        $('.progress > div').css('width', progressRate + '%');
+                        $('.progress > div').html(progressRate + '%')
+                        if (progressRate == 100) {
+                            $('.progress > div').html("上传服务器完成，请等待！")
+                        }
+                    })
+    
+                    return xhr;
+                },
+                success: function (data) {
+                    // testEditor.insertValue(handleType(data.data));
+                    $('.progress > div').html("上传完成！")
+                    uploadPanel();
+                    handleMessage("上传成功")
+                    loadAttachment(0)
+                    console.log(data)
+                    
+                }
+            });
+        }
+    
+    })
+}
 
 // 拷贝附件路径到剪切板
 function copyImgPath(path, mediaType) {
@@ -379,7 +511,7 @@ function copyImgPath(path, mediaType) {
     if (mediaType) {
         var prefix = mediaType.split("/")[0];
         if (prefix === "image") {
-            result = "<img src='" + path + "'>"
+            result = path
             console.log("image")
         } else if (prefix === "audio") {
             result = "<audio controls src='" + path + "'></audio>"
@@ -393,13 +525,13 @@ function copyImgPath(path, mediaType) {
         }
     }
     copyText(result, function () {
-        Toast("成功复制到剪切板！", 'success')
+        handleMessage("成功复制到剪切板！")
     })
 }
 
 
 function deleteAttachment(id) {
-    let address = protocol + "//" + url + ":8080/api/attachment/delete/" + id;
+    let address = protocol + "//" + url + "/api/attachment/delete/" + id;
     fetch(address, {
         headers: {
             'Content-Type': 'application/json;charset=utf8',
@@ -418,7 +550,7 @@ function deleteAttachment(id) {
 let totalPages;
 //分页加载附件数据
 function loadAttachment(page) {
-    let address = protocol + "//" + url + ":8080/api/attachment?page=" + page;
+    let address = protocol + "//" + url + "/api/attachment?page=" + page;
     fetch(address, {
         headers: {
             'Content-Type': 'application/json;charset=utf8',
@@ -487,97 +619,8 @@ document.addEventListener("keydown", function (event) {
 $("#attachment").click(function () { attachmentPanel(); })
 
 
-/**
- * 保存文章
- */
-function save(more) {
-    console.log(more)
-    let article = createArticle();
-    if (article) {
-        let jsonData = JSON.stringify(article)
-        // console.log(jsonData)
-        if (cmsWrite.articleId) {
-            $.ajax({
-                url: more? protocol + "//" + url + ":8080/api/article/save/" + cmsWrite.articleId+"?more=true":protocol + "//" + url + ":8080/api/article/save/" + cmsWrite.articleId,
-                headers: {
-                    'Content-Type': 'application/json;charset=utf8',
-                    'Authorization': 'Bearer ' + token,
-                    'Accept': 'application/json'
-                },
-                type: 'POST',
-                data: jsonData,
-                success: function (data) {
-                    // console.log(data.data)
-                    $("#markdown-preview").html(data.data.formatContent)
-                    readerlatex()
-                    // console.log(data.data.id)
-                    cmsWrite.articleId = data.data.id
-                    // Toast("更新文章" + data.data.title + "成功！", 'success')
-                    handleMessage("更新文章" + data.data.title + ", "+data.message)
-
-                },error:function(data){
-                    handleMessage("更新文章" + data.data.title + ", "+data.message)
-                }
-            });
-        } else {
-            $.ajax({
-                url: more? protocol + "//" + url + ":8080/api/article/save?more=true": protocol + "//" + url + ":8080/api/article/save",
-                headers: {
-                    'Content-Type': 'application/json;charset=utf8',
-                    'Authorization': 'Bearer ' + token,
-                    'Accept': 'application/json'
-                },
-                // dataType: "json",
-                type: 'POST',
-                data: jsonData,
-                success: function (data) {
-                    $("#markdown-preview").html(data.data.formatContent)
-                    readerlatex()
-                    cmsWrite.articleId = data.data.id
-                    // Toast("添加文章" + data.data.title + "成功！", 'success')
-                    handleMessage("添加文章" + data.data.title + "成功！")
-                    history.pushState("state", "", "/user/edit/" + cmsWrite.articleId)
-                    $("#submitCreate").css("display", "none")
-                    $("#submitUpdate").css("display", "inline-block")
-
-                }
-            });
-        }
-    }
-
-}
-
-function readerlatex(){
-    var mathElems = document.getElementsByClassName("katex");
-    var elems = [];
-    for (const i in mathElems) {
-        if (mathElems.hasOwnProperty(i)) elems.push(mathElems[i]);
-    }
-
-    elems.forEach(elem => {
-        katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
-    });
-    loadImg('markdown-preview')
-    mermaid.init({ noteMargin: 10 },$(".mermaid"));
-}
 
 
-$("#save").click(function () {
-    save(true)
-})
-
-document.addEventListener("keydown", function (event) {
-    if (event.altKey && event.keyCode === 83) {
-        event.preventDefault();
-        save(false)
-    }
-})
-document.addEventListener("keydown", function (event) {
-    if (event.ctrlKey && event.keyCode === 83) {
-        event.preventDefault();
-        save(true)
-    }
-})
 
 /***************************************** */
 function uploadPanel() {
@@ -617,177 +660,222 @@ document.addEventListener("keydown", function (event) {
 
 
 
-/*Svg字符串上传*/
-function uploadStrContentChange(originalData, svgInput, isUpdate, callback, attachmentId) {
-    // let svgInput = $("#svgInput").val()
-    // console.log(svgInput)
-    // console.log(originalData)
-    let dataRender = $("#componentInput").attr("data-render")
-    let uploadUrl = protocol + "//" + url + ":8080/api/attachment/uploadStrContent"
-    if (isUpdate) {
-        uploadUrl += "/" + attachmentId
-    }
-    $.ajax({
-        url: uploadUrl,
-        headers: {
-            'Content-Type': 'application/json;charset=utf8',
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-        },
-        type: 'post',
-        data: JSON.stringify({ "formatContent": svgInput, "originContent": originalData, renderType: dataRender }),
-        dataType: 'json',
-        contentType: "application/json;charset=UTF-8",
-        success: function (data) {
-            if (callback) {
-                callback(data)
-            }
-            // console.log(data.data)
-
-            $("#componentInput").val("")
-        }
-    });
-}
-mermaid.mermaidAPI.initialize({
-    startOnLoad: false
-});
-
-// mermaid 图渲染
-function renderMermaid(componentInput, componentPreview) {
-    var needsUniqueId = "render" + (Math.floor(Math.random() * 10000)).toString(); //should be 10K attempts before repeat user finger stops working before then hopefully
-    function mermaidApiRenderCallback(graph) {
-        // $('#mermaidPreview').html(graph);
-        componentPreview.html(graph)
-    }
-    try {
-        mermaid.mermaidAPI.render(needsUniqueId, componentInput, mermaidApiRenderCallback);
-    } catch (e) {
-        componentPreview.html(componentPreview.html() + e)
-    }
-}
-
-// latex 服务器渲染
-function renderLatex(componentInput, componentPreview) {
-    $.ajax({
-        url: protocol + "//" + url + ":8080/api/latex/svg",
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-        },
-        type: 'post',
-        // dataType: 'xml',
-        contentType: "application/json;charset=UTF-8",
-        data: JSON.stringify({ "latex": componentInput }),
-        success: function (data) {
-            componentPreview.html(data)
-        }
-    });
-}
 
 
-// 原始svg监听
-$("#componentInput").bind('input propertychange', function () {
-    let componentPreview = $("#componentPreview")
-    let componentInput = $("#componentInput").val()
-    let dataRender = $("#componentInput").attr("data-render")
+// // mermaid 图渲染
+// function renderMermaid(componentInput, componentPreview) {
+//     var needsUniqueId = "render" + (Math.floor(Math.random() * 10000)).toString(); //should be 10K attempts before repeat user finger stops working before then hopefully
+//     function mermaidApiRenderCallback(graph) {
+//         // $('#mermaidPreview').html(graph);
+//         componentPreview.html(graph)
+//     }
+//     try {
+//         mermaid.mermaidAPI.render(needsUniqueId, componentInput, mermaidApiRenderCallback);
+//     } catch (e) {
+//         componentPreview.html(componentPreview.html() + e)
+//     }
+// }
 
-    if (dataRender == "mermaid") {
-        renderMermaid(componentInput, componentPreview)
-    } else if (dataRender == "latex") {
-        renderLatex(componentInput, componentPreview)
-    } else if (dataRender == "svg") {
-        componentPreview.html(componentInput)
-    }
-});
+// // latex 服务器渲染
+// function renderLatex(componentInput, componentPreview) {
+//     $.ajax({
+//         url: protocol + "//" + url + "/api/latex/svg",
+//         headers: {
+//             'Authorization': 'Bearer ' + token,
+//             'Accept': 'application/json'
+//         },
+//         type: 'post',
+//         // dataType: 'xml',
+//         contentType: "application/json;charset=UTF-8",
+//         data: JSON.stringify({ "latex": componentInput }),
+//         success: function (data) {
+//             componentPreview.html(data)
+//         }
+//     });
+// }
 
 
-// 上传svg字符串
-let svgAttachmentId = null
-function saveSvg() {
-    if ($("#componentInput").val() != "") {
-        uploadStrContentChange($("#componentInput").val(), $("#componentPreview").html(), false, function (data) {
-            loadAttachment()
-            $("#fixed-card").css("display", "none")
-        })
-    } else {
-        Toast("内容不能为空！", 'error')
-    }
-}
 
-function updateSvg() {
-    if (svgAttachmentId) {
-        if ($("#componentInput").val() != "") {
-            uploadStrContentChange($("#componentInput").val(), $("#componentPreview").html(), true, function () {
-                loadAttachment()
-                $("#fixed-card").css("display", "none")
-            }, svgAttachmentId)
-        } else {
-            Toast("内容不能为空！", 'error')
-        }
 
-    }
 
-}
 
-function updateAttachmentInput(id) {
-    svgAttachmentId = id;
-    let componentPreview = $("#componentPreview")
-    $("#fixed-card").css("display", "block")
-    $.ajax({
-        url: protocol + "//" + url + ":8080/api/attachment/find/" + id,
-        headers: {
-            'Content-Type': 'application/json;charset=utf8',
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-        },
-        type: 'get',
-        dataType: 'json',
-        contentType: "application/json;charset=UTF-8",
-        success: function (data) {
-            $("#componentInput").val(data.data.originContent)
-            if (data.data.renderType == "mermaid") {
-                renderMermaid(data.data.originContent, componentPreview)
-                $("#componentInput").attr("data-render", "mermaid")
-                $("#svg-header").html("修改mermaid")
-            } else if (data.data.renderType == "latex") {
+// function updateAttachmentInput(id) {
+//     svgAttachmentId = id;
+//     let componentPreview = $("#componentPreview")
+//     $("#fixed-card").css("display", "block")
+//     $.ajax({
+//         url: protocol + "//" + url + "/api/attachment/find/" + id,
+//         headers: {
+//             'Content-Type': 'application/json;charset=utf8',
+//             'Authorization': 'Bearer ' + token,
+//             'Accept': 'application/json'
+//         },
+//         type: 'get',
+//         dataType: 'json',
+//         contentType: "application/json;charset=UTF-8",
+//         success: function (data) {
+//             $("#componentInput").val(data.data.originContent)
+//             if (data.data.renderType == "mermaid") {
+//                 renderMermaid(data.data.originContent, componentPreview)
+//                 $("#componentInput").attr("data-render", "mermaid")
+//                 $("#svg-header").html("修改mermaid")
+//             } else if (data.data.renderType == "latex") {
 
-                $("#componentInput").attr("data-render", "latex")
-                $("#svg-header").html("修改Latex")
+//                 $("#componentInput").attr("data-render", "latex")
+//                 $("#svg-header").html("修改Latex")
 
-                renderLatex(data.data.originContent, componentPreview)
-            } else {
-                $("#componentInput").attr("data-render", "svg")
-                $("#svg-header").html("修改Svg")
-                componentPreview.html(data.data.originContent)
-            }
-        }
-    });
-    // uploadStrContentChange($("#componentInput").val(), $("#componentPreview").html(),true,id)
-    // $("#fixed-card").css("display", "none")
-    // console.log(id)
-}
+//                 renderLatex(data.data.originContent, componentPreview)
+//             } else {
+//                 $("#componentInput").attr("data-render", "svg")
+//                 $("#svg-header").html("修改Svg")
+//                 componentPreview.html(data.data.originContent)
+//             }
+//         }
+//     });
+//     // uploadStrContentChange($("#componentInput").val(), $("#componentPreview").html(),true,id)
+//     // $("#fixed-card").css("display", "none")
+//     // console.log(id)
+// }
 
 // 添加svg
-$(".openSvgPanel").click(function () {
-    let dataRender = $(this).attr("data-render")
-    if (dataRender == "mermaid") {
-        $("#componentInput").attr("data-render", "mermaid")
-        $("#svg-header").html("插入Mermaid")
-        $("#fixed-card").css("display", "block")
-    } else if (dataRender == "latex") {
+// $(".openSvgPanel").click(function () {
+//     let dataRender = $(this).attr("data-render")
+//     if (dataRender == "mermaid") {
+//         $("#componentInput").attr("data-render", "mermaid")
+//         $("#svg-header").html("插入Mermaid")
+//         $("#fixed-card").css("display", "block")
+//     } else if (dataRender == "latex") {
 
-        $("#componentInput").attr("data-render", "latex")
-        $("#svg-header").html("插入Latex")
-        $("#fixed-card").css("display", "block")
-    } else if (dataRender == "svg") {
+//         $("#componentInput").attr("data-render", "latex")
+//         $("#svg-header").html("插入Latex")
+//         $("#fixed-card").css("display", "block")
+//     } else if (dataRender == "svg") {
 
-        $("#componentInput").attr("data-render", "svg")
-        $("#svg-header").html("插入SVG")
-        $("#fixed-card").css("display", "block")
+//         $("#componentInput").attr("data-render", "svg")
+//         $("#svg-header").html("插入SVG")
+//         $("#fixed-card").css("display", "block")
+//     }
+// })
+
+
+// $("#closeBtn").click(function () {
+//     $("#fixed-card").css("display", "none")
+// })
+
+
+
+
+
+function createCategory() {
+    let textInput = $("#textInput").val()
+    // let categories = $("#categories").val()
+    let name = $("#name").val()
+    let cssClass = $("#cssClass").val()
+    let picPath = $("#picPath").val()
+    let picThumbPath = $("#picThumbPath").val()
+    let useHtml = $("#useHtml").val()
+    if (name == "") {
+        // alert("文章标题不能为空")
+        handleMessage("分类标题不能为空")
+        return
     }
-})
+    // if (categories == "" || categories == 0) {
+    //     // alert("文章分类不能为空")
+    //     Toast("文章分类不能为空", 'error')
+    //     return
+    // }
+    // if (textInput == "") {
+    //     // alert("文章内容不能为空")
+    //     Toast("文章内容不能为空", 'error')
+    //     return
+    // }
+    // let summary = $("#summary").val()
+    return {
+        originalContent: textInput, // 输入的markdown
+        name: name,
+        cssClass:cssClass,
+        picPath: picPath,
+        picThumbPath: picThumbPath,
+        useHtml: useHtml
+    };
+}
 
 
-$("#closeBtn").click(function () {
-    $("#fixed-card").css("display", "none")
-})
+
+function saveCategory(id) {
+    function save(){
+        var params = createCategory()
+        console.log(params)
+        if (params) {
+
+            jsonData = JSON.stringify(params)
+            // console.log(jsonData)
+
+            let address = protocol + "//" + url + ":" + port + "/api/category/save/" + id
+
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'application/json;charset=utf8',
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                },
+                type: 'POST',
+                data: jsonData,
+                success: function (data) {
+                    $("#markdown-preview").html(data.data.formatContent)
+                    handleMessage("保存分类" + data.data.name + "成功！", 'success')
+                    // window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+
+                }
+            });
+        }
+    }
+    $("#saveCategory").click(function () {
+       
+        save()
+    })
+
+
+    document.addEventListener("keydown", function (event) {
+        if (event.ctrlKey && event.keyCode === 83) {
+            event.preventDefault();
+            save()
+        }
+    })
+}
+
+
+
+function categoryUpdate(id) {
+    $("#categoryUpdate").click(function () {
+        var params = createCategory()
+        console.log(params)
+        if (params) {
+
+            jsonData = JSON.stringify(params)
+            // console.log(jsonData)
+
+            let address = protocol + "//" + url + ":" + port + "/api/category/update/" + id
+
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'application/json;charset=utf8',
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                },
+                type: 'POST',
+                data: jsonData,
+                success: function (data) {
+                    handleMessage("更新分类" + data.data.name + "成功！", 'success')
+                    window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+
+                }
+            });
+        }
+
+    })
+
+}
+

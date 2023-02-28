@@ -70,7 +70,7 @@
         var protocol = window.location.protocol;
         function login(jsonData) {
             $.ajax({
-                url: protocol + "//" + url + ":8080/api/user/login",
+                url: protocol + "//" + url + "/api/user/login",
                 headers: {
                     'Content-Type': 'application/json;charset=utf8',
                     'Accept': 'application/json'

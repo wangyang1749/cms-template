@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
-    <meta charset="UTF-8">
+<head>
+    <title>生信小木屋</title>
     <meta name="keywords" content="生物信息学,生信,生信小木屋,生物信息分析,r语言,python">
     <meta name="description" content="生信小木屋，用数据科学的知识，探索生命科学的奥秘">
-    <title>生信小木屋</title>
+    <cms:block cms:replace="templates/templates/fragment/header" />
     <link rel="stylesheet" href="/templates/resources/css/home.css">
 </head>
 
 <body cms:inline="none">
     <div cms:replace="/html/components/header :: #fragment"></div>
+
     <div class="container margin-top-72">
         <div class="row ">
             <div class="col-lg-9">
                 <div id="main-content">
                     <div cms:replace="/html/components/carousel :: #fragment"></div>
-
 
                     <div cms:replace="/html/components/categoryComponent :: #fragment"></div>
 
@@ -24,7 +24,7 @@
                         <div class="category-title"><span>所有文章分类</span></div>
                       
                     </div> -->
-                
+
 
                     <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
 
@@ -79,19 +79,8 @@
                 <div>
                     <div class="card mb-3  bg-white ">
                         <div class="card-body shadow">
-                            <a href="/user/write" target="_blank" class="mb-1">
-                                <button type="button" class="btn btn-outline-secondary btn-lg btn-block">写文章 <i
-                                        class="bi bi-pencil"></i></button>
-                            </a>
-                            <div>
-                                <div cms:if="${username}" class="bd-search d-flex align-items-center">
-                                    <a class="nav-link text-secondary"
-                                        cms:text="'欢迎'+${#request.getAttribute('username')+'登录'}" href="/user/info"></a>
-                                    <a class="text-secondary" href="javascript:;" id="exit">退出</a>
-                                </div>
-                                <a cms:if="!${username}" class="nav-link text-secondary" href="/login">请登录</a>
-                            </div>
-                            <hr>
+
+
                             <div cms:replace="~{/html/components/myArticle :: #fragment} ?:_"></div>
                         </div>
                     </div>
@@ -102,14 +91,14 @@
                                 <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
                             </div>
                         </div>
-    
-    
+
+
                         <div id="siderbar-box">
                             <div cms:replace="/html/components/form :: #fragment"></div>
                         </div>
                     </div>
 
-                   
+
 
                     <!-- <div class="card mb-3  bg-white p-4">
                         <h5><span class="badge badge-danger ">21考研倒计时:</span></h5>
@@ -139,9 +128,18 @@
 
     </div>
 
+    <div class="container-side">
+        <div class="index-right-warp">
+            <div class="index-left">
+                <img src="/templates/resources/images/0002.png" alt="">
+                <p class="text-info font-weight-bolder">不忘初心、热爱科学、用心研究</p>
+            </div>
+        </div>
+    </div>
+
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
-    <div th:replace="templates/templates/fragment/footer"></div>
+    <div cms:replace="templates/templates/fragment/footer"></div>
     <script src="/templates/resources/js/search_engine.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
 
@@ -173,12 +171,7 @@
         }
         // https://www.cnblogs.com/kuiyeit/p/4785539.html
         // https://www.cnblogs.com/miny-simp/p/9555498.html
-        $("#exit").click(function () {
-            localStorage.removeItem("Authorization");
-            localStorage.removeItem("user");
-            $.cookie("Authorization", null, { path: "/" });
-            window.location.href = "/"
-        })
+
 
         $('.bd-search').carousel({
             interval: 2000

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>生信小木屋</title>
+    <meta name="keywords" content="生物信息学,生信,生信小木屋,生物信息分析,r语言,python">
+    <meta name="description" content="生信小木屋，用数据科学的知识，探索生命科学的奥秘">
+    <cms:block cms:replace="templates/templates/fragment/header" />
+    <link rel="stylesheet" href="/templates/resources/css/home.css">
+</head>
+
+<body cms:inline="none">
+    <div cms:replace="/html/components/header :: #fragment"></div>
+
+    <div class="container margin-top-72">
+
+
+        <div class="markdown shadow p-3 bg-white rounded mb-3" th:utext="${view.formatContent}" id="markdown-preview">
+        </div>
+        <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+            <div class="p-2">
+                <div class="form-group">
+                    <textarea class="form-control" id="textInput" rows="8" th:text="${view.originalContent}"></textarea>
+                </div>
+                <div>
+                    <input type="file" name="file" id="file">
+                </div>
+                <div class="progress mt-2">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+                <!-- <progress value="22" max="100">
+                </progress> -->
+            </div>
+            <a th:href="'/user/editSheet/'+${view.id}" class="btn btn-success ">编辑</a>
+            <a href="javascript:;" class="btn btn-success " id="save">保存</a>
+            <a href="javascript:;" class="btn btn-success " id="exit">退出</a>
+        
+
+        </div>
+
+        <div cms:if="${#sets.isEmpty(roles)}">
+            <button type="submit" class="btn btn-secondary" id="login" onclick="login()">登录</button>
+        </div>
+    </div>
+    <input type="hidden" id="sheetId" th:value="${view.id}">
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+
+    <div cms:replace="templates/templates/fragment/footer"></div>
+    <script src="/templates/resources/js/mermaid.min.js"></script>
+
+    <script src="/templates/resources/js/jquery.pagination.js"></script>
+    <script src="/templates/resources/js/write.js?v=1.9"></script>
+
+    <script>
+        let sheetId = $("#sheetId").val()
+        function createSheet() {
+            let content = $("#textInput").val()
+
+            if (content == "") {
+                // alert("文章内容不能为空")
+                handleMessage("文章内容不能为空")
+                return
+            }
+
+            return {
+                originalContent: content, // 输入的markdown
+                isSource: false
+            };
+        }
+        function updateSheet() {
+            var params = createSheet()
+            // console.log(params)
+            if (params) {
+
+                jsonData = JSON.stringify(params)
+                // console.log(jsonData)
+
+                let address = protocol + "//" + url + ":" + port + "/api/sheet/update/" + sheetId
+
+                $.ajax({
+                    url: address,
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf8',
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    },
+                    type: 'POST',
+                    data: jsonData,
+                    success: function (data) {
+                        // console.log(data)
+                        $("#markdown-preview").html(data.data.formatContent)
+                        readerlatex()
+                        // $("#markdown-preview").html(data.data.formatContent)
+                        // readerlatex()
+                        // cmsWrite.articleId = data.data.id
+                        handleMessage("更新sheet" + data.data.title + "成功！", 'success')
+                        // window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+
+                    }
+                });
+            }
+
+        }
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey && event.keyCode === 83) {
+                event.preventDefault();
+                updateSheet()
+            }
+        })
+        $("#save").click(function(){
+            updateSheet()
+        })
+        $("#file").change(function () {
+            var fd = new FormData();
+            // 如果有多张图片一块上传，下面直接使用fd.append()继续追加即可
+            if (document.getElementById("file").files[0]) {
+                fd.append("file", document.getElementById("file").files[0]);
+                $.ajax({
+                    url: protocol + "//" + url + ":" + port + "/api/attachment/upload",
+                    headers: {
+
+                        'Authorization': 'Bearer ' + token
+                    },
+                    type: 'post',
+                    data: fd,
+                    dataType: 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    processData: false,
+                    contentType: false,
+                    xhr: function () {
+                        var xhr = new XMLHttpRequest();
+                        //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+                        xhr.upload.addEventListener('progress', function (e) {
+                            console.log(e);
+                            //loaded代表上传了多少
+                            //total代表总数为多少
+                            var progressRate = (e.loaded / e.total) * 100;
+                            console.log(progressRate)
+
+                            //通过设置进度条的宽度达到效果
+                            $('.progress > div').css('width', progressRate + '%');
+                            $('.progress > div').html(progressRate + '%')
+                            if (progressRate == 100) {
+                                $('.progress > div').html("上传服务器完成，请等待！")
+                            }
+                        })
+
+                        return xhr;
+                    },
+                    success: function (data) {
+                        // testEditor.insertValue(handleType(data.data));
+                        $('.progress > div').html("上传完成！")
+                        // uploadPanel();
+                        // console.log(data)
+                        let content = $("#textInput").val()
+                        $("#textInput").val("[点击下载](" + data.data.path + ") \n \n" + content)
+
+                        setTimeout(function () {
+                            updateSheet()
+                        }, 1000)
+
+                        handleMessage("上传成功")
+
+                        console.log(data)
+
+                    }
+                });
+            }
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <title>编辑页面</title>
+
+    <cms:block th:replace="templates/templates/fragment/header" />
+    <link rel="stylesheet" href="/templates/resources/css/bootstrap-tags.css" />
+    <link rel="stylesheet" href="/templates/resources/css/user.css">
+    <link rel="stylesheet" href="/templates/resources/css/pagination.css">
+    <link rel="stylesheet" href="/templates/resources/css/editormd.css">
+    <link rel="stylesheet" href="/templates/resources/css/katex.min.css">
+    <link rel="stylesheet" href="/templates/resources/css/admonition.css">
+    <link rel="stylesheet" href="/templates/resources/css/code.css?v=0.1">
+    <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
+</head>
+
+<body>
+    <!-- Start Header Area -->
+    <div cms:replace="/html/components/header :: #fragment"></div>
+    <!-- end Header Area -->
+
+    <main class="margin-top-72">
+        <div class="container">
+            <a href="javascript:;" id="uploadFile" class="btn btn-all">上传</a>
+            <div class="p-2">
+                <div>
+                    <input type="file" name="file" id="file">
+                </div>
+                <div class="progress mt-2">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+                <!-- <progress value="22" max="100">
+                </progress> -->
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end form-group">
+
+            <h5 class="breadcrumb-title" th:text="${view==null?'':view.title}" contenteditable="true" id="title">Blog
+                Details</h5>
+            <!-- <button type="button" class="btn btn-all" id="copyHTML">拷贝HTML</button> -->
+            <!-- <button type="button" class="btn btn-all" id="attachment">附件</button> -->
+            <button type="button" class="btn btn-success mr-1" id="recall">撤回修改</button>
+            <button type="button" class="btn btn-success mr-1" id="sourceCode">打开/关闭源码</button>
+            <button type="button" class="btn btn-success mr-1" id="attachment">附件</button>
+            <button type="button" class="btn btn-success mr-1" id="save">保存</button>
+
+            <button type="button" class="btn btn-success mr-1" id="submitUpdate">更新</button>
+            <button type="button" class="btn btn-success mr-1" id="previewNet">预览</button>
+            <button type="button" class="btn btn-success mr-1" id="openHtml">HTML</button>
+        </div>
+        <div id="editor" style="visibility:hidden;height: 0;"></div>
+
+        <div class="row bg-white">
+            <div class="col col-50">
+                <div id="test-editormd" class="edit-input ">
+                    <textarea style="display:none;" id="textInput" th:text="${view==null?'':view.originalContent}">
+                    </textarea>
+                </div>
+            </div>
+            <div class="col p-3 col-50">
+                <div id="markdown-preview" th:utext="${view==null?'':view.formatContent}" class="markdown  pr-3">
+                </div>
+
+            </div>
+        </div>
+        <!-- <div th:utext="${view.originalContent}" contenteditable="true" id="content"> -->
+
+
+        </div>
+        <input type="hidden" id="sheetId" th:value="${view.id}">
+        <input type="hidden" id="formatContent" th:value="${view.formatContent}">
+
+
+
+
+        <div class="drawer-panel drawer-attachment margin-top-72">
+
+
+            <div id="attachment-list"></div>
+            <div class="attachment m-style "></div>
+        </div>
+
+    </main>
+
+    <!-- Scroll to top start -->
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
+    <!-- Scroll to Top End -->
+
+    <!-- footer section start -->
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+    <!-- footer section end -->
+
+
+    <div th:replace="templates/templates/fragment/footer"></div>
+    <script src="/templates/resources/js/jquery.pagination.js"></script>
+    <script src="/templates/resources/js/mermaid.min.js"></script>
+    <script src="/templates/resources/js/uploadImg.js?v=1.1"></script>
+
+
+    <script src="/templates/resources/js/editormd.min.js"></script>
+    <script src="/templates/resources/js/write.js?v=1.9"></script>
+
+    <!-- <script src="/enterprise/static/write/codemirror/lib/codemirror.js"></script>
+    <script src="/enterprise/static/write/codemirror/addon/edit/closetag.js"></script>
+    <script src="/enterprise/static/write/codemirror/mode/xml/xml.js"></script>
+    <script src="/enterprise/static/write/codemirror/mode/javascript/javascript.js"></script>
+    <script src="/enterprise/static/write/codemirror/mode/css/css.js"></script>
+    <script src="/enterprise/static/write/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="/enterprise/static/write/js/jquery.pagination.js"></script>
+    <script src="/enterprise/static/write/js/attachment.js"></script> -->
+
+    <script>
+        var testEditor;
+
+        $(function () {
+            testEditor = editormd("test-editormd", {
+                width: "90%",
+                height: 640,
+                watch: false,
+                toolbar: false,
+                codeFold: false,
+                syncScrolling: "single",
+                path: "/templates/resources/lib/editor/",
+                htmlDecode: true,
+                imageUpload: false,
+                onload: function () {
+                    initPasteDragImg(this); //必须
+                }, onchange() {
+                    // console.log("aa")
+                }
+                // emoji:true
+            });
+
+            /*
+            // or
+            testEditor = editormd({
+                id      : "test-editormd",
+                width   : "90%",
+                height  : 640,
+                path    : "../lib/"
+            });
+            */
+            testEditor.val("aaa")
+        });
+    </script>
+    <script>
+        let sheetId = $("#sheetId").val()
+        let formatContent = $("#formatContent").val()
+        let isSourceCode = false
+        function uploadFileSheet() {
+            
+        }
+        // $("#textInput").val("aaaa")
+        uploadFileSheet()
+        function sheetOption() {
+
+            function createSheet() {
+                let title = $("#title").html()
+                let content = $("#textInput").val()
+                if (title == "") {
+                    // alert("文章标题不能为空")
+                    handleMessage("文章标题不能为空")
+                    return
+                }
+                if (content == "") {
+                    // alert("文章内容不能为空")
+                    handleMessage("文章内容不能为空")
+                    return
+                }
+
+                return {
+                    originalContent: content, // 输入的markdown
+                    title: title,
+                    isSource: false
+                };
+            }
+            function updateSheet() {
+                var params = createSheet()
+                // console.log(params)
+                if (params) {
+
+                    jsonData = JSON.stringify(params)
+                    // console.log(jsonData)
+
+                    let address = protocol + "//" + url + ":" + port + "/api/sheet/update/" + sheetId
+
+                    $.ajax({
+                        url: address,
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf8',
+                            'Authorization': 'Bearer ' + token,
+                            'Accept': 'application/json'
+                        },
+                        type: 'POST',
+                        data: jsonData,
+                        success: function (data) {
+                            // console.log(data)
+
+                            $("#markdown-preview").html(data.data.formatContent)
+                            readerlatex()
+                            // cmsWrite.articleId = data.data.id
+                            handleMessage("更新sheet" + data.data.title + "成功！", 'success')
+                            // window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+
+                        }
+                    });
+                }
+
+            }
+            $("#submitUpdate").click(function () {
+                updateSheet()
+            })
+            function save() {
+                var params = createSheet()
+                if (params) {
+
+                    jsonData = JSON.stringify(params)
+                    // console.log(jsonData)
+
+                    let address = protocol + "//" + url + ":" + port + "/api/sheet/save/" + sheetId + "?more=true"
+
+                    $.ajax({
+                        url: address,
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf8',
+                            'Authorization': 'Bearer ' + token,
+                            'Accept': 'application/json'
+                        },
+                        type: 'POST',
+                        data: jsonData,
+                        success: function (data) {
+                            // console.log(data)
+                            // cmsWrite.articleId = data.data.id
+                            readerlatex()
+                            $("#markdown-preview").html(data.data.formatContent)
+                            handleMessage("保存sheet" + data.data.title + "成功！", 'success')
+                            // window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+
+                        }
+                    });
+                }
+            }
+            $("#save").click(function () {
+                save(true)
+            })
+
+            document.addEventListener("keydown", function (event) {
+                if (event.ctrlKey && event.keyCode === 83) {
+                    event.preventDefault();
+                    updateSheet()
+                }
+            })
+
+            $("#previewNet").click(function () {
+                window.open("/preview/sheet/" + sheetId, "_blank");
+            })
+            $("#openHtml").click(function () {
+                window.open("/html_sheet_[[${view.viewName}]].html", "_blank");
+            })
+            $("#file").change(function () {
+                var fd = new FormData();
+                // 如果有多张图片一块上传，下面直接使用fd.append()继续追加即可
+                if (document.getElementById("file").files[0]) {
+                    fd.append("file", document.getElementById("file").files[0]);
+                    $.ajax({
+                        url: protocol + "//" + url + ":" + port + "/api/attachment/upload",
+                        headers: {
+
+                            'Authorization': 'Bearer ' + token
+                        },
+                        type: 'post',
+                        data: fd,
+                        dataType: 'json',
+                        contentType: "application/json;charset=UTF-8",
+                        processData: false,
+                        contentType: false,
+                        xhr: function () {
+                            var xhr = new XMLHttpRequest();
+                            //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+                            xhr.upload.addEventListener('progress', function (e) {
+                                console.log(e);
+                                //loaded代表上传了多少
+                                //total代表总数为多少
+                                var progressRate = (e.loaded / e.total) * 100;
+                                console.log(progressRate)
+
+                                //通过设置进度条的宽度达到效果
+                                $('.progress > div').css('width', progressRate + '%');
+                                $('.progress > div').html(progressRate + '%')
+                                if (progressRate == 100) {
+                                    $('.progress > div').html("上传服务器完成，请等待！")
+                                }
+                            })
+
+                            return xhr;
+                        },
+                        success: function (data) {
+                            // testEditor.insertValue(handleType(data.data));
+                            $('.progress > div').html("上传完成！")
+                            // uploadPanel();
+                            // console.log(data)
+                            testEditor.insertValue("[点击下载]("+data.data.path+") \n \n");
+                            setTimeout(function(){
+                                updateSheet()
+                            },1000)
+                            
+                            handleMessage("上传成功")
+                           
+                            console.log(data)
+                         
+                        }
+                    });
+                }
+
+            })
+        }
+
+        sheetOption()
+
+        $("#recall").click(function () {
+            $("#content").html(formatContent)
+        })
+
+
+
+
+
+
+        function openCode() {
+            windowCM = CodeMirror(document.getElementById("editor"), {
+                lineNumbers: true,
+                mode: "htmlmixed",
+                theme: 'monokai',
+                lineWrapping: true,
+                autofocus: true,
+                tabSize: 2,
+                value: "",
+                autoCloseTags: true,
+                blastCode: { effect: 2 },
+            });
+            windowCM.setValue($("#content").html())
+
+            windowCM.on("change", function (editor, changes) {
+                $("#content").html(editor.getValue())
+                // while (changes) {
+                //     // Editor1.replaceRange(changes.text.join("\n"), changes.from, changes.to);
+
+                //     changes = changes.next;
+                // }
+
+            });
+            $("#content").blur(function () {
+                windowCM.setValue($("#content").html())
+                // console.log($("#content").html())
+            })
+        }
+
+        // openCode()
+        // visibility:hidden;height: 0;
+        $("#sourceCode").click(function () {
+            if (!isSourceCode) {
+                $("#editor").css("visibility", "visible")
+                $("#editor").css("height", "300px")
+                isSourceCode = true
+            } else {
+                $("#editor").css("visibility", "hidden")
+                $("#editor").css("height", "0")
+                isSourceCode = false
+            }
+        })
+
+    </script>
+</body>
+
+</html>

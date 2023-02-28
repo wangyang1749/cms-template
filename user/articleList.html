@@ -188,7 +188,7 @@
 
             if (confirm("确定删除该文章?")) {
                 $.ajax({
-                    url: protocol + "//" + url + ":8080/api/article/delete/" + id,
+                    url: protocol + "//" + url + "/api/article/delete/" + id,
                     headers: {
                         'Content-Type': 'application/json;charset=utf8',
                         'Authorization': 'Bearer ' + token

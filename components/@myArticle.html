@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="templates/templates/fragment/header :: common_header(~{},~{},~{})">
-    <title>å¤´éƒ¨ç»„ä»¶</title>
+<head>
+    <title>组件</title>
+    <cms:block cms:replace="templates/templates/fragment/header" />
 </head>
 
 <body>
     <div cms:replace="/html/components/header :: #fragment"></div>
-    <div class="container">
+    <div class="container margin-top-72">
 
     <section id="fragment">
         <!-- <ul class="list-group list-group-flush "> -->

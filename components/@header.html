@@ -1,88 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="templates/templates/fragment/header :: common_header(~{},~{},~{})">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>head</title>
- 
-</head>
-<body>
+
+<head>
+  <cms:block cms:replace="templates/templates/fragment/header" />
+  <title>头部组件</title>
   <style>
-    /* .navbar{
-      padding:0 !important;
-      height: 3.5rem;
-    }
-    .nav-title{
-  
-      background: #f8f9fa;
-      height: 100%;
-      line-height: 3.5rem;
-}
-
-    .navbar-collapse a{
-      padding:0;
-      line-height: 3.5rem;
-    }
-    .navbar-collapse a:hover{
-        background: #00dfff!important;
-        color: white!important;
-        
-    } */
-
-    /* .nav-title:hover{
-      background: white;
-    } */
 
   </style>
+</head>
+
+<body>
+
   <section id="fragment">
-      <nav class="navbar navbar-expand-lg navbar-light mb-3 fixed-top shadow-sm app" id="header">
-          <div class="nav-title " id="mobile-nav-logo">
-            <div>
-              <a class="nav-link" href="/"><img src="/logo.png" alt="" srcset="" /></a>
-        
+    <!-- <nav class="navbar navbar-expand-lg navbar-light mb-3 fixed-top shadow-sm app" id="header">
+      <div class="nav-title " id="mobile-nav-logo">
+        <div>
+          <a class="nav-link" href="/"><img src="/logo.png" alt="" srcset="" /></a>
+
+        </div>
+        <div class="mobile-search" id="mobile-search">
+          <img src="/templates/resources/img/search.svg" alt="" srcset="">
+        </div>
+      </div> -->
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+      <div class="navbar-brand p-0">
+        <a href="/"><img src="/logo.png" alt="" srcset="" /></a>
+      </div>
+      <form action="/articleList" class="mobile-form">
+        <input class="form-control mr-sm-2" type="search" placeholder="搜索生信内容..." name="keyword">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </form>
+
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item dropdown ">
+            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
+              教程
+            </a>
+            <div class="dropdown-menu overflow-y">
+              <a th:each="item : ${@categoryServiceImpl.listChildWithTree('20229294666')}"
+                class="dropdown-item nav-link text-secondary" th:href="${item.linkPath}"
+                th:text="${item.name}">Action</a>
+              <!-- <a class="dropdown-item nav-link text-secondary" href="#">Another action</a>
+
+              <a class="dropdown-item nav-link text-secondary" href="#">Something else here</a> -->
             </div>
-            <div class="mobile-search" id="mobile-search">
-              <img src="/templates/resources/img/search.svg" alt="" srcset="">
-            </div>
-          </div>
-        
-        
-        
-          <div class=" navbar-collapse " id="mobile-nav1">
-            <ul class="nav navbar-nav mr-auto">
-              <li class="nav-item" th:each="item : ${view}">
-                
-                <a th:class="'nav-link '+'css-'+${item.name}" th:href="${item.urlName}" >
-                  <i th:class="'bi '+${item.icon}"></i><span> </span><span th:text="${item.name}"></span>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
+              文章
+            </a>
+            <ul class="dropdown-menu">
+              <li class="nav-item dropdown dropright"
+                th:each="item : ${@categoryServiceImpl.listChildWithTree('202311946444')}">
+                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
+                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
+                  文章
                 </a>
+                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
+                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
+                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
+                </ul>
               </li>
-        
             </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
+              数学
+            </a>
+            <ul class="dropdown-menu">
+              <li class="nav-item dropdown dropright"
+                th:each="item : ${@categoryServiceImpl.listChildWithTree('202292953635')}">
+                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
+                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
+                  文章
+                </a>
+                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
+                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
+                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item" th:each="item : ${view}" cms:myclassappend="${URL== item.name }? active : '' ">
+            <a class="nav-link" th:href="${item.urlName}">
+              <i th:class="'bi '+${item.icon}"></i><span> </span><span th:text="${item.name}"></span>
+            </a>
+          </li>
+          <!-- 
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+         
+            <li class="nav-item">
+              <a class="nav-link disabled">Disabled</a>
+            </li> -->
+        </ul>
+        <form action="/articleList" class="form-inline my-2 my-lg-0 form-inline-pc">
+          <input class="form-control mr-sm-2" type="search" placeholder="搜索生信内容..." name="keyword">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+        </form>
+
+
+        <ul class="navbar-nav mr-2">
+          <li cms:if="!${username}" class="ml-2">
+            <span><a href="/login" class="btn btn-outline-success my-2 my-sm-0" type="submit">登录</a></span>
+          </li>
+          <li class="nav-item dropdown" cms:if="${username}">
+            <a class="nav-link dropdown-toggle text-secondary" href="/user/info"
+              cms:text="${#request.getAttribute('username')}">
+              教程
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item nav-link text-secondary" href="/user/write" target="_blank">写文章</a>
+              <a class="dropdown-item nav-link text-secondary" target="_blank" href="/html_sheet_quickSheet.html">快速记录</a>
+              <a class="dropdown-item nav-link text-secondary" href="javascript:;" id="exit">退出</a>
+
+              <!-- <a class="dropdown-item nav-link text-secondary" href="#">Something else here</a> -->
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- <div class=" navbar-collapse " id="mobile-nav1">
+        <ul class=" navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          <li class="nav-item" th:each="item : ${view}">
+
+            <a th:class="'nav-link '+'css-'+${item.name}" th:href="${item.urlName}">
+              <i th:class="'bi '+${item.icon}"></i><span> </span><span th:text="${item.name}"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+
+
+      <div id="search-panel" class="bd-search align-items-center">
+        <form action="/articleList" method="GET">
+          <div class="search-panel-flex">
+            <input id="global-search" class="form-control mr-sm-2" type="search" placeholder="Search" name="keyword">
+            <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
           </div>
-          <div id="search-panel" class="bd-search align-items-center">
-            <form action="/articleList" method="GET">
-              <div class="search-panel-flex">
-                <input id="global-search" class="form-control mr-sm-2" type="search" placeholder="Search" name="keyword">
-                <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
-              </div>
-            </form>
-          </div>
-        
-        
-          <div id="mobile-nav2"></div>
-        </nav>
+        </form>
+      </div> -->
+
+
+    <!-- <div id="mobile-nav2"></div>
+    </nav> -->
   </section>
-  <div class="container ">
+  <div class="container  margin-top-72">
+    <div th:text="${@categoryServiceImpl.listChildWithTree('202311946444').get(0).children}"></div>
+
+    <div th:each="item : ${@categoryServiceImpl.listChildWithTree('202311946444')}">
+      <span th:text="${item.name}"> </span>
+      <span th:each="child : ${item.children}" th:text="${child.name}"></span>
+    </div>
   </div>
 
 
-    <div cms:replace="/html/components/footer :: #fragment"></div>
+  <div cms:replace="/html/components/footer :: #fragment"></div>
 
-    <div th:replace="templates/templates/fragment/footer"></div>
-    <script src="/templates/resources/js/article.js?v=1.06"></script>
-    <script src="/templates/resources/js/admonition.js"></script>
-    <script src="/templates/resources/js/search_engine.js"></script>
+  <div th:replace="templates/templates/fragment/footer"></div>
+  <script src="/templates/resources/js/article.js?v=1.06"></script>
+  <script src="/templates/resources/js/admonition.js"></script>
+  <script src="/templates/resources/js/search_engine.js"></script>
 
 </body>
+
 </html>

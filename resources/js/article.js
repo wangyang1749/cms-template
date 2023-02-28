@@ -139,7 +139,7 @@ function downloadSheetPDF(id) {
 function increaseViewCount(articleId) {
     if ($.cookie("viewId") != articleId) {
         $.ajax({
-            url: protocol + "//" + url + ":8080/option/increaseViewCount/" + articleId,
+            url: protocol + "//" + url + "/option/increaseViewCount/" + articleId,
             headers: {
                 'Content-Type': 'application/json;charset=utf8',
                 'Accept': 'application/json'
@@ -157,13 +157,13 @@ function increaseViewCount(articleId) {
             }, error: function (e) {
                 // console.log(e)
                 console.log(e.status);
-                console.log(e.responseJSON.message);
+                // console.log(e.responseJSON.message);
             }
 
         });
     } else {
         $.ajax({
-            url: protocol + "//" + url + ":8080/option/getVisitsCount/" + articleId,
+            url: protocol + "//" + url + " /option/getVisitsCount/" + articleId,
             headers: {
                 'Content-Type': 'application/json;charset=utf8',
                 'Accept': 'application/json'
@@ -194,7 +194,7 @@ function likeStatus(articleId) {
 function increaseLikeCount(articleId) {
     if ($.cookie("likeId") != articleId) {
         $.ajax({
-            url: protocol + "//" + url + ":8080/option/increaseLikeCount/" + articleId,
+            url: protocol + "//" + url + " /option/increaseLikeCount/" + articleId,
             type: "get",
             success: function (data) {
                 $.cookie(
@@ -243,7 +243,7 @@ function deleteArticle(id, viewName) {
 
     if (confirm("确定删除该文章?")) {
         $.ajax({
-            url: protocol + "//" + url + ":8080/api/article/delete/" + id,
+            url: protocol + "//" + url + " /api/article/delete/" + id,
             headers: {
                 'Content-Type': 'application/json;charset=utf8',
                 'Authorization': 'Bearer ' + token

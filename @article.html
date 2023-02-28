@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="templates/templates/fragment/header :: common_header(~{::title},~{::link},~{::meta})">
+<head>
     <title th:text="${view.title} +' - 生信小木屋'">文章详情</title>
     <meta name="keywords" content="生命科学知识分享,生物技术,生物信息学" th:content="${view.title}">
     <meta name="description" content="分享生命科学方面相关文章" th:content="${view.summary}">
 
-    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/styles/default.min.css"> -->
+    <cms:block cms:replace="templates/templates/fragment/header" />
+
+
     <!-- markdown扩展 -->
     <link rel="stylesheet" href="/templates/resources/css/highlight.css">
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="/templates/resources/css/katex.min.css">
     <link rel="stylesheet" href="/templates/resources/css/code.css?v=1.0">
     <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
@@ -187,9 +188,9 @@
     <input type="hidden" cms:value="${userId}" id="userId">
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
-    <div th:replace="templates/templates/fragment/side"></div>
+    <div cms:replace="templates/templates/fragment/side"></div>
 
-    <div th:replace="templates/templates/fragment/footer"></div>
+    <div cms:replace="templates/templates/fragment/footer"></div>
 
     <script src="/templates/resources/js/mermaid.min.js"></script>
     <script>
@@ -282,11 +283,7 @@
 
             })
         }
-        function login() {
-            let href = window.location.href
-            // console.log(href)
-            window.open("/login?" + href)
-        }
+      
 
 
         function reply(id) {
@@ -339,9 +336,7 @@
         }
     </script>
     <script cms:inline="javascript">
-        $(function () {
-            $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
-        });
+      
 
         increaseViewCount([[${ view.id }]])
         likeStatus([[${ view.id }]])
