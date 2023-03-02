@@ -17,8 +17,8 @@
     <div cms:replace="/html/components/header :: #fragment"></div>
     <div class="container margin-top-72" id="app">
 
-        <div class="row mb-3" id="fragment">
-            <div class="col-md-4" th:each="item : ${view}">
+        <div class="row " id="fragment">
+            <div class="col-md-4 mb-3" th:each="item : ${view}">
                 <a th:href="${item.linkPath}" class="text-secondary">
                     <div class="card category-card-show no-border">
                         <div class="card-img-height ">

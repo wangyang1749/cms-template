@@ -163,7 +163,7 @@ function increaseViewCount(articleId) {
         });
     } else {
         $.ajax({
-            url: protocol + "//" + url + " /option/getVisitsCount/" + articleId,
+            url: protocol + "//" + url + "/option/getVisitsCount/" + articleId,
             headers: {
                 'Content-Type': 'application/json;charset=utf8',
                 'Accept': 'application/json'
@@ -174,7 +174,7 @@ function increaseViewCount(articleId) {
             }, error: function (e) {
                 // console.log(e)
                 console.log(e.status);
-                console.log(e.responseJSON.message);
+                // console.log(e.responseJSON.message);
             }
 
         });
@@ -243,7 +243,7 @@ function deleteArticle(id, viewName) {
 
     if (confirm("确定删除该文章?")) {
         $.ajax({
-            url: protocol + "//" + url + " /api/article/delete/" + id,
+            url: protocol + "//" + url + "/api/article/delete/" + id,
             headers: {
                 'Content-Type': 'application/json;charset=utf8',
                 'Authorization': 'Bearer ' + token

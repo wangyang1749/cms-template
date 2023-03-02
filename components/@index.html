@@ -26,9 +26,29 @@
                     </div> -->
 
 
-                    <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home"
+                                type="button" aria-selected="true">最新文章</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile"
+                                type="button" aria-selected="false">热门文章</button>
+                        </li>
+                    </ul>
 
-                    <div cms:replace="/html/components/hotArticle :: #fragment"></div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div cms:replace="/html/components/hotArticle :: #fragment"></div>
+
+                        </div>
+                    </div>
+
+                 
+
 
 
                     <!-- <div class="row">

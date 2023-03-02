@@ -769,7 +769,9 @@ a:focus {
     color: #fff;
 
 }
-
+.category-card-show .card-img-height {
+    border-radius: 2%;
+}
 .category-card-show .card-img-overlay {
     position: absolute;
     top: 0px;
@@ -1174,4 +1176,7 @@ a:focus {
     right: 0;
     width: 18rem;
     text-align: center;
+}
+button:focus{
+    outline:none !important;
 }

@@ -773,7 +773,7 @@ function createCategory() {
     let cssClass = $("#cssClass").val()
     let picPath = $("#picPath").val()
     let picThumbPath = $("#picThumbPath").val()
-    let useHtml = $("#useHtml").val()
+    let parse = $("#parse").val()
     if (name == "") {
         // alert("文章标题不能为空")
         handleMessage("分类标题不能为空")
@@ -796,7 +796,7 @@ function createCategory() {
         cssClass:cssClass,
         picPath: picPath,
         picThumbPath: picThumbPath,
-        useHtml: useHtml
+        parse: parse
     };
 }
 
