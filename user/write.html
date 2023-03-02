@@ -14,23 +14,16 @@
     <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
 
     <title th:text="${view==null? '发布文章':view.title}"></title>
-
+    <style th:utext="${view.css}"></style>
 </head>
 
 <body>
     <style>
-    
-
-
-
-        
-
-
 
     </style>
     <div cms:replace="/html/components/header :: #fragment"></div>
 
-    <div   class="margin-top-72">
+    <div class="margin-top-72">
 
 
         <div class="article-option">
@@ -56,12 +49,14 @@
                 <label for="exampleFormControlInput1">封面图片</label>
                 <img th:src="${view==null?'':view.picPath}" alt="">
                 <p>
-                    picPath<input class="form-control" th:value="${view==null?'':view.picPath}" id="picPath" type="text" />
+                    picPath<input class="form-control" th:value="${view==null?'':view.picPath}" id="picPath"
+                        type="text" />
                 </p>
                 <p>
-                    picThumbPath<input class="form-control" th:value="${view==null?'':view.picThumbPath}" id="picThumbPath" type="text" />
+                    picThumbPath<input class="form-control" th:value="${view==null?'':view.picThumbPath}"
+                        id="picThumbPath" type="text" />
                 </p>
-                
+
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">文章分类</label>
@@ -72,8 +67,19 @@
             <div class="form-group">
                 <label for="exampleFormControlSelect2">文章标签</label>
                 <div id="my-tag-list" class=" tag-list  "></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">css</label>
+                <textarea th:text="${view==null?'':view.css}" id="css" class="form-control" rows="3"></textarea>
 
             </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">js</label>
+                <textarea th:text="${view==null?'':view.js}" id="js" class="form-control" rows="3"></textarea>
+
+            </div>
+
+
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">文章摘要</label>
                 <textarea th:text="${view==null?'':view.summary}" id="summary" class="form-control"
@@ -142,7 +148,7 @@
             <div class="attachment m-style "></div>
         </div>
 
-<!-- 
+        <!-- 
         <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <strong class="mr-auto">消息</strong>
@@ -330,7 +336,7 @@
     <script>
 
 
-        
+
         articleOption()
         uploadFile()
         cmsWrite.defaultCategoryId = [[${ view== null ? '' : view.categoryId }]]
@@ -340,7 +346,7 @@
             cmsWrite.articleId = param
         }
         setArticleId([[${ view== null ? '' : view.id }]])
-       
+
         /**
          * 判断是否在更新页面
          */
@@ -354,10 +360,8 @@
 
 
 
-
-
     </script>
-
+    <script th:utext="${view.js}"></script>
 </body>
 
 </html>

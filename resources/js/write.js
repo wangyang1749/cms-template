@@ -170,6 +170,8 @@ function articleOption() {
         let categories = $("#categories").val()
         let title = $("#title").val()
         let picPath = $("#picPath").val()
+        let css = $("#css").val()
+        let js = $("#js").val()
         let picThumbPath = $("#picThumbPath").val()
         if (title == "") {
             // alert("文章标题不能为空")
@@ -192,6 +194,8 @@ function articleOption() {
             tagIds: cmsWrite.selectTags,
             categoryId: categories,
             title: title,
+            css:css,
+            js:js,
             summary: summary,
             picPath: picPath,
             picThumbPath: picThumbPath

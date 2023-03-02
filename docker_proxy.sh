@@ -1,0 +1,1 @@
+docker run --rm -it -p 80:80 -v /home/wy/cms/templates/templates:/etc/nginx/conf  nginx:stable-alpine sh
