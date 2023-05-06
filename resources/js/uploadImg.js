@@ -60,7 +60,7 @@ function uploadImg(file, Editor) {
         success: function (msg) {
 
             var url = msg.data.path;
-            Editor.insertValue("![html=(width=auto,height=auto)生信小木屋](" + url + ")");
+            Editor.insertValue("![html=(class=wp-90)生信小木屋](" + url + ")");
 
             // var success = msg['success'];
             // if (success == 1) {

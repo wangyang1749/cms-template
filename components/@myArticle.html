@@ -10,16 +10,32 @@
     <div cms:replace="/html/components/header :: #fragment"></div>
     <div class="container margin-top-72">
 
-    <section id="fragment">
-        <!-- <ul class="list-group list-group-flush "> -->
-            
-            <a th:href="${item.linkPath}" th:each="item : ${view}" >
-                <span class="badge badge-info mr-1"><i class="bi  bi-file-earmark-text"></i> <span  th:text="${item.title} "></span></span>
+        <section id="fragment">
+            <!-- <ul class="list-group list-group-flush "> -->
+
+            <a th:href="${item.linkPath}" th:each="item : ${view}">
+                <span class="badge badge-info mr-1"><i class="bi  bi-file-earmark-text"></i> <span
+                        th:text="${item.title} "></span></span>
                 <!-- <span style="font-size: 0.6rem;" class="badge badge-secondary badge-pill"
                     th:text="${item.visits}"></span> -->
             </a>
-        <!-- </ul> -->
-    </section>
+            <hr>
+            <ul class="list-unstyled">
+                <li class="text-primary">
+                    儒家： 无所为而为
+                </li>
+                <li class="text-success">
+                    道家： 无为而无不为
+                </li>
+                <li class="text-info">
+                    佛家： 无心而为
+                </li>
+                <li class="text-danger">
+                    生有涯，而知无涯。以有涯随无涯，殆已！
+                </li>
+            </ul>
+            <!-- </ul> -->
+        </section>
     </div>
     <div cms:replace="/html/components/footer :: #fragment"></div>
 

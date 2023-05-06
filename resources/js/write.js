@@ -603,7 +603,7 @@ function attachmentPanel() {
     if ($(".drawer-attachment").css("display") == "none") {
         // console.log("kkkkk")
         $(".drawer-attachment").css({ display: 'block' });
-        $(".drawer-attachment").animate({ width: '30rem' });
+        $(".drawer-attachment").animate({ width: '40%' });
         loadAttachment(0)
     } else {
         $(".drawer-attachment").animate({ width: '0px' }, function () {

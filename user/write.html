@@ -8,13 +8,34 @@
     <link rel="stylesheet" href="/templates/resources/css/user.css">
     <link rel="stylesheet" href="/templates/resources/css/pagination.css">
     <link rel="stylesheet" href="/templates/resources/css/editormd.css">
-    <link rel="stylesheet" href="/templates/resources/css/katex.min.css">
+    <link rel="stylesheet" href="/templates/resources/katex/katex.min.css">
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
     <link rel="stylesheet" href="/templates/resources/css/code.css?v=0.1">
     <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
 
     <title th:text="${view==null? '发布文章':view.title}"></title>
     <style th:utext="${view.css}"></style>
+    <style>
+        @media screen and (max-width: 720px) {
+            .margin-top-72 {
+                margin-top: 10px;
+            }
+            #copyHTML{
+                display: none;
+            }
+        }
+        .drawer-attachment{
+            z-index: 99999999;
+           width: 90%;
+        }
+
+        /* .form-button {
+            position: fixed;
+            bottom: 9rem;
+            z-index: 99999;
+            width: 90%;
+        } */
+    </style>
 </head>
 
 <body>
@@ -27,14 +48,26 @@
 
 
         <div class="article-option">
+            <div class="d-flex justify-content-end form-group form-button">
+                <button type="button" class="btn btn-success" id="copyHTML">拷贝HTML</button>
+                <button type="button" class="btn btn-success" id="attachment">附件</button>
+                <button type="button" class="btn btn-danger" id="save">保存</button>
+                <button type="button" class="btn btn-warning" id="previewNet">预览</button>
+                <!-- <button type="button" class="btn btn-warning" id="submitPanel">发布</button> -->
+
+                <button type="button" class="btn btn-info" id="submitCreate">首次发布</button>
+                <button type="button" class="btn btn-info" id="submitUpdate" style="display: none;">更新发布</button>
+
+            </div>
+
             <div class="row bg-white">
-                <div class="col col-50">
+                <div class=" col-md-6">
                     <div id="test-editormd" class="edit-input ">
                         <textarea style="display:none;" id="textInput" th:text="${view==null?'':view.originalContent}">
                         </textarea>
                     </div>
                 </div>
-                <div class="col p-3 col-50">
+                <div class=" p-3 col-md-6">
                     <div id="markdown-preview" th:utext="${view==null?'':view.formatContent}" class="markdown  pr-3">
                     </div>
 
@@ -84,17 +117,6 @@
                 <label for="exampleFormControlTextarea1">文章摘要</label>
                 <textarea th:text="${view==null?'':view.summary}" id="summary" class="form-control"
                     placeholder="请输入摘要（不输入，将自动从文章截取）" rows="3"></textarea>
-
-            </div>
-            <div class="d-flex justify-content-end form-group">
-                <button type="button" class="btn btn-success" id="copyHTML">拷贝HTML</button>
-                <button type="button" class="btn btn-success" id="attachment">附件</button>
-                <button type="button" class="btn btn-danger" id="save">保存</button>
-                <button type="button" class="btn btn-warning" id="previewNet">预览</button>
-                <!-- <button type="button" class="btn btn-warning" id="submitPanel">发布</button> -->
-
-                <button type="button" class="btn btn-info" id="submitCreate">首次发布</button>
-                <button type="button" class="btn btn-info" id="submitUpdate" style="display: none;">更新发布</button>
 
             </div>
 
@@ -281,7 +303,9 @@
     </script>
 
     <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script> -->
-    <script defer src="/templates/resources/js/katex.min.js"></script>
+    <!-- <script defer src="/templates/resources/js/katex.min.js"></script> -->
+    <script defer src="/templates/resources/katex/katex.min.js"></script>
+
     <script>
 
         (function () {
@@ -303,7 +327,7 @@
 
         $(function () {
             testEditor = editormd("test-editormd", {
-                width: "90%",
+                width: "100%",
                 height: 640,
                 watch: false,
                 toolbar: false,
@@ -331,7 +355,7 @@
             */
         });
     </script>
-    <script src="/templates/resources/js/write.js?v=1.9"></script>
+    <script src="/templates/resources/js/write.js?v=1.10"></script>
 
     <script>
 

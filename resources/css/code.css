@@ -37,3 +37,9 @@ pre code::-webkit-scrollbar-track {
     background: rgba(0,0,0,0.1);
 
 }
+
+
+
+.markdown pre  .language-outc{
+    display: none;
+}

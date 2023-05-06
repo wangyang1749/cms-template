@@ -1180,3 +1180,33 @@ a:focus {
 button:focus{
     outline:none !important;
 }
+
+.wp-90 img{
+    width: 90% !important;
+}
+
+.wp-80 img{
+    width: 80% !important;
+}
+.wp-70 img{
+    width: 70% !important;
+}
+.wp-60 img{
+    width: 60% !important;
+}
+.wp-50 img{
+    width: 50% !important;
+}
+.wp-40 img{
+    width: 40% !important;
+}
+.wp-30 img{
+    width: 30% !important;
+}
+.wp-20 img{
+    width: 20% !important;
+}
+
+.katex{
+    font-size: inherit !important;
+}

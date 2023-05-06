@@ -165,4 +165,9 @@
     //     })
     // })
 
+    $(".language-outc").before("<a href='javascript:;' class='a-outc'>点击展开</a>")
+    $(".a-outc").click(function(){
+        $(this).siblings(".language-outc").slideToggle()
+    })
+
 </script>

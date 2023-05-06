@@ -12,10 +12,11 @@
 
     <!-- markdown扩展 -->
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
-    <link rel="stylesheet" href="/templates/resources/css/katex.min.css">
+    <!-- <link rel="stylesheet" href="/templates/resources/css/katex.min.css"> -->
+    <link rel="stylesheet" href="/templates/resources/katex/katex.min.css">
     <link rel="stylesheet" href="/templates/resources/css/code.css?v=1.0">
     <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
-
+    <style th:utext="${view.css}"></style>
 
 </head>
 
@@ -384,7 +385,8 @@
     </script>
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script> -->
-    <script defer src="/templates/resources/js/katex.min.js"></script>
+    <!-- <script defer src="/templates/resources/js/katex.min.js"></script> -->
+    <script defer src="/templates/resources/katex/katex.min.js"></script>
 
     <script>
 
@@ -402,7 +404,7 @@
             });
         })();
     </script>
-
+  <script th:utext="${view.js}"></script>
 </body>
 
 </html>
