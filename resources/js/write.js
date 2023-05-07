@@ -18,7 +18,9 @@ function setSelectTags(sel) {
     }
 }
 var beforeTagData = []
-var url = location.hostname;
+var port = window.location.port
+var url = location.hostname+":"+port
+
 var protocol = window.location.protocol;
 var token = $.cookie('Authorization')
 

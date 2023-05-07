@@ -1,7 +1,8 @@
 var url = location.hostname;
 var protocol = window.location.protocol;
+var port = window.location.port
 const service = axios.create({
-    baseURL: protocol+"//"+url+"",
+    baseURL: protocol+"//"+url+":"+port,
     timeout: 10000,
     withCredentials: true,
 })

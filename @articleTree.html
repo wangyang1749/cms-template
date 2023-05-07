@@ -95,7 +95,7 @@
 
                     <div id="article-comment" class="mt-3" th:if="${view.openComment}">
                         <!-- <div cms:replace="@{'html/comment/'+${view.viewName} :: #fragment}" parser></div> -->
-                        <div cms:replace="~{'html/comment/'+${view.viewName} :: #fragment} ?:_" parser></div>
+                        <div cms:replace="~{'html/article/comment/'+${view.viewName} :: #fragment} ?:_" parser></div>
 
                     </div>
 
