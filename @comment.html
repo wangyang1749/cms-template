@@ -40,7 +40,7 @@
                                 </div>
 
 
-                                <div th:text="${item.content}"></div>
+                                <div th:utext="${item.formatContent}"></div>
                                 <div>
                                     <a href="javascript:;" th:onclick="deleteComment([[${item.id}]])"
                                         th:class="'text-secondary user-'+${item.user.id}">删除</a>
@@ -77,7 +77,7 @@
                                 </div>
 
 
-                                <div th:text="${item.content}"></div>
+                                <div th:utext="${item.formatContent}"></div>
                                 <div>
                                     <a href="javascript:;" th:onclick="deleteComment([[${item.id}]])"
                                         th:class="'text-secondary user-'+${item.user.id}">删除</a>
