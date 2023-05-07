@@ -3,7 +3,7 @@
 
 <head>
     <title>组件</title>
-    <cms:block cms:replace="templates/templates/fragment/header" />
+    <th:block th:replace="templates/templates/fragment/header" />
 </head>
 
 
@@ -12,7 +12,7 @@
 
     <div class="container ">
         <section id="fragment" class="mb-3">
-            <ul class="list-group list-group-flush shadow">
+            <ul class="list-group list-group-flush shadow" th:id="${#strings.arraySplit(url,',')[0]}+'-list'">
                 <!-- <div class="list-group-item list-group-item-light d-flex justify-content-between">
                     <span> <i class="bi bi-journal-bookmark"></i> <span th:text="${name}"></span></span>
                     <a class="text-secondary" th:href="${showUrl}">
@@ -68,15 +68,15 @@
                     </div>
                     <div class="mt-2">
                         <a href="javascript:;" th:onclick="previewArticleHTML([[${item.path}]],[[${item.viewName}]])"
-                        class="text-secondary preview">
-                        <span th:id="'article-shrink-bottom-'+${item.viewName}" style="display: none;">收起<i
-                                class="bi bi-arrows-collapse"></i></span> </a>
+                            class="text-secondary preview">
+                            <span th:id="'article-shrink-bottom-'+${item.viewName}" style="display: none;">收起<i
+                                    class="bi bi-arrows-collapse"></i></span> </a>
                     </div>
                 </li>
+                <!-- <div id="articles">
 
-                <a class="text-secondary" th:href="${showUrl}" style="text-align: center;">
-                    更多
-                </a>
+                </div> -->
+
                 <!-- <a th:href="${item.linkPath}" th:each="item : ${view}"
                     class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
     
@@ -86,6 +86,18 @@
     
                 </a> -->
             </ul>
+            <div th:id="${#strings.arraySplit(url,',')[0]}+'-btn'">
+                <a class="text-secondary" href="javascript:;" th:onclick="loadList([[${url}]])"
+                    style="text-align: center;">
+                    <!-- <span th:text="${info.ids}"></span>
+                    <span th:text="${info.sortStr}"></span>
+                    <span th:text="${info.order}"></span> -->
+                    点击加载更多(<span th:text="${info.page+1}"></span>,<span th:text="${info.totalPage}"></span>)
+                    <!-- <span th:text="${componentIds}"></span>
+                    <span th:text="${url}"></span> -->
+                </a>
+            </div>
+
         </section>
     </div>
 

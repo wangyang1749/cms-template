@@ -201,6 +201,45 @@
         $(function () {
             $("img.lazy").lazyload({ effect: "fadeIn" });
         });
+
+        function loadList(path){
+            console.log(path)
+            id = path.split(",")[0]
+            // console.log()
+            var url = location.hostname;
+            var protocol = window.location.protocol;
+            var port = window.location.port
+            let address = protocol + "//" + url +":"+port+"/" +path
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'text/html;charset=utf8',
+                    // 'Accept': 'application/text'
+                },
+                type: 'GET',
+                success: function (data) {
+                    html = $(data).find(".list-group").children()
+                    
+                    
+                    
+                    $("#"+id+'-list').append(html)
+
+                    loadBtn = $(data).find("#"+id+'-btn')
+                    $("#"+id+'-btn').html(loadBtn)
+                    // console.log(loadBtn)
+                },error:function(data){
+                    res = JSON.parse(data.responseText)
+                    // console.log(res.message)
+                    $("#"+id+'-btn').html(res.message)
+                }
+            });
+        }
+
+
+
+
+
+
     </script>
 </body>
 
