@@ -17,7 +17,7 @@
 
 
                     <section id="fragment">
-                        <div id="carouselExampleCaptions" class="carousel slide  mb-3 shadow" data-ride="carousel">
+                        <div id="carouselExampleCaptions" class="carousel slide  mb-3 shadow carousel-fade" data-ride="carousel">
                             <ol class="carousel-indicators">
                                 <li th:each="item , userStat: ${view}" data-target="#carouselExampleCaptions"
                                     th:data-slide-to="${userStat}" th:class="${userStat.index == 0} ? 'active' :''">
@@ -73,7 +73,7 @@
 
     <div cms:replace="templates/templates/fragment/footer"></div>
     <script src="/templates/resources/js/search_engine.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script> -->
 
 </body>
 

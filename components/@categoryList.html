@@ -6,66 +6,95 @@
     <cms:block cms:replace="templates/templates/fragment/header" />
 </head>
 <style>
-    .category-menu >ul{
+    .category-menu>ul {
         display: block !important;
     }
 </style>
+
 <body>
     <div cms:replace="/html/components/header :: #fragment"></div>
     <div class="container margin-top-72">
-    <div class="row ">
-    <div class="col-lg-9">
-        <button data-toggle="collapse"  data-target="#test1"   aria-expanded="true" aria-controls="test1">
-            展开
-             </button>
-           <div class="collapse" id="test1" >
-             <div class="bg-dark  text-light p-4">
-              ahio # rfewg
-             </div>
-           </div>
-         
-        <hr>
+        <div class="row ">
+            <div class="col-lg-9">
+                <button data-toggle="collapse" data-target="#test1" aria-expanded="true" aria-controls="test1">
+                    展开
+                </button>
+                <div class="collapse" id="test1">
+                    <div class="bg-dark  text-light p-4">
+                        ahio # rfewg
+                    </div>
+                </div>
 
-        <section id="fragment">
-            
-            <th:block th:fragment="row(commentsVar)">
-                <ul th:each="item,index:${commentsVar}" >
-                    <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
-                        <!-- <h4 th:if="${item.parentId==0}">
+                <hr>
+
+                <section id="fragment">
+
+                    <th:block th:fragment="row(commentsVar)">
+                        <ul th:each="item,index:${commentsVar}">
+                            <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+                                <!-- <h4 th:if="${item.parentId==0}">
                             </i><a th:href="${item.linkPath}" class="text-muted"  >
                                 <i class="bi  bi-book" th:class="${item.icon}"></i> <span
                                     th:text="${item.name}"></span>
                             </a><i class="bi bi-arrow-down"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
                         </h4> -->
-                        <a th:href="${item.linkPath}" class="text-secondary" >
-                            <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
-                                th:text="${item.name}"></span>
-                        </a><i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-caret-down text-secondary pointer"     data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
-                    </li>
-                    <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
-                        <!-- <h4 th:if="${item.parentId==0}">
+                                <a th:href="${item.linkPath}" class="text-secondary"
+                                    th:if="${ #sets.isEmpty(item.children)}">
+                                    <p>
+                                        <i class="bi  bi-box2" th:class="${item.icon}"></i>
+                                        <span th:text="${item.name}"></span>
+                                    </p>
+
+                                </a>
+                                <a href="javascript:;" class="text-secondary" th:if="${! #sets.isEmpty(item.children)}" th:data-target="'#ID'+${item.viewName}" >
+                                    <p>
+                                        <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
+                                            th:text="${item.name}"></span>
+                                    </p>
+
+                                    <i class="bi bi-chevron-right  text-secondary pointer"
+                                        ></i>
+                                </a>
+                            </li>
+                            <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
+                                <!-- <h4 th:if="${item.parentId==0}">
                             </i><a th:href="${item.linkPath}" class="text-muted"    >
                                 <i class="bi  bi-book" th:class="${item.icon}"></i> <span
                                     th:text="${item.name}"></span>
                             </a><i class="bi bi-arrow-down"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
                         </h4> -->
-                        <a th:href="${item.linkPath}" class="text-secondary"  >
-                            <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
-                                th:text="${item.name}"></span>
-                        </a><i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-caret-down text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
-                        <div class="child collapse" th:id="'ID'+${item.viewName}">
-                            <th:block th:include="this::row(${item.children})"></th:block>
-                        </div>
-                        
-                    </li>
-                </ul>
-            </th:block>
-            <div th:include="this::row(${view})" class="category-menu"></div>
-           
+                                <a th:href="${item.linkPath}" class="text-secondary"
+                                    th:if="${ #sets.isEmpty(item.children)}">
+                                    <p>
+                                        <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
+                                            th:text="${item.name}"></span>
+                                    </p>
+
+                                </a>
+                                <a href="javascript:;" class="text-secondary" th:if="${! #sets.isEmpty(item.children)}" th:data-target="'#ID'+${item.viewName}">
+                                    <p>
+                                        <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
+                                            th:text="${item.name}"></span>
+                                    </p>
+
+                                    <i class="bi bi-chevron-right  text-secondary pointer" 
+                                        ></i>
+                                </a>
+
+
+                                <div class="child collapse" th:id="'ID'+${item.viewName}">
+                                    <th:block th:include="this::row(${item.children})"></th:block>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </th:block>
+                    <div th:include="this::row(${view})" class="category-menu"></div>
 
 
 
-            <!-- <div class="category-horizontal mb-3 shadow" th:each="item : ${view}" >
+
+                    <!-- <div class="category-horizontal mb-3 shadow" th:each="item : ${view}" >
                 <div class="category-title"><span th:text="${item.name}">所有文章分类</span></div>
                 <div class="category-list"  >
                 
@@ -73,10 +102,10 @@
                         th:class="'css-'+${child.viewName}">Dapibus ac facilisis in</a>
                 </div>
             </div> -->
-        </section>
-    
-    </div>
-    </div>
+                </section>
+
+            </div>
+        </div>
     </div>
     <div cms:replace="/html/components/footer :: #fragment"></div>
     <div cms:replace="templates/templates/fragment/footer"></div>

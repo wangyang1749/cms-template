@@ -19,7 +19,7 @@ function setSelectTags(sel) {
 }
 var beforeTagData = []
 var port = window.location.port
-var url = location.hostname+":"+port
+var url = location.hostname
 
 var protocol = window.location.protocol;
 var token = $.cookie('Authorization')
@@ -51,6 +51,10 @@ function readerlatex() {
     });
     loadImg('markdown-preview')
     mermaid.init({ noteMargin: 10 }, $(".mermaid"));
+
+    $(".markdown-btn").click(function(){
+        $(this).siblings(".markdown-btn-content").slideToggle()
+    })
 }
 
 
@@ -812,13 +816,14 @@ function saveCategory(id) {
     function save(){
         var params = createCategory()
         console.log(params)
+       
         if (params) {
 
             jsonData = JSON.stringify(params)
             // console.log(jsonData)
 
             let address = protocol + "//" + url + ":" + port + "/api/category/save/" + id
-
+            console.log(address)
             $.ajax({
                 url: address,
                 headers: {

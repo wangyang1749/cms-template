@@ -14,11 +14,18 @@
 
     <div class="container margin-top-72">
         <div class="row ">
-            <div class="col-lg-9">
-                <div id="main-content">
-                    <div cms:replace="/html/components/carousel :: #fragment"></div>
-
-                    <div cms:replace="/html/components/categoryComponent :: #fragment"></div>
+            <div class="col-lg-9 ">
+                <div id="main-content ">
+                    <div class="row carousel-index mb-3">
+                        <div class="col-lg-9">
+                            <div cms:replace="/html/components/carousel :: #fragment"></div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div cms:replace="/html/components/categoryComponent :: #fragment"></div>
+                        </div>
+                      </div>
+                    
+                    
 
                     <!-- <div class="category-horizontal mb-3">
                         <div class="category-title"><span>所有文章分类</span></div>
@@ -47,7 +54,7 @@
                         </div>
                     </div>
 
-                 
+
 
 
 
@@ -99,17 +106,13 @@
                 <div>
                     <div class="card mb-3  bg-white ">
                         <div class="card-body shadow">
-
-
-                            <div cms:replace="~{html/components/myArticle :: #fragment} ?:_"></div>
+                            <div cms:replace="html/components/myArticle :: #fragment"></div>
                         </div>
                     </div>
 
                     <div id="siderbar-flexd">
-                        <div class="card mb-3  bg-white  overflow-auto" id="siderbar-main">
-                            <div class="shadow">
-                                <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
-                            </div>
+                        <div class="card mb-3  bg-white  overflow-auto shadow" id="siderbar-main">
+                            <div cms:replace="/html/components/categoryMenu :: #fragment"></div>
                         </div>
 
 
@@ -161,7 +164,7 @@
 
     <div cms:replace="templates/templates/fragment/footer"></div>
     <script src="/templates/resources/js/search_engine.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script> -->
 
     <script>
         function leftTimer(year, month, day, hour, minute, second) {
@@ -202,14 +205,15 @@
             $("img.lazy").lazyload({ effect: "fadeIn" });
         });
 
-        function loadList(path){
-            console.log(path)
+        var flag = true
+        function loadList(path) {
+            // console.log(path)
             id = path.split(",")[0]
             // console.log()
             var url = location.hostname;
             var protocol = window.location.protocol;
             var port = window.location.port
-            let address = protocol + "//" + url +":"+port+"/" +path
+            let address = protocol + "//" + url + ":" + port + "/" + path
             $.ajax({
                 url: address,
                 headers: {
@@ -219,23 +223,36 @@
                 type: 'GET',
                 success: function (data) {
                     html = $(data).find(".list-group").children()
-                    
-                    
-                    
-                    $("#"+id+'-list').append(html)
 
-                    loadBtn = $(data).find("#"+id+'-btn')
-                    $("#"+id+'-btn').html(loadBtn)
+
+
+                    $("#" + id + '-list').append(html)
+
+                    loadBtn = $(data).find("#" + id + '-btn').children()
+                    $("#" + id + '-btn').html(loadBtn)
+                    flag = true
                     // console.log(loadBtn)
-                },error:function(data){
+                }, error: function (data) {
                     res = JSON.parse(data.responseText)
                     // console.log(res.message)
-                    $("#"+id+'-btn').html(res.message)
+                    $("#" + id + '-btn').html(res.message)
                 }
             });
         }
 
+        
+        $(window).scroll(function () {
+            var _target =$(document).height() - $(window).height() -$(window).scrollTop()
+            // console.log(_target)
+            if(_target < 400 && flag){
+                flag = false
+                url = $(".tab-pane.fade.active.show .load-id").data("url")
+                console.log(url)
+                $("img.lazy").lazyload({ effect: "fadeIn" ,threshold :500});
+                loadList(url)
+            }
 
+        });
 
 
 

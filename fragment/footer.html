@@ -5,7 +5,7 @@
 <script src="/templates/resources/js/index.js?v=1.22"></script>
 <!-- <script src="/templates/resources/js/statistics.js"></script> -->
 <script src="/templates/resources/js/bootstrap.min.js"></script>
-
+<script src="/templates/resources/js/highlightjs-line-numbers.min.js"></script>
 
 <script>
     $(function () {
@@ -69,14 +69,24 @@
         // console.log(id)
         // console.log(patentId)
         $("#ID" + id).slideDown(50);
+        $("#ID-current-" + id+" i").removeClass("bi-chevron-right")
+        $("#ID-current-" + id+" i").addClass("bi-chevron-down")
         let patentId = $("#ID-current-" + id).data("parent")
-
+       
+       
         showArticle(patentId)
     }
     function loadCategoryActivate() {
         if ($("#viewName")) {
             $("#ID-current-" + $("#viewName").val()).addClass("article-activate")
             let id = $("#ID-current-" + $("#viewName").val()).data("parent")
+            // console.log()
+            // console.log("#" + $("#viewName").val())
+            $("#ID" + $("#viewName").val()).slideDown(50);
+            $("#ID-current-" + $("#viewName").val()+" i").removeClass("bi-chevron-right")
+            $("#ID-current-" + $("#viewName").val()+" i").addClass("bi-chevron-down")
+
+            // console.log(id)
             if (id == "none") {
 
                 $("#ID" + $("#viewName").val()).slideDown(50);
@@ -146,8 +156,19 @@
     loadTocscorll()
 
     // $('#category-table a').each(function () {
+
     //     // console.log(this)
     //     $(this).click(function (e) {
+    //         $('#category-table a').each(function () {
+    //             child = $(this).parent().find(".child")
+    //             if(child){
+    //                 child.css("display","none")
+    //                 $(this).find("i").removeClass("bi-chevron-down")
+    //                 $(this).find("i").addClass("bi-chevron-right")
+    //             }
+    //         })
+
+
     //         e.preventDefault()
     //         let url_ = $(this).attr("href")
     //         console.log(url_)
@@ -159,15 +180,36 @@
     //         })
     //         $('#toc-box').load(url_ + " #toc-box")
     //         window.history.pushState("", "", url_);
-    //         loadTocscorll()
+    //         // loadTocscorll()
          
 
     //     })
     // })
+
+        $('.category-menu a').each(function () {
+            
+            $(this).click(function(){
+                this_ =  $(this)
+                div = $(this).parent().children(".child")
+                div.slideToggle(function(){
+                    if($(this).is(":visible")){
+                       this_.children("i").removeClass("bi-chevron-right")
+                       this_.children("i").addClass("bi-chevron-down")
+                    }else{
+                        this_.children("i").removeClass("bi-chevron-down")
+                       this_.children("i").addClass("bi-chevron-right")
+                    } 
+                })
+            })
+        })
 
     $(".language-outc").before("<a href='javascript:;' class='a-outc'>点击展开</a>")
     $(".a-outc").click(function(){
         $(this).siblings(".language-outc").slideToggle()
     })
 
+
+    $(".markdown-btn").click(function(){
+        $(this).siblings(".markdown-btn-content").slideToggle()
+    })
 </script>

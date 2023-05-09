@@ -6,7 +6,7 @@ body {
     margin: 0 auto;
     padding: 0;
     margin: 0 auto;
-    background: #f6f6f6;
+    /* background: #f6f6f6; */
     min-height: 100%;
     display: flex;
     flex-direction: column;
@@ -326,95 +326,7 @@ a:focus {
 }
 
 
-@media screen and (max-width: 991px) {
 
-    /*手机文章列表图文*/
-    .mobile-summary {
-        flex-direction: column;
-    }
-
-    .mobile-img {
-        margin-right: 0 !important;
-        margin-bottom: 1rem;
-    }
-
-    .img-summary {
-        width: 100%;
-        height: 7rem;
-        overflow: hidden;
-    }
-
-    .img-summary img {
-        width: 100% !important;
-    }
-
-    /*手机文章列表图文*/
-    .footnotes p {
-        display: block;
-    }
-
-    .nav .nav-link {
-        padding: .25rem 0.15rem;
-
-    }
-
-    /* .navbar {
-        position: relative;
-        text-align: center;
-    } */
-
-
-    .container {
-        margin-top: 0px !important;
-        overflow-x: hidden;
-        padding: 0;
-    }
-
-    .bd-search {
-        width: 100%;
-        display: none;
-    }
-
-    .navbar .form-inline {
-        width: 100%;
-    }
-
-    .navbar .form-inline input {
-        width: 100%;
-    }
-
-    .nav-title {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 0 !important;
-    }
-
-    .mobile-search {
-        display: block;
-    }
-
-    .mobile-search img {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
-}
-
-@media screen and (max-width: 991px) {
-    /* .index-article a {
-        width: 100% !important;
-    } */
-
-    .carousel-caption p {
-        display: none;
-    }
-
-    .navbar-collapse a {
-        padding: 0;
-        line-height: none;
-    }
-}
 
 .meta-media {
     position: relative;
@@ -495,28 +407,7 @@ a:focus {
 
 }
 
-@media screen and (max-width: 991px) {
-    .navbar {
-        position: relative;
-    }
 
-    .navbar-collapse {
-        background: white;
-        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
-    }
-
-
-    .navbar-collapse a {
-        /* padding: 1rem 0.5rem!important; */
-        line-height: inherit !important;
-    }
-
-    .nav-title {
-        line-height: inherit !important;
-        height: auto;
-    }
-
-}
 
 .comment-row {
     margin-right: 30px;
@@ -580,13 +471,6 @@ a:focus {
     background-color: #006016;
 }
 
-@media screen and (max-width: 991px) {
-    .left-side {
-        display: none;
-    }
-
-
-}
 
 /* .left-side-img{
     width: 13rem;
@@ -725,7 +609,7 @@ a:focus {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 8rem;
+    height: 4rem;
 }
 
 .category-card .card-img {
@@ -818,9 +702,7 @@ a:focus {
     /* box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; */
 }
 
-.carousel-item {
-    height: 25rem;
-}
+
 
 .carousel-item img {
     height: 100%;
@@ -1017,32 +899,6 @@ a:focus {
     /* .dropright .dropdown-menu */
 }
 
-@media screen and (max-width: 991px) {
-    .navbar .navbar-brand {
-        text-align: center;
-        width: 100%;
-    }
-
-    .mobile-form {
-        display: flex !important;
-        width: 100%;
-        padding: 1rem 15px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .form-inline-pc {
-        display: none;
-    }
-
-    .navbar .mobile-form input {
-        flex: 1;
-    }
-
-    .navbar-nav {
-        padding: 1rem 1.5rem;
-    }
-}
-
 
 
 /* #header {
@@ -1084,7 +940,7 @@ a:focus {
 .edit-input {
     z-index: 9999;
     width: 100%;
-    /* margin: 0; */
+    /* margin: 0; */min-width
 
 }
 
@@ -1209,4 +1065,198 @@ button:focus{
 
 .katex{
     font-size: inherit !important;
+}
+
+@media screen and (max-width: 1330px) {
+    .bioinfo-menu{
+        display: none;
+    }
+}
+
+.carousel-index .col-lg-9 >  section{
+    height: 100%;
+}
+.carousel{
+    height: 100%;
+}
+.carousel-index .col-lg-9   .carousel-inner{
+    height: 100%;
+}
+.carousel-index .col-lg-9   .carousel-item{
+    height: 100%;
+}
+
+.carousel-index .col-lg-9{
+    padding-right: 7.5px;
+}
+.carousel-index .col-lg-3{
+    padding-left: 7.5px;
+}
+.column{
+    margin-top: -7.5px;
+    margin-bottom: -7.5px;
+}
+.m-7{
+    padding-bottom: 7.5px;
+    padding-top: 7.5px;
+}
+.md-left{
+    border-right: 1px solid #ebf2f2;
+}
+.md-right{
+    border-left: 1px solid #ebf2f2;
+}
+.bt{
+    border-top: 1px solid #ebf2f2;  
+}
+.category-menu a{
+    height: 1.5rem;
+}
+.category-menu a, .category-table a{
+    display: flex;
+    /* background: red; */
+    justify-content: space-between;
+}
+.category-table a:hover{
+    background-color: #ebf2f2;
+}
+
+.markdown-btn-content{
+    display: none;
+}
+@media screen and (max-width: 991px) {
+
+    /*手机文章列表图文*/
+    .mobile-summary {
+        flex-direction: column;
+    }
+
+    .mobile-img {
+        margin-right: 0 !important;
+        margin-bottom: 1rem;
+    }
+
+    .img-summary {
+        width: 100%;
+        height: 7rem;
+        overflow: hidden;
+    }
+
+    .img-summary img {
+        width: 100% !important;
+    }
+
+    /*手机文章列表图文*/
+    .footnotes p {
+        display: block;
+    }
+
+    .nav .nav-link {
+        padding: .25rem 0.15rem;
+
+    }
+
+    /* .navbar {
+        position: relative;
+        text-align: center;
+    } */
+
+
+    .container {
+        margin-top: 0px !important;
+        overflow-x: hidden;
+        padding: 0;
+    }
+
+    .bd-search {
+        width: 100%;
+        display: none;
+    }
+
+    .navbar .form-inline {
+        width: 100%;
+    }
+
+    .navbar .form-inline input {
+        width: 100%;
+    }
+
+    .nav-title {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 !important;
+    }
+
+    .mobile-search {
+        display: block;
+    }
+
+    .mobile-search img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .carousel-caption p {
+        display: none;
+    }
+
+    .navbar-collapse a {
+        padding: 0;
+        line-height: none;
+    }
+    .navbar {
+        position: relative;
+    }
+
+    .navbar-collapse {
+        background: white;
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+    }
+
+
+    .navbar-collapse a {
+        /* padding: 1rem 0.5rem!important; */
+        line-height: inherit !important;
+    }
+
+    .nav-title {
+        line-height: inherit !important;
+        height: auto;
+    }
+    .left-side {
+        display: none;
+    }
+
+    .navbar .navbar-brand {
+        text-align: center;
+        width: 100%;
+    }
+
+    .mobile-form {
+        display: flex !important;
+        width: 100%;
+        padding: 1rem 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .form-inline-pc {
+        display: none;
+    }
+
+    .navbar .mobile-form input {
+        flex: 1;
+    }
+
+    .navbar-nav {
+        padding: 1rem 1.5rem;
+    }
+
+    .carousel-item {
+        height: 25rem !important;
+    }
+    .bioinfo-menu{
+        display: inline;
+    }
 }

@@ -4,13 +4,15 @@
            
             <a  th:href="${item.linkPath}" class="text-secondary"  th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
                 <span th:text="${item.title}"></span>
-            </a><i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-caret-down text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
+                <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
+            </a>
         </li>
         <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
          
             <a  th:href="${item.linkPath}" class="text-secondary"   th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
                 <span th:text="${item.title}"></span>
-            </a><i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-caret-down text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
+                <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
+            </a>
             <div class="child collapse" th:id="'ID'+${item.viewName}">
                 <th:block th:include="this::row(${item.children},${item.viewName})"></th:block>
             </div>

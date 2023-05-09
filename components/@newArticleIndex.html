@@ -86,9 +86,9 @@
     
                 </a> -->
             </ul>
-            <div th:id="${#strings.arraySplit(url,',')[0]}+'-btn'">
-                <a class="text-secondary" href="javascript:;" th:onclick="loadList([[${url}]])"
-                    style="text-align: center;">
+            <div th:id="${#strings.arraySplit(url,',')[0]}+'-btn'"  >
+                <a class="text-secondary load-id" href="javascript:;" th:onclick="loadList([[${url}]])"
+                    style="text-align: center;" th:data-url="${url}">
                     <!-- <span th:text="${info.ids}"></span>
                     <span th:text="${info.sortStr}"></span>
                     <span th:text="${info.order}"></span> -->
