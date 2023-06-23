@@ -41,6 +41,18 @@
                 </li>
             </ul>
             <!-- </ul> -->
+            <form action="https://zhannei.baidu.com/cse/site" method="get">
+                <div class="input-group mb-3">
+                    <input type="hidden" name="cc" id="" value="bioinfo.online" /><!--设置拼接参数cl，name属性写api的参数名，value写参数值-->
+                    <!-- <input type="hidden" name="pn" id="" value="3" /> -->
+                    <input type="text" class="form-control" placeholder="百度站内搜索" name="q"
+                        aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">搜索</button>
+                    </div>
+                </div>
+            </form>
+
         </section>
     </div>
     <div cms:replace="/html/components/footer :: #fragment"></div>

@@ -154,7 +154,7 @@
                                 </li>
                                 <li class="page-item">
                                     <a class="page-link"
-                                        th:href="'/'+${view.category.path}+'/'+${view.category.viewName}+'.html'">1</a>
+                                        th:href="${view.category.linkPath}">1</a>
                                 </li>
 
                                 <li class="page-item" th:each="item : ${#numbers.sequence(2, view.totalPages)}">
