@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 
-<head >
+<head>
     <title th:text="${view.category.name}">分类页面</title>
     <cms:block cms:replace="templates/templates/fragment/header" />
 
@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-lg-9 ">
 
-                <div id="main-content"  class="bg-white">
+                <div id="main-content" class="bg-white">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">首页 </a></li>
                         <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategories)}"
@@ -36,7 +36,8 @@
                             <img th:if="${view.category.picPath!=null && view.category.picPath!=''}"
                                 th:src="${view.category.picPath}" class="mb-1">
                             <div class="d-flex title">
-                                <a class="text-secondary" th:href="@{'~'+${view.linkPath.replace('.html','')}+'-mind.html'}">
+                                <a class="text-secondary"
+                                    th:href="@{'~'+${view.linkPath.replace('.html','')}+'-mind.html'}">
                                     <span th:text="${view.category.name}"></span>
                                 </a>
 
@@ -54,22 +55,23 @@
                         <div class=" p-3">
                             <!-- <div th:utext="${view.category.description}"></div> -->
                             <div id="markdown" th:utext="${view.category.formatContent}"></div>
-                            <a cms:if="${#sets.contains(roles, 'ADMIN')}" class=" badge badge-success" th:href="@{'~/user/editCategory/'+${view.category.id}}">
+                            <a cms:if="${#sets.contains(roles, 'ADMIN')}" class=" badge badge-success"
+                                th:href="@{'~/user/editCategory/'+${view.category.id}}">
                                 编辑</a>
                             <!-- <ul class="list-group list-group-flush">
                                 <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName} :: #fragment }   ?:_"
                                     parser></div>
                             </ul> -->
-                          
+
                         </div>
                     </div>
 
 
 
-               
+
 
                     <!-- 文章列表 -->
-                    <ul class="list-group list-group-flush mb-3">
+                    <ul class=" list-group-flush mb-3">
                         <div class="list-group-item list-group-item-light">
                             <strong th:text="${view.category.name}"></strong> 一共收录文章<em
                                 th:text="${view.totalElements}"></em>篇，
@@ -86,7 +88,7 @@
 
                         <div id="components">
 
-                            <ul class="list-group list-group-flush">
+                            <ul class="list-group list-group-flush" th:id="'Id-'+${view.viewName}+'-list'">
                                 <li class="list-group-item" th:each="item : ${view.contents}">
                                     <!-- th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'" -->
                                     <a th:href="${item.linkPath}" class="text-secondary text-decoration-none ">
@@ -95,7 +97,8 @@
                                             <h5 class="mb-1 title" th:text="${item.title}"></h5>
                                         </div>
                                         <div class="d-flex mobile-summary">
-                                            <div class="mr-3 mobile-img" th:if="${item.picThumbPath!=null && item.picThumbPath!=''}">
+                                            <div class="mr-3 mobile-img"
+                                                th:if="${item.picThumbPath!=null && item.picThumbPath!=''}">
                                                 <div class="img-summary">
                                                     <img class=" lazy" th:data-original="${item.picThumbPath}" alt="">
                                                 </div>
@@ -132,7 +135,18 @@
                                 </li>
 
                             </ul>
-
+                            <div th:id="'Id-'+${view.viewName}+'-btn'">
+                                <a class="text-secondary load-id" href="javascript:;" th:onclick="loadList([['Id-'+${view.viewName}]],[[${url}]])"
+                                    style="text-align: center;" th:data-url="${url}">
+                                    <!-- <span th:text="${info.ids}"></span>
+                                    <span th:text="${info.sortStr}"></span>
+                                    <span th:text="${info.order}"></span> -->
+                                    点击加载更多(<span th:text="${view.page+1}"></span>,<span
+                                        th:text="${view.totalPages}"></span>)
+                                    <!-- <span th:text="${componentIds}"></span>
+                                    <span th:text="${url}"></span> -->
+                                </a>
+                            </div>
 
                             <!-- <div th:each="item : ${view.getContent()}" class="bg-white">
                               
@@ -147,22 +161,24 @@
                             <ul class="pagination">
 
                                 <li class="page-item">
-                                    <a class="page-link" th:href="${view.linkPath.replace('.html','')}+'.html'" aria-label="Previous">
+                                    <a class="page-link" th:href="${view.linkPath.replace('.html','')}+'.html'"
+                                        aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
                                 <li class="page-item">
-                                    <a class="page-link"
-                                        th:href="${view.category.linkPath}">1</a>
+                                    <a class="page-link" th:href="${view.category.linkPath}">1</a>
                                 </li>
 
                                 <li class="page-item" th:each="item : ${#numbers.sequence(2, view.totalPages)}">
-                                    <a class="page-link" th:href="${view.linkPath.replace('.html','')}+'-'+${item}+'-page.html'"
+                                    <a class="page-link"
+                                        th:href="${view.linkPath.replace('.html','')}+'-'+${item}+'-page.html'"
                                         th:text="${item}">1</a>
                                 </li>
 
                                 <li class="page-item">
-                                    <a class="page-link" th:href="${view.linkPath.replace('.html','')}+'-'+${view.totalPages}+'-page.html'"
+                                    <a class="page-link"
+                                        th:href="${view.linkPath.replace('.html','')}+'-'+${view.totalPages}+'-page.html'"
                                         aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
@@ -213,15 +229,15 @@
                         </li>
                     </ul>
                 </th:block> -->
-                <div class="bg-white" >
+                <div class="bg-white">
                     <div cms:replace="~{'html/articleList/CATEGORY_CHILD/'+${view.parentCategories.get(0).viewName}} ?:_"
-                    parser>
-                </div>
+                        parser>
+                    </div>
                 </div>
                 <div class="bg-white p-3">
                     <div cms:replace="/html/components/form :: #fragment"></div>
                 </div>
-               
+
 
             </div>
         </div>
@@ -235,6 +251,42 @@
         $(function () {
             $("img.lazy").lazyload({ effect: "fadeIn" });
         });
+
+
+        var flag = true
+        function loadList(id, path) {
+            console.log(path)
+            // id = path.replaceAll("/","-")
+            // console.log()
+            var url = location.hostname;
+            var protocol = window.location.protocol;
+            var port = window.location.port
+            let address = protocol + "//" + url + ":" + port + "/" + path
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'text/html;charset=utf8',
+                    // 'Accept': 'application/text'
+                },
+                type: 'GET',
+                success: function (data) {
+                    html = $(data).find(".list-group").children()
+
+
+
+                    $("#" + id + '-list').append(html)
+
+                    loadBtn = $(data).find("#" + id + '-btn').children()
+                    $("#" + id + '-btn').html(loadBtn)
+                    flag = true
+                    // console.log(loadBtn)
+                }, error: function (data) {
+                    res = JSON.parse(data.responseText)
+                    // console.log(res.message)
+                    $("#" + id + '-btn').html(res.message)
+                }
+            });
+        }
     </script>
 </body>
 
