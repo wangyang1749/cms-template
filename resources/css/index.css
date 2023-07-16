@@ -1124,6 +1124,12 @@ button:focus{
 .markdown-btn-content{
     display: none;
 }
+@media screen and (min-width: 991px) {
+    .navbar-brand {
+        margin-left: 2rem;
+    }
+}
+
 @media screen and (max-width: 991px) {
 
     /*手机文章列表图文*/
@@ -1254,9 +1260,30 @@ button:focus{
     }
 
     .carousel-item {
-        height: 25rem !important;
+        height: 10rem !important;
     }
     .bioinfo-menu{
         display: inline;
     }
 }
+.carousel-index > div > section{
+    height: 100%;
+}
+.carousel-inner, .carousel-item{
+    height: 100%;
+}
+
+/* @font-face {
+    font-family: "iconfont"; 
+    src: url('iconfont.woff2?t=1687539652274') format('woff2'),
+         url('iconfont.woff?t=1687539652274') format('woff'),
+         url('iconfont.ttf?t=1687539652274') format('truetype');
+  } */
+  
+.category-icon  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 30px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }

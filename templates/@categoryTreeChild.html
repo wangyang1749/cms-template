@@ -177,7 +177,7 @@
                         <dl>
                             <dt class="text-muted">快捷入口</dt>
                             <dd>
-                                <a class=" badge badge-success" th:href="@{'~'+${view.linkPath}+'-mind.html'}">
+                                <a class=" badge badge-success" th:href="@{'~'+${view.linkPath.replace('.html','')}+'-mind.html'}">
                                     <!-- <span th:text="${view.category.name}"></span> -->
                                     思维导图
                                 </a> &nbsp;

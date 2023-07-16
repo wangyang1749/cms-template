@@ -26,7 +26,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm" id="header">
       <div class="navbar-brand p-0">
-        <a href="/"><img src="/logo.png" alt="" srcset="" /></a>
+        <a href="/"><img src="/logo.svg" alt="" srcset="" style="width:12rem;    filter: drop-shadow(rgba(0, 0, 0, 0.2) -3px 3px 0px);" /></a>
       </div>
       <form action="/articleList" class="mobile-form">
         <input class="form-control mr-sm-2" type="search" placeholder="搜索生信内容..." name="keyword">
@@ -143,7 +143,8 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">
               <a class="dropdown-item nav-link text-secondary" href="/user/write" target="_blank">写文章</a>
-              <a class="dropdown-item nav-link text-secondary" target="_blank" href="/html_sheet_quickSheet.html">快速记录</a>
+              <a class="dropdown-item nav-link text-secondary" target="_blank"
+                href="/html_sheet_quickSheet.html">快速记录</a>
               <a class="dropdown-item nav-link text-secondary" href="javascript:;" id="exit">退出</a>
 
               <!-- <a class="dropdown-item nav-link text-secondary" href="#">Something else here</a> -->
@@ -200,12 +201,23 @@
   </div>
 
 
+  <div class="css-1b1qzf2"
+    style="left: 10%; top: -10.2431%; width: 58%; filter: drop-shadow(rgba(0, 0, 0, 0.2) -10px 10px 0px);">
+    <div class="css-5yi7x6" style="transform: rotateX(0deg) rotateY(24deg) rotateZ(8deg) skewX(10deg);">
+      <img src="/logo.svg" alt="" srcset="" />
+    </div>
+  </div>
+
+  <div class="css-1b1qzf2"
+    style="left: 10%; top: -10.2431%; width: 58%; filter: drop-shadow(rgba(0, 0, 0, 0.2) -10px 10px 0px);">
+    <img src="/logo.svg" alt="" srcset="" />
+  </div>
+
   <div cms:replace="/html/components/footer :: #fragment"></div>
 
   <div th:replace="templates/templates/fragment/footer"></div>
   <script src="/templates/resources/js/article.js?v=1.06"></script>
   <script src="/templates/resources/js/admonition.js"></script>
-  <script src="/templates/resources/js/search_engine.js"></script>
 
 </body>
 

@@ -36,7 +36,7 @@
                             <img th:if="${view.category.picPath!=null && view.category.picPath!=''}"
                                 th:src="${view.category.picPath}" class="mb-1">
                             <div class="d-flex title">
-                                <a class="text-secondary" th:href="@{'~'+${view.linkPath}+'-mind.html'}">
+                                <a class="text-secondary" th:href="@{'~'+${view.linkPath.replace('.html','')}+'-mind.html'}">
                                     <span th:text="${view.category.name}"></span>
                                 </a>
 
@@ -138,7 +138,7 @@
                             <ul class="pagination">
 
                                 <li class="page-item">
-                                    <a class="page-link" th:href="${view.linkPath}+'.html'" aria-label="Previous">
+                                    <a class="page-link" th:href="${view.linkPath.replace('.html','')}+'.html'" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -148,12 +148,12 @@
                                 </li>
 
                                 <li class="page-item" th:each="item : ${#numbers.sequence(2, view.totalPages)}">
-                                    <a class="page-link" th:href="${view.linkPath}+'-'+${item}+'-page.html'"
+                                    <a class="page-link" th:href="${view.linkPath.replace('.html','')}+'-'+${item}+'-page.html'"
                                         th:text="${item}">1</a>
                                 </li>
 
                                 <li class="page-item">
-                                    <a class="page-link" th:href="${view.linkPath}+'-'+${view.totalPages}+'-page.html'"
+                                    <a class="page-link" th:href="${view.linkPath.replace('.html','')}+'-'+${view.totalPages}+'-page.html'"
                                         aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
@@ -208,11 +208,11 @@
                             </li>
                         </ul>
                     </th:block>
-                    <div class="card  bg-white">
+                    <!-- <div class="card  bg-white">
                         <div class="shadow">
                             <div th:include="this::category(${view.partner})"></div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div cms:replace="/html/components/form :: #fragment"></div>
 

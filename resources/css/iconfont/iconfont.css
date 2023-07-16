@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "iconfont"; 
+  src: url('iconfont.woff2?t=1687543246033') format('woff2'),
+       url('iconfont.woff?t=1687543246033') format('woff'),
+       url('iconfont.ttf?t=1687543246033') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-yiliao_xijun:before {
+  content: "\e63b";
+}
+
+.icon-jiyin1:before {
+  content: "\e649";
+}
+
+.icon-xibaocells:before {
+  content: "\e634";
+}
+
+.icon-cell:before {
+  content: "\e6f1";
+}
+
+.icon-jiyin:before {
+  content: "\e616";
+}
+

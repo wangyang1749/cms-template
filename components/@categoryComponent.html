@@ -18,25 +18,16 @@
     <div class="container margin-top-72" id="app">
 
         <div id="fragment">
-            <div class="column">
+            <div class="column category-icon  d-flex">
                 <div class="m-7" th:each="item : ${view}">
-                    <a th:href="${item.linkPath}" class="text-secondary">
-                        <div class="card category-card-show no-border">
-                            <div class="card-img-height ">
-                                <img th:data-original="${item.picThumbPath}" class="card-img lazy"
-                                    th:if="${item.picThumbPath!=''}">
-                                <img data-original="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/1675527366022_1675527607698.png?x-oss-process=image/resize,l_400,mfit"
-                                    class="card-img lazy" th:if="${item.picThumbPath==''}">
-                                <div class="card-img-overlay">
-                                    <h5 class="card-title" th:text="${item.name}">Card title</h5>
-                                    <!-- <p class="text-light" th:text="${item.description}"></p> -->
-                                </div>
-                            </div>
-                            <!-- <div class="card-body">
-                                
-                            </div> -->
-                        </div>
+                    <!-- <span class="iconfont icon-jiyin"></span> -->
+                  
 
+
+                    <a th:href="${item.linkPath}" class="text-info d-block text-center  mr-2">
+                       
+                        <i th:class="${item.icon}"></i>
+                        <h5 class="card-title" th:text="${item.name}">Card title</h5>
                     </a>
                 </div>
             </div>

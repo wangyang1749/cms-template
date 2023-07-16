@@ -1,0 +1,44 @@
+{
+  "id": "4135171",
+  "name": "bioinfo",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "29410407",
+      "name": "医疗_细菌",
+      "font_class": "yiliao_xijun",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "31380392",
+      "name": "基因",
+      "font_class": "jiyin1",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "500675",
+      "name": "细胞_cells",
+      "font_class": "xibaocells",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "18477399",
+      "name": "cell",
+      "font_class": "cell",
+      "unicode": "e6f1",
+      "unicode_decimal": 59121
+    },
+    {
+      "icon_id": "27084447",
+      "name": "基因",
+      "font_class": "jiyin",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    }
+  ]
+}

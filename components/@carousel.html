@@ -20,7 +20,7 @@
                         <div id="carouselExampleCaptions" class="carousel slide  mb-3 shadow carousel-fade" data-ride="carousel">
                             <ol class="carousel-indicators">
                                 <li th:each="item , userStat: ${view}" data-target="#carouselExampleCaptions"
-                                    th:data-slide-to="${userStat}" th:class="${userStat.index == 0} ? 'active' :''">
+                                    th:data-slide-to="${userStat.index}" th:class="${userStat.index == 0} ? 'active' :''">
                                 </li>
 
                             </ol>
@@ -38,8 +38,8 @@
                                     <div class="carousel-caption-warp">
                                         <div class="carousel-caption-box">
                                             <a th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'">
-                                                <h1 th:text="${item.title}"></h1>
-                                                <p th:text="${item.summary}"></p>
+                                                <h5 th:text="${item.title}"></h5>
+                                                <!-- <p th:text="${item.summary}"></p> -->
                                             </a>
                                         </div>
 
@@ -72,7 +72,6 @@
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
     <div cms:replace="templates/templates/fragment/footer"></div>
-    <script src="/templates/resources/js/search_engine.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script> -->
 
 </body>

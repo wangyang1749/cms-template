@@ -120,10 +120,10 @@
                                 <dt class="text-muted">快捷入口</dt>
                                 <dd th:if="${view.category!=null}">
                                     <a class=" badge badge-success"
-                                        th:href="'/html_articleList_'+${view.category.viewName}+'.html'"
+                                        th:href="${view.category.linkPath}"
                                         th:text="${view.category.name}"></a>
                                     <a class=" badge badge-success"
-                                        th:href="'/html_articleList_'+${view.category.viewName}+'-mind.html'">思维导图</a>
+                                        th:href="${view.category.linkPath.replace('.html','')}+'-mind.html'">思维导图</a>
                                     <a class=" badge badge-success" target="_blank"
                                         th:href="@{'~/preview/pdf/'+${view.id}}">浏览PDF</a>
                                     <a class=" badge badge-success" href="javascript:;"
@@ -213,7 +213,7 @@
     </script>
     <script src="/templates/resources/js/article.js?v=1.09"></script>
     <script src="/templates/resources/js/admonition.js"></script>
-    <script src="/templates/resources/js/search_engine.js"></script>
+    <!-- <script src="/templates/resources/js/search_engine.js"></script> -->
 
     <script src="/templates/resources/js/axios.min.js"></script>
     <script src="/templates/resources/js/service.js?1.0"></script>

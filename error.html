@@ -14,6 +14,7 @@
     <div class="container ">
         <h2>[[${status}]] 发生错误了</h2>
         [[${message}]]
+        <span th:text="${errorMsg}"></span>
     </div>
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
