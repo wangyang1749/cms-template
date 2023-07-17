@@ -7,7 +7,9 @@
 
     <cms:block cms:replace="templates/templates/fragment/header" />
 
-    <link rel="stylesheet" href="templates/resources/css/category.css">
+    <link rel="stylesheet" href="/templates/resources/css/category.css">
+    <cms:block cms:replace="templates/templates/fragment/statistics" />
+
 </head>
 
 <body cms:inline="none">
@@ -172,51 +174,42 @@
             </div>
 
             <div class="col-lg-3  mb-3" id="siderbar">
-                <div class="bg-white">
-                    <div>
-                        <dl>
-                            <dt class="text-muted">快捷入口</dt>
-                            <dd>
-                                <a class=" badge badge-success" th:href="@{'~'+${view.linkPath}+'-mind.html'}">
-                                    <!-- <span th:text="${view.category.name}"></span> -->
-                                    思维导图
-                                </a> &nbsp;
-
-                            </dd>
-                            <dd>
-
-
-                            </dd>
-                        </dl>
-                        <hr>
-                        <dl>
-                            <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
-                                <input name="title" type="text" class="form-control" placeholder="input article name">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="submit">创建文章</button>
-                                </div>
-                            </form>
-                        </dl>
-                    </div>
-
-                    <div class="pb-3">
-
-                        <!-- <div cms:replace="~{'html/articleList/pingtaifuwuArticleMuLu/'+${view.category.viewName}} ?:_"
-                        parser></div> -->
-                        <div cms:replace="~{'html/articleList/CATEGORY_CHILD/'+${view.parentCategory.viewName}} ?:_"
-                            parser>
+                <div class="p-1 bg-white" cms:if="${#sets.contains(roles, 'ADMIN')}">
+                    <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                        <input name="title" type="text" class="form-control" placeholder="input article name">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">创建文章</button>
                         </div>
-                        <!-- <div th:text="${view.parentCategories}"></div> -->
-                    </div>
-
-                    <div class="p-3">
-                        <div cms:replace="/html/components/form :: #fragment"></div>
+                    </form>
+                </div>
+                <div class="bg-white">
+                    <div cms:replace="~{${view.parentCategories.get(0).path}+'/CATEGORY_CHILD/'+${view.parentCategories.get(0).viewName}} ?:_"
+                        parser>
                     </div>
                 </div>
 
+                <dl>
+                    <dt class="text-muted">快捷入口</dt>
+                    <dd>
+                        <a class=" badge badge-success" th:href="@{'~'+${view.linkPath}+'-mind.html'}">
+                            <!-- <span th:text="${view.category.name}"></span> -->
+                            思维导图
+                        </a> &nbsp;
 
+                    </dd>
+                    <dd>
+
+
+                    </dd>
+                </dl>
+                <div class="p-3">
+                    <div cms:replace="/html/components/form :: #fragment"></div>
+                </div>
             </div>
+
+
         </div>
+    </div>
 
     </div>
 

@@ -55,29 +55,11 @@
 
           <li class="nav-item dropdown bioinfo-menu">
             <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
-              生信工具
+              生信流程
             </a>
             <ul class="dropdown-menu">
               <li class="nav-item dropdown dropright"
-                th:each="item : ${@categoryServiceImpl.listChildWithTree('202311946444')}">
-                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
-                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
-                  文章
-                </a>
-                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
-                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
-                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown bioinfo-menu">
-            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
-              数学基础
-            </a>
-            <ul class="dropdown-menu">
-              <li class="nav-item dropdown dropright"
-                th:each="item : ${@categoryServiceImpl.listChildWithTree('202292953635')}">
+                th:each="item : ${@categoryServiceImpl.listChildWithTree('202211811130')}">
                 <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
                   class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
                   文章
@@ -92,11 +74,48 @@
 
           <li class="nav-item dropdown bioinfo-menu">
             <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
-              机器学习
+              R绘图
             </a>
             <ul class="dropdown-menu">
               <li class="nav-item dropdown dropright"
-                th:each="item : ${@categoryServiceImpl.listChildWithTree('202332230949')}">
+                th:each="item : ${@categoryServiceImpl.listChildWithTree('202273125610')}">
+                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
+                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
+                  文章
+                </a>
+                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
+                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
+                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown bioinfo-menu">
+            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
+              文献解读
+            </a>
+            <ul class="dropdown-menu">
+              <li class="nav-item dropdown dropright"
+                th:each="item : ${@categoryServiceImpl.listChildWithTree('20217182952')}">
+                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
+                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
+                  文章
+                </a>
+                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
+                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
+                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown bioinfo-menu">
+            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
+              编程
+            </a>
+            <ul class="dropdown-menu">
+              <li class="nav-item dropdown dropright"
+                th:each="item : ${@categoryServiceImpl.listChildWithTree('202361613404')}">
                 <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
                   class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
                   文章

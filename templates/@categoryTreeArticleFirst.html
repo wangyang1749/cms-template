@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title th:text="${view.category.name} +' - 生信小木屋'">文章详情</title>
+    <meta name="keywords" content="生命科学知识分享,生物技术,生物信息学" th:content="${view.category.name}">
+
+    <cms:block cms:replace="templates/templates/fragment/header" />
+
+    <link rel="stylesheet" href="/templates/resources/css/highlight.css">
+
+    <!-- markdown扩展 -->
+    <link rel="stylesheet" href="/templates/resources/css/admonition.css">
+    <!-- <link rel="stylesheet" href="/templates/resources/css/katex.min.css"> -->
+    <link rel="stylesheet" href="/templates/resources/katex/katex.min.css">
+    <link rel="stylesheet" href="/templates/resources/css/code.css?v=1.1">
+    <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
+    <cms:block cms:replace="templates/templates/fragment/statistics" />
+
+</head>
+
+<body>
+
+
+
+    <div cms:replace="/html/components/header :: #fragment"></div>
+    <div class="container-xl container-80vw  margin-top-72 ">
+
+
+        <div class="row">
+            <div class="col-xl-2  pb-3 md-left">
+                <div class="flex-table">
+                    <!-- <div class="d-flex user-info">
+                        <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
+                        <div class="align-self-center ml-3">
+                            <i class="bi bi-person"></i>: <strong th:text="${view.user.username}"> </strong><br>
+                            <i class="bi bi-envelope"></i>: <strong> 联系作者</strong>
+
+                        </div>
+                    </div> -->
+                    <hr>
+                    <a class=" badge badge-success" th:href="'/html_articleList_'+${view.category.viewName}+'.html'">
+                        <i class="bi bi-bookmarks"></i> <span th:text="${view.category.name}"></span>
+                    </a>
+                    <a class=" badge badge-success"
+                        th:href="'/html_articleList_'+${view.category.viewName}+'-mind.html'">
+                        <i class="bi bi-layers"></i> 思维导图</a>
+
+                    <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+                        <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                            <input name="title" type="text" class="form-control" placeholder="input article name">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">创建文章</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="category-table flex-table-box" id="category-table">
+                        <div cms:replace="~{${view.category.path}+'/CATEGORY_TITLE/'+${view.category.viewName}} ?:_"
+                            parser>
+                        </div>
+                        <!-- <div cms:replace="~{${view.category.firstTitleList}} ?:_" parser></div> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-8 mb-3">
+
+                <!-- <div>
+                <img th:src="${view.picPath}" class="rounded-pill"/>
+            </div> -->
+
+
+                <div id="main-content">
+                    <input type="hidden" th:value="${view.viewName}" id="viewName">
+
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">首页 </a></li>
+                            <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}"
+                                th:each="item : ${view.parentCategory}">
+                                <a th:href="${item.linkPath}" th:text="${item.name}"></a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a th:href="${view.category.linkPath}" th:text="${view.category.name}"></a>
+                            </li>
+
+                        </ol>
+                        <div class="content-header  pl-3 pr-3 pt-3 pb-3">
+                            <a cms:if="${#sets.contains(roles, 'ADMIN')}" class=" badge badge-success"
+                                th:href="@{'~/user/editCategory/'+${view.category.id}}">
+                                编辑</a>
+                            <ul class="list-group list-group-flush">
+                                <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName} :: #fragment }   ?:_"
+                                    parser></div>
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- <span  cms:if="${#sets.contains(roles, 'ADMIN')}" cms:value="${roles}">greh</span> -->
+                    
+                    <div id="markdown" cms:inline="none" class="markdown  markdown-course pt-2 pl-3 pr-3 pb-3"
+                        th:utext="${view.category.formatContent}">
+
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+                    <div cms:replace="~{${view.category.recommendPath}} ?:_" parser></div>
+                </div>
+
+
+
+
+                <!-- <div class="mt-3">
+
+                    <div cms:replace="~{'html/components/recommend-'+${view.category.viewName}} ?:_" parser></div>
+                </div> -->
+
+            </div>
+
+
+
+
+
+
+            <div class="col-xl-2  md-right ">
+                <div class="flex-table">
+                    <div cms:replace="/html/components/form :: #fragment"></div>
+                    <hr>
+                    <!-- <div class="flex-table-box" id="toc-box">
+                        <div th:utext="${view.toc}" class="content-table ">
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <input type="hidden" cms:value="${userId}" id="userId">
+
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+    <!-- <div th:replace="templates/templates/fragment/side"></div> -->
+
+    <div cms:replace="templates/templates/fragment/footer"></div>
+
+    <script src="/templates/resources/js/article.js?v=1.10"></script>
+    <script src="/templates/resources/js/admonition.js"></script>
+    <!-- <script src="/templates/resources/js/search_engine.js"></script> -->
+    <script src="/templates/resources/js/axios.min.js"></script>
+    <script src="/templates/resources/js/service.js?1.0"></script>
+
+    <script src="/templates/resources/js/mermaid.min.js"></script>
+
+
+    <script>
+
+    </script>
+    <script>
+        mermaid.init({ noteMargin: 10 }, $(".mermaid"));
+    // mermaid.mermaidAPI.initialize({ startOnLoad: false });
+
+    // mermaid.initialize({ startOnLoad: true });
+
+    //   mermaid.init({
+    //     theme: 'forest',
+    //     // themeCSS: '.node rect { fill: red; }',
+    //     logLevel: 3,
+    //     securityLevel: 'loose',
+    //     flowchart: { curve: 'basis' },
+    //     gantt: { axisFormat: '%m/%d/%Y' },
+    //     sequence: { actorMargin: 50 },
+    //     // sequenceDiagram: { actorMargin: 300 } // deprecated
+    //   },$('.mermaid'));
+    </script>
+
+
+
+    <script cms:inline="javascript">
+        // let viewName = "[[${view.category.viewName}]]"
+
+    </script>
+
+
+        
+
+
+    <script cms:inline="javascript">
+        $(function () {
+            $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
+        });
+
+      
+
+    </script>
+
+
+    <script src="/templates/resources/js/highlight/highlight.min.js"></script>
+
+    <script>
+
+        // hljs.addPlugin({
+        //     'after:highlight': (result) => {
+        //         result.value = result.value.replace(/^/gm, '<span class="line-num"></span>')
+        //     }
+        // });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
+            });
+        });
+
+
+    </script>
+
+    <script defer src="/templates/resources/katex/katex.min.js"></script>
+
+    <script>
+
+        (function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                var mathElems = document.getElementsByClassName("katex");
+                var elems = [];
+                for (const i in mathElems) {
+                    if (mathElems.hasOwnProperty(i)) elems.push(mathElems[i]);
+                }
+
+                elems.forEach(elem => {
+                    katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
+                });
+            });
+        })();
+    </script>
+  
+</body>
+
+</html>

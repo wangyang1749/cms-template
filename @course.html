@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/templates/resources/css/code.css?v=1.1">
     <link rel="stylesheet" href="/templates/resources/js/highlight/styles/atom-one-dark.min.css">
     <style th:utext="${view.css}"></style>
+    <cms:block cms:replace="templates/templates/fragment/statistics" />
 
 </head>
 
@@ -25,8 +26,8 @@
 
 
     <div cms:replace="/html/components/header :: #fragment"></div>
-    <div class="container-xl margin-top-72 ">
-     
+    <div class="container-xl container-80vw  margin-top-72 ">
+
 
         <div class="row">
             <div class="col-xl-2  pb-3 md-left">
@@ -49,7 +50,7 @@
 
 
                     <!-- <dl>
-                            <dt class="text-muted">
+                             <dt class="text-muted">
                                 <i class="bi bi-tags"></i> 标签
                             </dt>
                             <dd th:if="${view.tags!=null}">
@@ -58,9 +59,18 @@
                             </dd>
 
                         </dl> -->
+                    <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+                        <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                            <input name="title" type="text" class="form-control" placeholder="input article name">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">创建文章</button>
+                            </div>
+                        </form>
+                    </div>
 
                     <div class="category-table flex-table-box" id="category-table">
-                        <div cms:replace="~{${view.category.path}+'/CATEGORY_TITLE/'+${view.category.viewName}} ?:_" parser>
+                        <div cms:replace="~{${view.category.path}+'/CATEGORY_TITLE/'+${view.category.viewName}} ?:_"
+                            parser>
                         </div>
                         <!-- <div cms:replace="~{${view.category.firstTitleList}} ?:_" parser></div> -->
                     </div>
@@ -119,7 +129,7 @@
                         <!-- <span  cms:if="${#sets.contains(roles, 'ADMIN')}" cms:value="${roles}">greh</span> -->
 
                         <div id="markdown" cms:inline="none" class="markdown  markdown-course pt-2 pl-3 pr-3 pb-3"
-                            th:utext="${view.formatContent}"  >
+                            th:utext="${view.formatContent}">
 
                         </div>
                         <div class="  p-3  d-flex justify-content-around">
@@ -157,7 +167,7 @@
                     <div cms:replace="/html/components/form :: #fragment"></div>
                     <hr>
                     <div class="flex-table-box" id="toc-box">
-                        <div th:utext="${view.toc}" class="content-table " >
+                        <div th:utext="${view.toc}" class="content-table ">
                         </div>
                     </div>
 
@@ -259,7 +269,7 @@
                 //     $(".user-"+userId).css("display", "inline")
                 // }
                 alert("成功添加评论" + response.data.message)
-                $('#comment-list').load('/'+[[${ view.path.replace("html/",'')}]]+"/comment/" + [[${ view.viewName }]] + ".html #comment-list")
+                $('#comment-list').load('/' + [[${ view.path.replace("html/", '') }]] + "/comment/" + [[${ view.viewName }]] + ".html #comment-list")
                 $(".user-" + userId).css("display", "inline")
 
             }).catch(function (error) {
@@ -275,7 +285,7 @@
             commentApi.delete(id).then(response => {
                 // console.log(response)
                 // alert("成功删除评论" + response.data.message)
-                $('#comment-list').load('/'+[[${ view.path.replace("html/",'')}]] +"/comment/" + [[${ view.viewName }]] + ".html #comment-list")
+                $('#comment-list').load('/' + [[${ view.path.replace("html/", '') }]] + "/comment/" + [[${ view.viewName }]] + ".html #comment-list")
             }).catch(function (error) {
                 // handle error
                 // console.log(error.response.data.message);
@@ -404,7 +414,7 @@
             });
         })();
     </script>
-  <script th:utext="${view.js}"></script>
+    <script th:utext="${view.js}"></script>
 </body>
 
 </html>

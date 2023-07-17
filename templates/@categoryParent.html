@@ -7,6 +7,8 @@
     <cms:block cms:replace="templates/templates/fragment/header" />
 
     <link rel="stylesheet" href="/templates/resources/css/category.css">
+    <cms:block cms:replace="templates/templates/fragment/statistics" />
+
 </head>
 
 <body cms:inline="none">
@@ -136,7 +138,7 @@
 
                             </ul>
                             <div th:id="'Id-'+${view.viewName}+'-btn'">
-                                <a class="text-secondary load-id" href="javascript:;" th:onclick="loadList([['Id-'+${view.viewName}]],[[${url}]])"
+                                <a class="btn btn-info btn-lg btn-block load-id" href="javascript:;" th:onclick="loadList([['Id-'+${view.viewName}]],[[${url}]])"
                                     style="text-align: center;" th:data-url="${url}">
                                     <!-- <span th:text="${info.ids}"></span>
                                     <span th:text="${info.sortStr}"></span>
@@ -191,7 +193,7 @@
             </div>
 
             <div class="col-lg-3 ">
-                <div class="p-1 bg-white">
+                <div class="p-1 bg-white" cms:if="${#sets.contains(roles, 'ADMIN')}">
                     <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
                         <input name="title" type="text" class="form-control" placeholder="input article name">
                         <div class="input-group-append">
@@ -199,38 +201,8 @@
                         </div>
                     </form>
                 </div>
-
-                <!-- <th:block th:fragment="category(commentsVar)">
-                    <ul th:each="item,index:${commentsVar}">
-                        <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
-                            <h4 th:if="${item.parentId==0}">
-                                </i><a th:href="${item.linkPath}" class="text-muted">
-                                    <i class="bi  bi-book" th:class="${item.icon}"></i> <span
-                                        th:text="${item.name}"></span>
-                                </a>
-                            </h4>
-                            <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
-                                <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
-                                    th:text="${item.name}"></span>
-                            </a>
-                        </li>
-                        <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
-                            <h4 th:if="${item.parentId==0}">
-                                </i><a th:href="${item.linkPath}" class="text-muted">
-                                    <i class="bi  bi-book" th:class="${item.icon}"></i> <span
-                                        th:text="${item.name}"></span>
-                                </a>
-                            </h4>
-                            <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
-                                <i class="bi  bi-box2" th:class="${item.icon}"></i> <span
-                                    th:text="${item.name}"></span>
-                            </a>
-                            <th:block th:include="this::category(${item.children})"></th:block>
-                        </li>
-                    </ul>
-                </th:block> -->
                 <div class="bg-white">
-                    <div cms:replace="~{'html/articleList/CATEGORY_CHILD/'+${view.parentCategories.get(0).viewName}} ?:_"
+                    <div cms:replace="~{${view.parentCategories.get(0).path}+'/CATEGORY_CHILD/'+${view.parentCategories.get(0).viewName}} ?:_"
                         parser>
                     </div>
                 </div>
@@ -279,6 +251,7 @@
                     loadBtn = $(data).find("#" + id + '-btn').children()
                     $("#" + id + '-btn').html(loadBtn)
                     flag = true
+                    $("img.lazy").lazyload({ effect: "fadeIn", threshold: 500 });
                     // console.log(loadBtn)
                 }, error: function (data) {
                     res = JSON.parse(data.responseText)

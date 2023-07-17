@@ -6,7 +6,6 @@
     <meta name="keywords" content="生物信息学,生信,生信小木屋,生物信息分析,r语言,python">
     <meta name="description" content="生信小木屋，用数据科学的知识，探索生命科学的奥秘">
     <cms:block cms:replace="templates/templates/fragment/header" />
-    <cms:block cms:replace="templates/templates/fragment/statistics" />
     <link rel="stylesheet" href="/templates/resources/css/home.css">
 </head>
 
@@ -16,23 +15,31 @@
 
 
 
-    <div class="container container-80vw margin-top-72">
+    <div class="container margin-top-72">
         <div class="row ">
             <div class="col-lg-9 ">
                 <div id="main-content ">
                     <div class="row carousel-index ">
-                        <div cms:replace="/html/components/carousel :: #fragment"></div>
-
+                        <div class="col-lg-4">
+                            <div cms:replace="/html/components/carousel :: #fragment"></div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div cms:replace="html/articleList/ARTICLE_TOP/20230558344"></div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div cms:replace="html/articleList/ARTICLE_TOP/202321823699"></div>
+                        </div>
                     </div>
 
 
 
 
-                    <div>
-                        <div cms:replace="/html/components/categoryComponent :: #fragment"></div>
-                    </div>
-                    <!--  style="left: 10%; top: 62%; filter: drop-shadow(rgba(0, 0, 0, 0.2) -10px 10px 0px);
-                            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0de);"<div class="position-relative shadow-lg" style="height:20rem">
+                    <hr>
+                    <div style="left: 10%; top: 62%; filter: drop-shadow(rgba(0, 0, 0, 0.2) -10px 10px 0px);
+                            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0de);">
+                            <div cms:replace="/html/components/categoryComponent :: #fragment"></div>
+                        </div>
+                    <!-- <div class="position-relative shadow-lg" style="height:20rem">
                         <img src="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/glass_1687599500702.jpg"
                             alt=""  style="    width: 100%;height: 100%;object-fit: cover;">
                         <div class="position-absolute" style="left: 10%; top: 17%; width: 58%; filter: drop-shadow(rgba(0, 0, 0, 0.2) -10px 10px 0px);
@@ -46,7 +53,7 @@
                             <div cms:replace="/html/components/categoryComponent :: #fragment"></div>
                         </div>
                     </div> -->
-
+                    <hr>
 
 
                     <!-- <div class="category-horizontal mb-3">
@@ -66,29 +73,38 @@
                                     type="button" aria-selected="false">热门文章</button>
                             </li>
                         </ul>
-
+    
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
                             </div>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <div cms:replace="/html/components/hotArticle :: #fragment"></div>
-
+    
                             </div>
                         </div>
                     </div>
-                
-                    <div class="row mb-5">
-                        <div class="col-lg-4">
-                            <div cms:replace="html/articleList/ARTICLE_TOP/20230558344"></div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div cms:replace="html/articleList/ARTICLE_TOP/202321823699"></div>
-                        </div>
-                    </div>
+                   
 
 
-                    <!-- <div th:each="item : ${category}" class="mb-3 list-group-flush">
+
+
+
+                    <!-- <div class="row">
+                        <div class="col-sm mb-3">
+                            
+                        </div>
+                        <div class="col-sm mb-3">
+                            <div cms:replace="/html/components/likeArticle.html"></div>
+                        </div>
+                        <div class="col-sm  mb-3">
+                            
+                        </div>
+                        
+                    </div> -->
+
+
+                    <div th:each="item : ${category}" class="mb-3 list-group-flush">
                         <div class="list-group-item list-group-item-light   d-flex justify-content-between">
                             <span th:text="${item.name}"></span>
                             <a class="text-secondary" th:href="@{'~/'+${item.path}+'/'+${item.viewName}+'.html'}"> 更多
@@ -99,7 +115,19 @@
 
                         </div>
 
+                    </div>
+
+                    <!-- <div class="row">
+                        <div class="col-lg-1">
+                                
+                        </div>
+                        <div class="col-lg-11">
+                           
+                        </div>
                     </div> -->
+
+
+
                 </div>
 
             </div>
@@ -155,14 +183,14 @@
 
     </div>
 
-    <!-- <div class="container-side">
+    <div class="container-side">
         <div class="index-right-warp">
             <div class="index-left">
                 <img src="/templates/resources/images/0002.png" alt="">
                 <p class="text-info font-weight-bolder">不忘初心、热爱科学、用心研究</p>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <div cms:replace="/html/components/footer :: #fragment"></div>
 
@@ -229,13 +257,12 @@
                     html = $(data).find(".list-group").children()
 
 
+
                     $("#" + id + '-list').append(html)
 
                     loadBtn = $(data).find("#" + id + '-btn').children()
                     $("#" + id + '-btn').html(loadBtn)
                     flag = true
-                    $("img.lazy").lazyload({ effect: "fadeIn", threshold: 500 });
-                    // loadImg('markdown-preview')
                     // console.log(loadBtn)
                 }, error: function (data) {
                     res = JSON.parse(data.responseText)
@@ -246,18 +273,18 @@
         }
 
 
-        // $(window).scroll(function () {
-        //     var _target = $(document).height() - $(window).height() - $(window).scrollTop()
-        //     // console.log(_target)
-        //     if (_target < 400 && flag) {
-        //         flag = false
-        //         url = $(".tab-pane.fade.active.show .load-id").data("url")
-        //         console.log(url)
-        //         $("img.lazy").lazyload({ effect: "fadeIn", threshold: 500 });
-        //         loadList(url)
-        //     }
+        $(window).scroll(function () {
+            var _target = $(document).height() - $(window).height() - $(window).scrollTop()
+            // console.log(_target)
+            if (_target < 400 && flag) {
+                flag = false
+                url = $(".tab-pane.fade.active.show .load-id").data("url")
+                console.log(url)
+                $("img.lazy").lazyload({ effect: "fadeIn", threshold: 500 });
+                loadList(url)
+            }
 
-        // });
+        });
 
 
 

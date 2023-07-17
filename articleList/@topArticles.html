@@ -1,5 +1,10 @@
-<ul th:each="item:${view.contents}" class="list-group list-group-flush">
-    <a th:href="${item.linkPath}"><li  th:text="${item.title}" class="list-group-item text-truncate text-secondary"></li></a>
-    
-</ul>
-<a  th:href="${view.linkPath}"  class="text-secondary">更多</a>
+<div class="article-top">
+    <div class="header-left-small">
+        <h5 th:text="${view.category.name}"></h5>
+    </div>
+    <ul th:each="item:${view.contents}" class="list-group list-group-flush">
+        <a th:href="${item.linkPath}"><li  th:text="${item.title}" class="list-group-item text-truncate text-secondary"></li></a>
+        
+    </ul>
+    <a  th:href="${view.linkPath}"  class="text-secondary">更多</a>
+</div>

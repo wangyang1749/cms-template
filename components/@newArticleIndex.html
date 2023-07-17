@@ -12,7 +12,7 @@
 
     <div class="container ">
         <section id="fragment" class="mb-3">
-            <ul class="list-group list-group-flush shadow" th:id="${#strings.arraySplit(url,',')[0]}+'-list'">
+            <ul class="list-group list-group-flush " th:id="${#strings.arraySplit(url,',')[0]}+'-list'">
                 <!-- <div class="list-group-item list-group-item-light d-flex justify-content-between">
                     <span> <i class="bi bi-journal-bookmark"></i> <span th:text="${name}"></span></span>
                     <a class="text-secondary" th:href="${showUrl}">
@@ -87,7 +87,7 @@
                 </a> -->
             </ul>
             <div th:id="${#strings.arraySplit(url,',')[0]}+'-btn'"  >
-                <a class="text-secondary load-id" href="javascript:;" th:onclick="loadList([[${url}]])"
+                <a class="btn btn-info btn-lg btn-block load-id" href="javascript:;" th:onclick="loadList([[${url}]])"
                     style="text-align: center;" th:data-url="${url}">
                     <!-- <span th:text="${info.ids}"></span>
                     <span th:text="${info.sortStr}"></span>

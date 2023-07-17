@@ -15,27 +15,45 @@
         }
     </style>
     <div cms:replace="/html/components/header :: #fragment"></div>
-    <div class="container margin-top-72" id="app">
+    <div class="container  container-80vw margin-top-72" id="app">
 
         <div id="fragment">
-            <div class="column category-icon  d-flex">
-                <div class="m-7" th:each="item : ${view}">
-                    <!-- <span class="iconfont icon-jiyin"></span> -->
-                  
 
-
-                    <a th:href="${item.linkPath}" class="text-info d-block text-center  mr-2">
-                       
-                        <i th:class="${item.icon}"></i>
-                        <h5 class="card-title" th:text="${item.name}">Card title</h5>
-                    </a>
+            <div th:each="category :${view}">
+                <div class="header-left-small">
+                    <h5 th:text="${category.category.name}"></h5>
                 </div>
+                <!-- column category-icon   -->
+
+
+                <!-- <span class="iconfont icon-jiyin"></span> -->
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-5 index-category">
+
+                    <div th:each="item : ${category.categoryVOS}" class="col">
+                        <a th:href="${item.linkPath}" class="item text-info d-block text-center  d-block">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="mr-3">
+                                    <i th:class="${item.icon}"></i>
+                                </div>
+                                <h5 class="item-title" th:text="${item.name}">Card title</h5>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+
             </div>
 
 
 
-
         </div>
+
+
+
+
+
+    </div>
     </div>
 
     </div>
