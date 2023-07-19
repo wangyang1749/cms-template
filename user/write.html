@@ -91,6 +91,24 @@
                 </p>
 
             </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlInput1">视频链接</label>
+                <img th:src="${view==null?'':view.picPath}" alt="">
+                <p>
+                    bilibili<input class="form-control" th:value="${view==null?'':view.bilibili}" id="bilibili"
+                        type="text" />
+                </p>
+                <p>
+                    youtube<input class="form-control" th:value="${view==null?'':view.youtube}"
+                        id="youtube" type="text" />
+                </p>
+                <p>
+                    video<input class="form-control" th:value="${view==null?'':view.video}"
+                        id="video" type="text" />
+                </p>
+
+            </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">文章分类</label>
                 <select id="categories" class=" form-control">

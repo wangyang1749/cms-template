@@ -19,7 +19,7 @@ function setSelectTags(sel) {
 }
 var beforeTagData = []
 var port = window.location.port
-var url = location.hostname
+var url = location.hostname+":"+port
 
 var protocol = window.location.protocol;
 var token = $.cookie('Authorization')
@@ -178,6 +178,13 @@ function articleOption() {
         let picPath = $("#picPath").val()
         let css = $("#css").val()
         let js = $("#js").val()
+
+        let bilibili = $("#bilibili").val()
+        let youtube = $("#youtube").val()
+        let video = $("#video").val()
+
+
+
         let picThumbPath = $("#picThumbPath").val()
         if (title == "") {
             // alert("文章标题不能为空")
@@ -204,7 +211,10 @@ function articleOption() {
             js:js,
             summary: summary,
             picPath: picPath,
-            picThumbPath: picThumbPath
+            picThumbPath: picThumbPath,
+            bilibili:bilibili,
+            youtube: youtube,
+            video: video
         };
     }
     $("#previewNet").click(function () {
