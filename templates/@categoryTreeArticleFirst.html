@@ -26,36 +26,42 @@
     <div cms:replace="/html/components/header :: #fragment"></div>
     <div class="container-xl container-80vw  margin-top-72 ">
 
-
+        <a class="m-tab-btn" id="tab-btn" href="javascript:;">展开</a>
         <div class="row">
-            <div class="col-xl-2  pb-3 md-left">
+            <div class="col-lg-2  pb-3 md-left order-1 m-order-2" id="tab-content1">
                 <div class="flex-table">
-                    <!-- <div class="d-flex user-info">
-                        <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
+                    <div class="d-flex user-info g-bg p-2">
+                        <img th:src="${view.category.user.avatar}" alt="" class="img-fluid rounded-circle" />
                         <div class="align-self-center ml-3">
-                            <i class="bi bi-person"></i>: <strong th:text="${view.user.username}"> </strong><br>
+                            <i class="bi bi-person"></i>: <strong th:text="${view.category.user.username}">
+                            </strong><br>
                             <i class="bi bi-envelope"></i>: <strong> 联系作者</strong>
 
                         </div>
-                    </div> -->
-                    <hr>
-                    <a class=" badge badge-success" th:href="'/html_articleList_'+${view.category.viewName}+'.html'">
-                        <i class="bi bi-bookmarks"></i> <span th:text="${view.category.name}"></span>
-                    </a>
-                    <a class=" badge badge-success"
-                        th:href="'/html_articleList_'+${view.category.viewName}+'-mind.html'">
-                        <i class="bi bi-layers"></i> 思维导图</a>
-
-                    <div cms:if="${#sets.contains(roles, 'ADMIN')}">
-                        <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
-                            <input name="title" type="text" class="form-control" placeholder="input article name">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit">创建文章</button>
-                            </div>
-                        </form>
                     </div>
 
-                    <div class="category-table flex-table-box" id="category-table">
+                    <div class="g-bg p-2">
+                        <a class=" badge badge-success "
+                            th:href="'/html_articleList_'+${view.category.viewName}+'.html'">
+                            <i class="bi bi-bookmarks"></i> <span th:text="${view.category.name}"></span>
+                        </a>
+                      
+                        <a class=" badge badge-success"
+                            th:href="'/'+${view.category.path}+'/'+${view.category.viewName}+'-mind.html'">
+                            <i class="bi bi-layers"></i> 思维导图</a>
+                        <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+                            <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                                <input name="title" type="text" class="form-control" placeholder="input article name">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">创建文章</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                    <div class="category-table flex-table-box g-bg p-2" id="category-table">
                         <div cms:replace="~{${view.category.path}+'/CATEGORY_TITLE/'+${view.category.viewName}} ?:_"
                             parser>
                         </div>
@@ -63,18 +69,35 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-2  md-right order-3 m-order-3">
 
-            <div class="col-xl-8 mb-3">
+                <div class="flex-table">
+                    <div cms:replace="/html/components/form :: #fragment"></div>
+                    <div class="g-bg p-2">
+                        <div cms:replace="~{${view.parentCategories.get(0).path}+'/CATEGORY_PARTNER/'+${view.parentCategories.get(0).viewName}} ?:_"
+                            parser>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="flex-table-box" id="toc-box">
+                        <div th:utext="${view.toc}" class="content-table ">
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+            <div class="col-lg-8 mb-3 order-2 m-order-1">
 
                 <!-- <div>
                 <img th:src="${view.picPath}" class="rounded-pill"/>
             </div> -->
 
 
-                <div id="main-content">
+                <div id="main-content ">
                     <input type="hidden" th:value="${view.viewName}" id="viewName">
 
-                    <div>
+                    <div class="markdown-bg">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">首页 </a></li>
                             <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}"
@@ -86,6 +109,11 @@
                             </li>
 
                         </ol>
+                        <div th:if="${view.category.picThumbPath!=null && view.category.picThumbPath!=''}">
+                            <img th:src="${view.category.picThumbPath}" alt="" style="width:100%">
+                        </div>
+                    </div>
+                    <div class="markdown-bg">
                         <div class="content-header  pl-3 pr-3 pt-3 pb-3">
                             <a cms:if="${#sets.contains(roles, 'ADMIN')}" class=" badge badge-success"
                                 th:href="@{'~/user/editCategory/'+${view.category.id}}">
@@ -96,16 +124,16 @@
                             </ul>
 
                         </div>
-
+                        <div id="markdown" cms:inline="none" class="markdown  markdown-course pt-2 pl-3 pr-3 pb-3"
+                            th:utext="${view.category.formatContent}">
+                        </div>
                     </div>
 
 
                     <!-- <span  cms:if="${#sets.contains(roles, 'ADMIN')}" cms:value="${roles}">greh</span> -->
-                    
-                    <div id="markdown" cms:inline="none" class="markdown  markdown-course pt-2 pl-3 pr-3 pb-3"
-                        th:utext="${view.category.formatContent}">
 
-                    </div>
+
+
 
                 </div>
 
@@ -123,22 +151,6 @@
 
             </div>
 
-
-
-
-
-
-            <div class="col-xl-2  md-right ">
-                <div class="flex-table">
-                    <div cms:replace="/html/components/form :: #fragment"></div>
-                    <hr>
-                    <!-- <div class="flex-table-box" id="toc-box">
-                        <div th:utext="${view.toc}" class="content-table ">
-                        </div>
-                    </div> -->
-
-                </div>
-            </div>
         </div>
 
 
@@ -196,7 +208,7 @@
     </script>
 
 
-        
+
 
 
     <script cms:inline="javascript">
@@ -204,7 +216,7 @@
             $("img.lazy").lazyload({ effect: "fadeIn", threshold: 180 });
         });
 
-      
+
 
     </script>
 
@@ -246,7 +258,29 @@
             });
         })();
     </script>
-  
+    <script>
+
+        if (document.body.clientWidth <= 991) {
+            $(function () {
+                $('#tab-btn').click(function (event) {
+                    //取消事件冒泡  
+                    event.stopPropagation();
+                    //按钮的toggle,如果div是可见的,点击按钮切换为隐藏的;如果是隐藏的,切换为可见的。  
+                    $("#tab-content1").animate({ width: 'toggle' });
+                    return false;
+                });
+                //点击空白处隐藏弹出层，下面为滑动消失效果和淡出消失效果。
+                $(document).click(function (event) {
+                    var _con = $('#tab-btn');   // 设置目标区域
+                    if (!_con.is(event.target) && _con.has(event.target).length === 0) {
+                        $('#tab-content1').animate({ width: 'hide' });   //滑动消失
+                        //$('#view').hide(1000);          //淡出消失
+                    }
+                });
+            })
+
+        }
+    </script>
 </body>
 
 </html>

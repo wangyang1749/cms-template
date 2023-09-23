@@ -21,19 +21,22 @@
     </style>
 </head>
 
-<body>
-    <div th:insert="templates/user/header"></div>
+<body> 
+    <div cms:replace="/html/components/header :: #fragment"></div>
     <div class="container">
+    
+        <div id="jsmind_container"></div>
         <a class="text-secondary" th:href="@{'~/'+${category.path}+'/'+${category.viewName}+'.html'}">返回列表</a>
 
         <button onclick="submit()">提交</button>
-        <div id="jsmind_container"></div>
     </div>
     <!--#include file="/components/footer.html"-->
     <div th:if="${isSave== null && notPdf==null}" th:insert="html/components/footer :: #footer"></div>
 
     <script type="text/javascript" src="/templates/resources/js/jsmind.js"></script>
     <script type="text/javascript" src="/templates/resources/js/jsmind.draggable.js"></script>
+    <script src="/templates/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/templates/resources/js/jquery.cookie.js"></script>
     <script type="text/javascript">
         var jm;
         function load_jsmind() {
@@ -76,6 +79,8 @@
         var protocol = window.location.protocol;
         var address = protocol + "//" + url + "";
         console.log(jm.get_data("node_array").data)
+        var token = $.cookie('Authorization')
+        console.log(token)
         function submit() {
             console.log(jm.get_data("node_array").data)
             fetch(address + '/api/article/saveMindJs/[[${category.id}]]', {
@@ -84,7 +89,7 @@
                     'user-agent': 'Mozilla/4.0 MDN Example',
                     'content-type': 'application/json',
                     'Accept': 'application/json,text/plain,*/*',
-                    'AuthorizeType': 'Cookie'
+                    'Authorization': 'Bearer ' + token
                 },
                 method: 'POST',
                 credentials: "include",

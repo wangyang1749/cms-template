@@ -28,47 +28,41 @@
     <div cms:replace="/html/components/header :: #fragment"></div>
     <div class="container-xl container-80vw  margin-top-72 ">
 
-
+        <a class="m-tab-btn" id="tab-btn" href="javascript:;">展开</a>
         <div class="row">
-            <div class="col-xl-2  pb-3 md-left">
+            <div class="col-lg-2  pb-3 md-left order-1 m-order-2" id="tab-content1">
                 <div class="flex-table">
-                    <div class="d-flex user-info">
+                    <div class="d-flex user-info g-bg p-2">
                         <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
                         <div class="align-self-center ml-3">
-                            <i class="bi bi-person"></i>: <strong th:text="${view.user.username}"> </strong><br>
+                            <i class="bi bi-person"></i>: <strong th:text="${view.category.user.username}">
+                            </strong><br>
                             <i class="bi bi-envelope"></i>: <strong> 联系作者</strong>
 
                         </div>
                     </div>
-                    <hr>
-                    <a class=" badge badge-success" th:href="'/html_articleList_'+${view.category.viewName}+'.html'">
-                        <i class="bi bi-bookmarks"></i> <span th:text="${view.category.name}"></span>
-                    </a>
-                    <a class=" badge badge-success"
-                        th:href="'/html_articleList_'+${view.category.viewName}+'-mind.html'">
-                        <i class="bi bi-layers"></i> 思维导图</a>
 
-
-                    <!-- <dl>
-                             <dt class="text-muted">
-                                <i class="bi bi-tags"></i> 标签
-                            </dt>
-                            <dd th:if="${view.tags!=null}">
-                                <a th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
-                                    th:each="item : ${view.tags}" th:text="${item.name}"></a>
-                            </dd>
-
-                        </dl> -->
-                    <div cms:if="${#sets.contains(roles, 'ADMIN')}">
-                        <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
-                            <input name="title" type="text" class="form-control" placeholder="input article name">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit">创建文章</button>
-                            </div>
-                        </form>
+                    <div class="g-bg p-2">
+                        <a class=" badge badge-success "
+                            th:href="'/html_articleList_'+${view.category.viewName}+'.html'">
+                            <i class="bi bi-bookmarks"></i> <span th:text="${view.category.name}"></span>
+                        </a>
+                        <a class=" badge badge-success"
+                            th:href="'/'+${view.category.path}+'/'+${view.category.viewName}+'-mind.html'">
+                            <i class="bi bi-layers"></i> 思维导图</a>
+                        <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+                            <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                                <input name="title" type="text" class="form-control" placeholder="input article name">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">创建文章</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
-                    <div class="category-table flex-table-box" id="category-table">
+
+
+                    <div class="category-table flex-table-box g-bg p-2" id="category-table">
                         <div cms:replace="~{${view.category.path}+'/CATEGORY_TITLE/'+${view.category.viewName}} ?:_"
                             parser>
                         </div>
@@ -77,7 +71,27 @@
                 </div>
             </div>
 
-            <div class="col-xl-8 mb-3">
+            <div class="col-lg-2  md-right order-3 m-order-3">
+
+
+                <div class="flex-table ">
+                    <div cms:replace="/html/components/form :: #fragment"></div>
+                    <div class="g-bg p-2">
+                        <div cms:replace="~{${view.parentCategory.get(0).path}+'/CATEGORY_PARTNER/'+${view.parentCategory.get(0).viewName}} ?:_"
+                            parser>
+                        </div>
+                    </div>
+
+
+                    <div class="flex-table-box  " id="toc-box">
+                        <div th:utext="${view.toc}" class="content-table g-bg p-2 ">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-8 mb-3 order-2 m-order-1">
 
                 <!-- <div>
                 <img th:src="${view.picPath}" class="rounded-pill"/>
@@ -86,8 +100,7 @@
 
                 <div id="main-content">
                     <input type="hidden" th:value="${view.viewName}" id="viewName">
-
-                    <div>
+                    <div class="video-bg">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">首页 </a></li>
                             <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}"
@@ -101,50 +114,108 @@
                                 <span th:text="${view.title}"></span>
                             </li>
                         </ol>
-                        <div class="content-header  pl-3 pr-3 pt-3 pb-3">
+                        <div th:if="${view.bilibili!=null && view.bilibili!=''}">
 
-                            <h1 class="m-0 title" th:text="${view.title}">标题</h1>
-                            <div class="info text-secondary">
-
-                                <span class="mr-2  "><i class="bi bi-clock"></i> 最后发布时间 : <strong
-                                        th:text="${#dates.format( view.updateDate, 'yyyy-MM-dd HH:mm:ss')}">时间</strong></span>
-                                <span class="mr-2"> <i class="bi bi-eye"></i> 浏览量 : <strong id="visits"></strong></span>
-                                <span cms:if="${#sets.contains(roles, 'ADMIN')}">
-                                    <a th:href="@{'~/user/edit/'+${view.id}}"
-                                        class=" text-secondary justify-content-end text-right"><i
-                                            class="bi bi-pencil-square"></i> 编辑</a>
-                                    <a class=" text-secondary justify-content-end text-right" href="javascript:;"
-                                        th:onclick="deleteArticle([[${view.id}]],[[${view.category.viewName}]])"
-                                        th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
-                                    <a href="javascript:;" onclick="loadImgCall(copyContent,'markdown')"
-                                        class="text-secondary justify-content-end text-right">拷贝</a>
-                                </span>
-
-                                <!-- <div cms:if="${userId}!=null">11 </div> -->
+                            <!-- <video controls="controls" style="width:100%">
+                                <source
+                                    src="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/video/ted_fabrication.mp4" />
+                            </video> -->
+                            <div class="meta-media">
+                                <iframe name="video-player" th:src="${view.bilibili}" class="video iframe-video"
+                                    autoplay="autoplay" allowfullscreen="true" framespacing="0" frameborder="no"
+                                    border="0" scrolling="no"></iframe>
                             </div>
 
+                            <hr>
+                            <div class="text-center mb-2 mt-2">
+
+                                <b> 切换视频源：</b>
+                                <a th:href="${view.youtube}" target="video-player"><img src="/resources/img/youtube.png"
+                                        style="height: 2rem;"></a>
+                                <a th:href="${view.bilibili}" target="video-player"><img
+                                        src="/resources/img/bilibili_icon.png" style="height: 2rem;"></a>
+
+                                <!-- &nbsp; |&nbsp; <a class="p-2 badge badge-pill badge-primary" href="javascript:;"
+                                    id="openPip">打开画中画</a> -->
+                            </div>
+
+                            <div class="d-flex justify-content-around p-3">
+                                <a class="btn btn-success" th:if="${view.forwardContentVO!=null}"
+                                    th:href="${view.forwardContentVO.linkPath}">
+                                    <i class="bi bi-arrow-left-short"></i>
+                                    <span th:text="${view.forwardContentVO.title}"></span>
+                                </a>
+                                <a class="btn btn-success" th:if="${view.nextcontentVO!=null}"
+                                    th:href="${view.nextcontentVO.linkPath}">
+
+                                    <span th:text="${view.nextcontentVO.title}"></span>
+                                    <i class="bi bi-arrow-right-short"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-bg">
+
+                        <div>
+                            <div class="content-header  pl-3 pr-3 pt-3 pb-3 text-center">
+                                <h1 class="m-0 title" th:text="${view.title}">标题</h1>
+                                <div class="info text-secondary">
+
+                                    <span class="mr-2  "><i class="bi bi-clock"></i> 最后发布时间 : <strong
+                                            th:text="${#dates.format( view.updateDate, 'yyyy-MM-dd HH:mm:ss')}">时间</strong></span>
+                                    <span class="mr-2"> <i class="bi bi-eye"></i> 浏览量 : <strong
+                                            id="visits"></strong></span>
+                                    <span cms:if="${#sets.contains(roles, 'ADMIN')}">
+                                        <a th:href="@{'~/user/edit/'+${view.id}}"
+                                            class=" text-secondary justify-content-end text-right"><i
+                                                class="bi bi-pencil-square"></i> 编辑</a>
+                                        <a class=" text-secondary justify-content-end text-right" href="javascript:;"
+                                            th:onclick="deleteArticle([[${view.id}]],[[${view.category.viewName}]])"
+                                            th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
+                                        <a href="javascript:;" onclick="loadImgCall(copyContent,'markdown')"
+                                            class="text-secondary justify-content-end text-right">拷贝</a>
+                                    </span>
+
+                                    <!-- <div cms:if="${userId}!=null">11 </div> -->
+                                </div>
+                            </div>
+                            <div id="markdown" cms:inline="none" class="markdown  markdown-course pt-2 pl-3 pr-3 pb-3"
+                                th:utext="${view.formatContent}">
+
+                            </div>
                         </div>
 
 
                         <!-- <span  cms:if="${#sets.contains(roles, 'ADMIN')}" cms:value="${roles}">greh</span> -->
+                        <div class="d-flex justify-content-around p-3">
+                            <a class="btn btn-success" th:if="${view.forwardContentVO!=null}"
+                                th:href="${view.forwardContentVO.linkPath}">
+                                <i class="bi bi-arrow-left-short"></i>
+                                <span th:text="${view.forwardContentVO.title}"></span>
+                            </a>
+                            <a class="btn btn-success" th:if="${view.nextcontentVO!=null}"
+                                th:href="${view.nextcontentVO.linkPath}">
 
-                        <div id="markdown" cms:inline="none" class="markdown  markdown-course pt-2 pl-3 pr-3 pb-3"
-                            th:utext="${view.formatContent}">
-
+                                <span th:text="${view.nextcontentVO.title}"></span>
+                                <i class="bi bi-arrow-right-short"></i></a>
                         </div>
-                        <div class="  p-3  d-flex justify-content-around">
+
+
+                        <!-- <div class="  p-3  d-flex justify-content-around">
 
                             <a id="likeOption" href="javascript:;" style="width: 1.5rem;"
                                 class="d-flex align-items-center text-secondary"><img id="like-img"
                                     src="/templates/resources/img/like.svg" alt=""><span id="like"></span></a>
-                        </div>
+                        </div> -->
                     </div>
 
-                    <div class="mt-3">
+
+
+
+                    <div class="mt-3 markdown-bg">
                         <div cms:replace="~{${view.category.recommendPath}} ?:_" parser></div>
                     </div>
 
-                    <div id="article-comment" class="mt-3" th:if="${view.openComment}">
+                    <div id="article-comment" class="mt-3 markdown-bg" th:if="${view.openComment}">
                         <!-- <div cms:replace="@{'html/comment/'+${view.viewName} :: #fragment}" parser></div> -->
                         <div cms:replace="~{${view.path}+'/comment/'+${view.viewName} :: #fragment} ?:_" parser></div>
                         <!-- <span th:text="${view.path}"></span> -->
@@ -162,18 +233,9 @@
 
 
             </div>
-            <div class="col-xl-2  md-right ">
-                <div class="flex-table">
-                    <div cms:replace="/html/components/form :: #fragment"></div>
-                    <hr>
-                    <div class="flex-table-box" id="toc-box">
-                        <div th:utext="${view.toc}" class="content-table ">
-                        </div>
-                    </div>
 
-                </div>
-            </div>
         </div>
+
 
 
 
@@ -223,6 +285,40 @@
     </script>
 
     <script>
+
+        // var iframe = document.getElementsByClassName('iframe-video')
+        // var openPip = document.getElementById("openPip")
+
+        // // console.log(openPip)
+        // if (iframe && iframe.length > 0) {
+        //     // var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+        //     // var iframeWindow = iframe[0].contentWindow;
+        //     // var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+        //     // // 使用 iframeDocument 对象进行 DOM 操作
+        //     // var iframeElement = iframeDocument.getElementsByTagName("video")
+        //     // console.log(iframeElement);
+
+        //     // // // 在iframe加载完成后执行操作
+        //     iframe[0].onload = function () {
+        //         openPip.onclick = function () {
+        //             video.addEventListener('loadedmetadata', function () {
+        //                 // 在video上请求画中画
+        //                 video.requestPictureInPicture().catch(function (error) {
+        //                     console.log('无法启用画中画功能:', error);
+        //                 });
+        //             });
+        //             let video = document.getElementsByTagName("video")[0]
+        //             video.requestPictureInPicture();
+        //             // if (video && video.length > 0) {
+        //             //     video = video[0]
+        //             //     video.requestPictureInPicture();
+        //             // }
+        //         }
+        //     }
+
+        //     // };
+        // }
+
 
     </script>
 
@@ -415,6 +511,29 @@
         })();
     </script>
     <script th:utext="${view.js}"></script>
+    <script>
+        if (document.body.clientWidth <= 991) {
+            $(function () {
+                $('#tab-btn').click(function (event) {
+                    //取消事件冒泡  
+                    event.stopPropagation();
+                    //按钮的toggle,如果div是可见的,点击按钮切换为隐藏的;如果是隐藏的,切换为可见的。  
+                    $("#tab-content1").animate({ width: 'toggle' });
+                    return false;
+                });
+                //点击空白处隐藏弹出层，下面为滑动消失效果和淡出消失效果。
+                $(document).click(function (event) {
+                    var _con = $('#tab-btn');   // 设置目标区域
+                    if (!_con.is(event.target) && _con.has(event.target).length === 0) {
+                        $('#tab-content1').animate({ width: 'hide' });   //滑动消失
+                        //$('#view').hide(1000);          //淡出消失
+                    }
+                });
+            })
+
+        }
+
+    </script>
 </body>
 
 </html>

@@ -2,10 +2,10 @@
 <script src="/templates/resources/js/jquery-3.4.1.min.js"></script>
 <script src="/templates/resources/js/jquery.cookie.js"></script>
 <script src="/templates/resources/js/jquery.lazyload.min.js"></script>
-<script src="/templates/resources/js/index.js?v=1.22"></script>
+<script src="/templates/resources/js/index.js?v=1.23"></script>
 <!-- <script src="/templates/resources/js/statistics.js"></script> -->
 <script src="/templates/resources/js/bootstrap.min.js"></script>
-<script src="/templates/resources/js/highlightjs-line-numbers.min.js"></script>
+<!-- <script src="/templates/resources/js/highlightjs-line-numbers.min.js"></script> -->
 
 <script>
     $(function () {
@@ -69,11 +69,11 @@
         // console.log(id)
         // console.log(patentId)
         $("#ID" + id).slideDown(50);
-        $("#ID-current-" + id+" i").removeClass("bi-chevron-right")
-        $("#ID-current-" + id+" i").addClass("bi-chevron-down")
+        $("#ID-current-" + id + " i").removeClass("bi-chevron-right")
+        $("#ID-current-" + id + " i").addClass("bi-chevron-down")
         let patentId = $("#ID-current-" + id).data("parent")
-       
-       
+
+
         showArticle(patentId)
     }
     function loadCategoryActivate() {
@@ -83,8 +83,8 @@
             // console.log()
             // console.log("#" + $("#viewName").val())
             $("#ID" + $("#viewName").val()).slideDown(50);
-            $("#ID-current-" + $("#viewName").val()+" i").removeClass("bi-chevron-right")
-            $("#ID-current-" + $("#viewName").val()+" i").addClass("bi-chevron-down")
+            $("#ID-current-" + $("#viewName").val() + " i").removeClass("bi-chevron-right")
+            $("#ID-current-" + $("#viewName").val() + " i").addClass("bi-chevron-down")
 
             // console.log(id)
             if (id == "none") {
@@ -181,35 +181,91 @@
     //         $('#toc-box').load(url_ + " #toc-box")
     //         window.history.pushState("", "", url_);
     //         // loadTocscorll()
-         
+
 
     //     })
     // })
 
-        $('.category-menu a').each(function () {
-            
-            $(this).click(function(){
-                this_ =  $(this)
-                div = $(this).parent().children(".child")
-                div.slideToggle(function(){
-                    if($(this).is(":visible")){
-                       this_.children("i").removeClass("bi-chevron-right")
-                       this_.children("i").addClass("bi-chevron-down")
-                    }else{
-                        this_.children("i").removeClass("bi-chevron-down")
-                       this_.children("i").addClass("bi-chevron-right")
-                    } 
-                })
+    $('.category-table  a').each(function () {
+
+        $(this).click(function () {
+            this_ = $(this)
+            div = $(this).parent().children(".child")
+            div.slideToggle(function () {
+                if ($(this).is(":visible")) {
+                    this_.children("i").removeClass("bi-chevron-right")
+                    this_.children("i").addClass("bi-chevron-down")
+                } else {
+                    this_.children("i").removeClass("bi-chevron-down")
+                    this_.children("i").addClass("bi-chevron-right")
+                }
             })
         })
+    })
+
+    $('.category-menu a').each(function () {
+
+        $(this).click(function () {
+            this_ = $(this)
+            div = $(this).parent().children(".child")
+            div.slideToggle(function () {
+                if ($(this).is(":visible")) {
+                    this_.children("i").removeClass("bi-chevron-right")
+                    this_.children("i").addClass("bi-chevron-down")
+                } else {
+                    this_.children("i").removeClass("bi-chevron-down")
+                    this_.children("i").addClass("bi-chevron-right")
+                }
+            })
+        })
+    })
 
     $(".language-outc").before("<a href='javascript:;' class='a-outc'>点击展开</a>")
-    $(".a-outc").click(function(){
+    $(".a-outc").click(function () {
         $(this).siblings(".language-outc").slideToggle()
     })
 
 
-    $(".markdown-btn").click(function(){
+    $(".markdown-btn").click(function () {
         $(this).siblings(".markdown-btn-content").slideToggle()
     })
+
+
+
+    // 等待页面和所有资源加载完毕后执行
+    window.addEventListener('load', function () {
+        // 获取视频元素
+        const video = document.getElementById('myVideo');
+        if (video) {
+            // 加载视频
+            video.load();
+            // 自动播放
+            video.play();
+            video.onclick = function () {
+                if (video.paused) {
+                    console.log('视频已暂停');
+                    video.play();
+                } else {
+                    video.pause();
+                    console.log('视频正在播放');
+                }
+            }
+            let volume = 0; // 初始音量为50%
+            video.volume = volume;
+            // 监听鼠标滚轮事件
+            video.addEventListener('wheel', function (event) {
+                // 阻止默认滚轮行为
+                event.preventDefault();
+                // 根据滚轮方向调整音量
+                if (event.deltaY < 0) {
+                    volume = Math.min(volume + 0.1, 1);
+                } else {
+                    volume = Math.max(volume - 0.1, 0);
+                }
+                // 设置音量
+                video.volume = volume;
+            });
+        }
+
+    });
 </script>

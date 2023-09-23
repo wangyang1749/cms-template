@@ -26,7 +26,8 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm" id="header">
       <div class="navbar-brand p-0">
-        <a href="/"><img src="/logo.svg" alt="" srcset="" style="width:12rem;    filter: drop-shadow(rgba(0, 0, 0, 0.2) -3px 3px 0px);" /></a>
+        <a href="/"><img src="/logo.svg" alt="" srcset=""
+            style="width:12rem;    filter: drop-shadow(rgba(0, 0, 0, 0.2) -3px 3px 0px);" /></a>
       </div>
       <form action="/articleList" class="mobile-form">
         <input class="form-control mr-sm-2" type="search" placeholder="搜索生信内容..." name="keyword">
@@ -53,6 +54,44 @@
             </div>
           </li>
 
+
+          <li class="nav-item dropdown bioinfo-menu">
+            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
+              上游数据处理
+            </a>
+            <ul class="dropdown-menu">
+              <li class="nav-item dropdown dropright"
+                th:each="item : ${@categoryServiceImpl.listChildWithTree('20237613294')}">
+                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
+                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
+                  文章
+                </a>
+                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
+                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
+                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown bioinfo-menu">
+            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
+              组学绘图
+            </a>
+            <ul class="dropdown-menu">
+              <li class="nav-item dropdown dropright"
+                th:each="item : ${@categoryServiceImpl.listChildWithTree('202273125610')}">
+                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
+                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
+                  文章
+                </a>
+                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
+                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
+                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          
           <li class="nav-item dropdown bioinfo-menu">
             <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
               生信流程
@@ -74,48 +113,11 @@
 
           <li class="nav-item dropdown bioinfo-menu">
             <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
-              R绘图
-            </a>
-            <ul class="dropdown-menu">
-              <li class="nav-item dropdown dropright"
-                th:each="item : ${@categoryServiceImpl.listChildWithTree('202273125610')}">
-                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
-                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
-                  文章
-                </a>
-                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
-                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
-                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
-                </ul>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown bioinfo-menu">
-            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
               文献解读
             </a>
             <ul class="dropdown-menu">
               <li class="nav-item dropdown dropright"
                 th:each="item : ${@categoryServiceImpl.listChildWithTree('20217182952')}">
-                <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
-                  class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
-                  文章
-                </a>
-                <ul class="dropdown-menu m-0" th:if="${! #sets.isEmpty(item.children)}">
-                  <a th:each="child : ${item.children}" class="dropdown-item nav-link text-secondary"
-                    th:href="${child.linkPath}" th:text="${child.name}">Action</a>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown bioinfo-menu">
-            <a class="nav-link dropdown-toggle text-secondary" href="javascript:">
-              编程
-            </a>
-            <ul class="dropdown-menu">
-              <li class="nav-item dropdown dropright"
-                th:each="item : ${@categoryServiceImpl.listChildWithTree('202361613404')}">
                 <a th:classappend="${! #sets.isEmpty(item.children)} ? dropdown-toggle : ''"
                   class="nav-link  text-secondary" th:href="${item.linkPath}" th:text="${item.name}">
                   文章

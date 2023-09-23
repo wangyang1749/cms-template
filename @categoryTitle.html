@@ -2,17 +2,26 @@
     <ul th:each="item,index:${commentsVar}">
         <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
            
-            <a  th:href="${item.linkPath}" class="text-secondary"  th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+            <a th:if="!${item.isDivision}"  th:href="${item.linkPath}" class="text-secondary"  th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+                <span th:text="${item.title}"></span>
+                <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
+            </a>
+            <a href="javascript:;" th:if="${item.isDivision}"  class="text-secondary"  th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
                 <span th:text="${item.title}"></span>
                 <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
             </a>
         </li>
         <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
          
-            <a  th:href="${item.linkPath}" class="text-secondary"   th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+            <a th:if="!${item.isDivision}"   th:href="${item.linkPath}" class="text-secondary"   th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
                 <span th:text="${item.title}"></span>
                 <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
             </a>
+            <a href="javascript:;" th:if="${item.isDivision}"  class="text-secondary"  th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+                <span th:text="${item.title}"></span>
+                <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"    data-toggle="collapse"  th:data-target="'#ID'+${item.viewName}"></i>
+            </a>
+
             <div class="child collapse" th:id="'ID'+${item.viewName}">
                 <th:block th:include="this::row(${item.children},${item.viewName})"></th:block>
             </div>
@@ -20,6 +29,5 @@
         </li>
     </ul>
 </th:block>
-
 
 <div th:include="this::row(${view.contents},'none')"></div>

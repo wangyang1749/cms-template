@@ -414,7 +414,7 @@ function siderBar(id, divtop, siderbarBoxTop, siderbarBoxH, siderbarWidth) {
 
 
 }
-if ($("#siderbar-main").length>0) {
+if ($("#siderbar-main").length > 0) {
     if (document.body.clientWidth >= 977) {
         setHeight("#siderbar-main")
         var divtop = $("#siderbar-main").offset().top
@@ -433,64 +433,65 @@ if ($("#siderbar-main").length>0) {
 
 }
 
+if (document.body.clientWidth >= 991) {
+    $(".flex-table").each(function () {
+        let headerHeight = $("#header").outerHeight(true)
 
-$(".flex-table").each(function(){
-    let headerHeight = $("#header").outerHeight(true)
+        let tableTop = $(this).offset().top
+        let tableWidth = $(this).width()
+        let tableHeight = $(this).outerHeight(true)
+        let windowHeight = $(window).height()
+        let documentHeight = $(document).height()
+        let footerHeight = $("#footer").outerHeight(true)
+        let footerTop = $("#footer").offset().top
+        let tableBox = $(this).find(".flex-table-box")
+        let tableBoxTop = tableBox.offset().top
+        let setHight = windowHeight - tableBoxTop
 
-    let tableTop =$(this).offset().top
-    let tableWidth = $(this).width()
-    let tableHeight = $(this).outerHeight(true)
-    let windowHeight = $(window).height()
-    let documentHeight = $(document).height()
-    let footerHeight = $("#footer").outerHeight(true)
-    let footerTop = $("#footer").offset().top
-    let tableBox =  $(this).find(".flex-table-box")
-    let tableBoxTop = tableBox.offset().top
-    let setHight = windowHeight - tableBoxTop
+        let mainBox = $("#main-content").outerHeight(true)
 
-    let mainBox =  $("#main-content").outerHeight(true)
-   
-    // console.log(tableHeight+headerHeight+footerHeight)
-    // console.log(documentHeight)
-    // console.log(mainBox)
+        // console.log(tableHeight+headerHeight+footerHeight)
+        // console.log(documentHeight)
+        // console.log(mainBox)
 
-    if(tableHeight+headerHeight>windowHeight &&  mainBox+headerHeight <windowHeight ){
+        if (tableHeight + headerHeight > windowHeight && mainBox + headerHeight < windowHeight) {
 
-    }
-
-    if(tableHeight>setHight){
-        tableBox.height(setHight);
-    }
-    tableHeight = $(this).outerHeight(true)
-    // console.log(tableHeight)
-    let this_= this
-    
-    let scrollTop = $(document).scrollTop()
-    // let minusFooter = documentHeight-footerHeight-windowHeight
-
-    if( (scrollTop >tableTop || tableTop==headerHeight) && ( mainBox+headerHeight >windowHeight )){
-        if(documentHeight-scrollTop-tableHeight- headerHeight-footerHeight>0 ){
-            $(this_).css({ "position": "fixed", "top": headerHeight + "px","width": tableWidth + "px"})
-        }else{
-            $(this_).css({ "position": "absolute", "bottom": "0", "top": "auto" })
         }
-    }
 
-    $(document).scroll(function () {
-        // console.log(scrollTop)
-        // console.log(tableTop)
-        documentHeight = $(document).height()
+        if (tableHeight > setHight) {
+            tableBox.height(setHight);
+        }
+        tableHeight = $(this).outerHeight(true)
+        // console.log(tableHeight)
+        let this_ = this
+
         let scrollTop = $(document).scrollTop()
-        // console.log(documentHeight-scrollTop-tableHeight- headerHeight )
-        // console.log(footerTop-scrollTop-windowHeight)
-        // console.log(scrollTop)
-        // console.log(headerHeight)
-        if(scrollTop >tableTop  && ( mainBox+headerHeight >windowHeight )){
-            if(documentHeight-scrollTop-tableHeight- headerHeight-footerHeight>0 ){
-                $(this_).css({ "position": "fixed", "top": headerHeight + "px","width": tableWidth + "px"})
-            }else{
+        // let minusFooter = documentHeight-footerHeight-windowHeight
+
+        if ((scrollTop > tableTop || tableTop == headerHeight) && (mainBox + headerHeight > windowHeight)) {
+            if (documentHeight - scrollTop - tableHeight - headerHeight - footerHeight > 0) {
+                $(this_).css({ "position": "fixed", "top": headerHeight + "px", "width": tableWidth + "px" })
+            } else {
                 $(this_).css({ "position": "absolute", "bottom": "0", "top": "auto" })
             }
         }
+
+        $(document).scroll(function () {
+            // console.log(scrollTop)
+            // console.log(tableTop)
+            documentHeight = $(document).height()
+            let scrollTop = $(document).scrollTop()
+            // console.log(documentHeight-scrollTop-tableHeight- headerHeight )
+            // console.log(footerTop-scrollTop-windowHeight)
+            // console.log(scrollTop)
+            // console.log(headerHeight)
+            if (scrollTop > tableTop && (mainBox + headerHeight > windowHeight)) {
+                if (documentHeight - scrollTop - tableHeight - headerHeight - footerHeight > 0) {
+                    $(this_).css({ "position": "fixed", "top": headerHeight + "px", "width": tableWidth + "px" })
+                } else {
+                    $(this_).css({ "position": "absolute", "bottom": "0", "top": "auto" })
+                }
+            }
+        })
     })
-})
+}

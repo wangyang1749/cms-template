@@ -6,7 +6,7 @@ body {
     margin: 0 auto;
     padding: 0;
     margin: 0 auto;
-    /* background: #f6f6f6; */
+    background: #f6f6f6;
     min-height: 100%;
     display: flex;
     flex-direction: column;
@@ -757,7 +757,7 @@ a:focus {
 
 .flex-table-box {
     overflow-y: auto;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     /* height: 100%; */
 }
 
@@ -791,20 +791,7 @@ a:focus {
     }
 }
 
-@media screen and (max-width: 1200px) {
-    .container-xl {
-        margin-top: 0px !important;
-        overflow-x: hidden;
-        padding: 0;
-        flex: 1;
-    }
 
-    .md-left,
-    .md-right {
-        display: none;
-    }
-
-}
 
 .category-table>div>ul,
 .content-table>ul {
@@ -857,9 +844,7 @@ a:focus {
     padding-top: 0.5rem; */
 }
 
-.markdown-course {
-    background: transparent;
-}
+
 
 .shop-img {
     position: relative;
@@ -1048,43 +1033,11 @@ button:focus {
     outline: none !important;
 }
 
-.wp-90 img {
-    width: 90% !important;
-}
-
-.wp-80 img {
-    width: 80% !important;
-}
-
-.wp-70 img {
-    width: 70% !important;
-}
-
-.wp-60 img {
-    width: 60% !important;
-}
-
-.wp-50 img {
-    width: 50% !important;
-}
-
-.wp-40 img {
-    width: 40% !important;
-}
-
-.wp-30 img {
-    width: 30% !important;
-}
-
-.wp-20 img {
-    width: 20% !important;
-}
-
 .katex {
     font-size: inherit !important;
 }
 
-@media screen and (max-width: 1330px) {
+@media screen and (max-width: 1470px) {
     .bioinfo-menu {
         display: none;
     }
@@ -1161,7 +1114,69 @@ button:focus {
     }
 }
 
+.m-tab-btn {
+    display: none;
+}
+
+/* @media screen and (max-width: 1200px) {
+ 
+} */
+
 @media screen and (max-width: 991px) {
+
+    .container-xl {
+        /* margin-top: 0px !important; */
+        overflow-x: hidden;
+        padding: 0;
+        flex: 1;
+    }
+
+    .m-tab-btn {
+        display: block;
+        position: fixed;
+        right: 2rem;
+        z-index: 99999;
+        background: green;
+        color: #fff;
+        /* border-radius: 50%; */
+        /* width: 2rem; */
+        height: 2rem;
+        line-height: 2rem;
+        border-radius: 0.3rem;
+    }
+
+    /* .md-left, */
+    .md-right {
+        /* display: none; */
+    }
+
+    .m-order-2 {
+        order: 2;
+        position: fixed;
+        z-index: 9999999;
+        background: #64c5b0;
+        width: 60%;
+        right: 0;
+        display: none;
+        height: 100%;
+        top: 0;
+    }
+
+    .m-order-1 {
+        order: 1;
+    }
+
+    .m-order-3 {
+        order: 3;
+    }
+
+
+    .container-xl {
+        overflow-x: hidden;
+        padding: 0;
+        flex: 1;
+        margin-top: 20px !important;
+    }
 
     /*手机文章列表图文*/
     .mobile-summary {
@@ -1348,24 +1363,145 @@ button:focus {
     -moz-border-radius: .6em;
     -webkit-border-radius: 0.6em;
 }
-.index-category .item-title{
+
+.index-category .item-title {
     margin-bottom: 0;
 }
-.index-category i{
+
+.index-category i {
     font-size: 2rem;
 }
-.row{
+
+.row {
     margin-right: -7.5px;
     margin-left: -7.5px;
 }
-.col{
+
+.carousel-index.row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.col {
     margin-top: 15px;
     padding-right: 7.5px;
-    padding-left: 7.5px; 
+    padding-left: 7.5px;
 }
-.list-group-item{
-    padding-left: 0;
+
+.list-group-item {
+    /* padding-left: 0; */
 }
-.list-group-flush{
-    padding-left: 0;
+
+.list-group-flush {
+    /* padding-left: 0; */
+}
+
+
+/**markdown**/
+.markdown-course {
+    background: transparent;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+    margin: 2rem 0;
+}
+
+.markdown blockquote {
+    margin: 2rem 0;
+}
+
+.g-bg {
+    box-shadow: 0 0 5px #888888;
+    background-color: #fff;
+    filter: none !important;
+    margin: 0.5em 0;
+}
+
+.markdown-bg {
+    box-shadow: 0 0 5px #888888;
+    background-color: #fff;
+    filter: none !important;
+    margin: 0.5em 0;
+}
+
+.video-bg {
+    box-shadow: 0 0 5px #888888;
+    background-color: #fff;
+    filter: none !important;
+    margin: 0.5em 0;
+}
+
+
+.markdown img {
+    box-shadow: 0 0 5px #888888;
+    background-color: #fff;
+    filter: none !important;
+    margin: 0.5em 0;
+    padding: 2rem;
+}
+
+.markdown h2{
+    margin-top: 5rem;
+}
+
+
+@media (min-width: 576px) {
+
+    .wp-90 img {
+        width: 90% !important;
+    }
+
+    .wp-80 img {
+        width: 80% !important;
+    }
+
+    .wp-70 img {
+        width: 70% !important;
+    }
+
+    .wp-60 img {
+        width: 60% !important;
+    }
+
+    .wp-50 img {
+        width: 50% !important;
+    }
+
+    .wp-40 img {
+        width: 40% !important;
+    }
+
+    .wp-30 img {
+        width: 30% !important;
+    }
+
+    .wp-20 img {
+        width: 20% !important;
+    }
+    .markdown ul::after{
+        content: "";
+        display: block;
+        clear: both;
+    }
+    /* .markdown ul{
+
+        clear: both;
+    } */
+    .markdown .f-right-50{
+        float: right;
+        width: 50%;
+        margin-left: 2rem;
+    }
+    .markdown .f-left-50{
+        float: left;
+        width: 50%;
+        margin-right: 2rem;
+    }
+
+
 }

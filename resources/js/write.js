@@ -169,7 +169,7 @@ function loadTags() {
 //     });
 // })
 
-
+ 
 function articleOption() {
     function createArticle() {
         let textInput = $("#textInput").val()
@@ -251,7 +251,9 @@ function articleOption() {
                     // console.log(data)
                     cmsWrite.articleId = data.data.id
                     handleMessage("更新文章" + data.data.title + "成功！")
-                    window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+                    let linkPath = $("#linkPath").val()
+                    // console.log(linkPath)
+                    window.location.href = linkPath //"/" + data.data.path + "/" + data.data.viewName + ".html"
 
                 }
             });
@@ -477,7 +479,7 @@ function uploadFile(){
         if (document.getElementById("file").files[0]) {
             fd.append("file", document.getElementById("file").files[0]);
             $.ajax({
-                url: protocol + "//" + url + ":"+port+"/api/attachment/upload",
+                url: protocol + "//" + url + "/api/attachment/upload",
                 headers: {
     
                     'Authorization': 'Bearer ' + token
@@ -832,7 +834,7 @@ function saveCategory(id) {
             jsonData = JSON.stringify(params)
             // console.log(jsonData)
 
-            let address = protocol + "//" + url + ":" + port + "/api/category/save/" + id
+            let address = protocol + "//" + url  + "/api/category/save/" + id
             console.log(address)
             $.ajax({
                 url: address,
@@ -877,7 +879,7 @@ function categoryUpdate(id) {
             jsonData = JSON.stringify(params)
             // console.log(jsonData)
 
-            let address = protocol + "//" + url + ":" + port + "/api/category/update/" + id
+            let address = protocol + "//" + url  + "/api/category/update/" + id
 
             $.ajax({
                 url: address,

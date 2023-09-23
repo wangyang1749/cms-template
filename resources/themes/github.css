@@ -68,12 +68,37 @@ body {
     width: 100%;
 }
 /* 表格样式 */
- .markdown table {
+ /* .markdown table {
     width: 100%;
     display: block;
     white-space: nowrap;
     overflow: auto;
+} */
+.tab-warp{
+    /* display: flex;
+    justify-content: center; */
+    margin: 2rem 0;
+    /* width: 100%; */
+    margin-bottom: 1rem;
+    color: #212529;
+    display: grid;
+    place-items: center;
+    overflow-x: auto;
 }
+.tab-warp thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+.tab-warp td, .tab-warp th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+.tab-warp tbody tr:hover {
+    color: #212529;
+    background-color: rgba(0,0,0,.075);
+}
+
 
 .footnote-backref, .footnote-ref{
     display: inline !important; 
@@ -216,7 +241,7 @@ blockquote {
 blockquote blockquote {
     padding-right: 0;
 }
-table {
+/* table {
     padding: 0;
     word-break: initial;
 }
@@ -248,7 +273,7 @@ table tr td:first-child {
 table tr th:last-child,
 table tr td:last-child {
     margin-bottom: 0;
-}
+} */
 
 .CodeMirror-lines {
     padding-left: 4px;

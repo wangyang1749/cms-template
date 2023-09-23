@@ -87,7 +87,6 @@
                         <!-- <div cms:replace="'/'+${view.category.path}+'/top/'+${view.category.viewName} ?: _" parser null></div> -->
                         <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName} :: #fragment }   ?:_"
                             parser></div>
-
                         <div id="components">
 
                             <ul class="list-group list-group-flush" th:id="'Id-'+${view.viewName}+'-list'">
@@ -202,7 +201,7 @@
                     </form>
                 </div>
                 <div class="bg-white">
-                    <div cms:replace="~{${view.parentCategories.get(0).path}+'/CATEGORY_CHILD/'+${view.parentCategories.get(0).viewName}} ?:_"
+                    <div cms:replace="~{${view.parentCategories.get(0).path}+'/CATEGORY_PARTNER/'+${view.parentCategories.get(0).viewName}} ?:_"
                         parser>
                     </div>
                 </div>

@@ -86,7 +86,7 @@
 
         <div class="mb-3">
             <div th:each="item : ${view.getContent()}" class="list-group-item ">
-                <a target="_blank" th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'"
+                <a target="_blank" th:href="${item.linkPath}"
                     class="list-group-item-action">
 
                     <div class="d-flex w-100 justify-content-between">

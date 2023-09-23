@@ -9,11 +9,333 @@
     <!-- markdown扩展 -->
     <link rel="stylesheet" href="/templates/resources/css/admonition.css">
     <cms:block cms:replace="templates/templates/fragment/statistics" />
+    <style>
+        .graph-svg:active {
+            cursor: grabbing;
+        }
 
+        .graph-svg>g>g {
+            cursor: pointer;
+        }
+
+        .graph-link {
+            stroke: rgba(217, 217, 217, 0.9);
+        }
+
+        .graph-node {
+            fill: #02c39a;
+            stroke: rgba(217, 217, 217, 0.8);
+            stroke-width: 1px;
+        }
+
+        .graph-node:active {
+            cursor: grabbing;
+        }
+
+        .graph-text {
+            font-size: 12px;
+        }
+
+        .graph-fixed {
+            fill: #f56100;
+        }
+
+        .graph-btn {
+            border: none;
+            border-radius: 0;
+            font-size: 1.2em;
+            padding: 0 10px;
+            color: #8590a6;
+        }
+
+        .graph-btn:focus {
+            outline: none;
+        }
+
+        .graph-btn:hover {
+            color: #5e6575;
+        }
+
+        .rethink-menu-btn {
+            z-index: 3;
+            position: fixed;
+            bottom: 2%;
+        }
+
+        .rethink-menu-btn img {
+            max-width: 4em;
+        }
+    </style>
 </head>
 
 <body cms:inline="none">
     <div cms:replace="/html/components/header :: #fragment"></div>
+    <script src="/resources/js/d3.v7.min.js"></script>
+    <script>
+        let graphType = 0;
+        const defaultLinkDistance = 100,
+            linkStrength = 0.05,
+            defaultOpacity = 0.1,
+            defaultR = 8,
+            defaultTextColor = "rgba(50, 50, 50, 0.65)",
+            defaultStrongTextColor = "rgba(50, 50, 50, 1)",
+            defaultDuration = 300,
+            textXShift = 12,
+            textYShift = 21,
+            zoomScale = [0.3, 5];
+        function switchGraph(
+            divId,
+            width,
+            height,
+            graph,
+            velocityDecay,
+            alphaDecay
+        ) {
+            $("#" + divId).empty();
+            if (graphType === 0) {
+                graphType = 1;
+                addGraph(
+                    divId,
+                    graph["inner_post"],
+                    width,
+                    height,
+                    velocityDecay,
+                    alphaDecay
+                );
+                $("#graphSwitcher").text("⊙");
+            } else {
+                graphType = 0;
+                addGraph(
+                    divId,
+                    graph["outer_post"],
+                    width,
+                    height,
+                    velocityDecay,
+                    alphaDecay
+                );
+                $("#graphSwitcher").text("◎");
+            }
+        }
+        function clamp(x, lo, hi) {
+            return x < lo ? lo : x > hi ? hi : x;
+        }
+        function addGraph(
+            divId,
+            graph,
+            width,
+            height,
+            velocityDecay,
+            alphaDecay
+        ) {
+            if (height === undefined) {
+                height = Math.min(800, width);
+            }
+            let unconnectedLinks, unconnectedNodes;
+            function tick() {
+                if (link !== undefined) {
+                    link
+                        .attr("x1", (d) => d.source.x)
+                        .attr("y1", (d) => d.source.y)
+                        .attr("x2", (d) => d.target.x)
+                        .attr("y2", (d) => d.target.y);
+                }
+                node
+                    .selectAll("circle")
+                    .attr("cx", (d) => d.x)
+                    .attr("cy", (d) => d.y);
+                node
+                    .selectAll("text")
+                    .attr("x", (d) => d.x)
+                    .attr("y", (d) => d.y + textYShift)
+                    .attr("text-anchor", "middle");
+            }
+            function mouseoverNode(event, d) {
+                d3.select(this)
+                    .select("circle")
+                    .transition()
+                    .duration(defaultDuration)
+                    .attr("r", defaultR * 1.5);
+                d3.select(this)
+                    .selectAll("text")
+                    .transition()
+                    .duration(defaultDuration)
+                    .attr("y", (d) => d.y + textYShift + 6)
+                    .style("fill", defaultStrongTextColor);
+                if (graphType === 1) {
+                    return;
+                }
+                let connectedNodesId = {};
+                connectedNodesId[d.index] = true;
+                unconnectedLinks = link.filter(function (e) {
+                    if (e.source.index === d.index || e.target.index === d.index) {
+                        if (!connectedNodesId.hasOwnProperty(e.source.index)) {
+                            connectedNodesId[e.source.index] = true;
+                        }
+                        if (!connectedNodesId.hasOwnProperty(e.target.index)) {
+                            connectedNodesId[e.target.index] = true;
+                        }
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
+                unconnectedNodes = node.filter(function (e) {
+                    return !connectedNodesId.hasOwnProperty(e.index);
+                });
+                unconnectedNodes
+                    .transition()
+                    .duration(defaultDuration)
+                    .style("opacity", defaultOpacity);
+                unconnectedLinks
+                    .transition()
+                    .duration(defaultDuration)
+                    .style("opacity", defaultOpacity);
+            }
+            function mouseoutNode(event, d) {
+                const g = d3.select(this);
+                g.selectAll("text")
+                    .transition()
+                    .duration(defaultDuration)
+                    .attr("y", (d) => d.y + textYShift)
+                    .style("fill", defaultTextColor);
+                g.select("circle")
+                    .transition()
+                    .duration(defaultDuration)
+                    .attr("r", defaultR);
+                if (graphType === 1) {
+                    return;
+                }
+                unconnectedNodes
+                    .transition()
+                    .duration(defaultDuration)
+                    .style("opacity", 1);
+                unconnectedLinks
+                    .transition()
+                    .duration(defaultDuration)
+                    .style("opacity", 1);
+            }
+            function unfix(event, d) {
+                delete d.fx;
+                delete d.fy;
+                d3.select(this).classed("graph-fixed", false);
+                simulation.alpha(1).restart();
+            }
+            function redirect(event, d) {
+                if (graphType === 0) {
+                    location.href = d.url;
+                } else {
+                    const divId = d.url.split("#")[1];
+                    if (divId === undefined) {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth"
+                        });
+                    } else {
+                        const myElement = document.getElementById(divId);
+                        const topPos = myElement.offsetTop;
+                        window.scrollTo({
+                            top: topPos - 120,
+                            behavior: "smooth"
+                        });
+                        $("#" + divId)
+                            .fadeOut(300)
+                            .fadeIn(200)
+                            .fadeOut(200)
+                            .fadeIn(200);
+                    }
+                }
+            }
+            function dragend() {
+                d3.select(this).classed("graph-fixed", true);
+            }
+            function dragged(event, d) {
+                d.fx = clamp(event.x, 0, width);
+                d.fy = clamp(event.y, 0, height);
+                simulation.alpha(1).restart();
+            }
+            const simulation = d3
+                .forceSimulation()
+                .nodes(graph.nodes)
+                .velocityDecay(velocityDecay)
+                .alphaDecay(alphaDecay)
+                .force("charge", d3.forceManyBody())
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force(
+                    "graph-link",
+                    d3
+                        .forceLink(graph.links)
+                        .distance((l) => {
+                            if (l.distance !== undefined) {
+                                return l.distance;
+                            } else {
+                                return defaultLinkDistance;
+                            }
+                        })
+                        .strength(linkStrength)
+                )
+                .on("tick", tick);
+            const drag = d3.drag().on("drag", dragged).on("end", dragend);
+            const svg = d3
+                .select("#" + divId)
+                .append("svg")
+                .attr("viewBox", [0, 0, width, height])
+                .classed("graph-svg", true),
+                g = svg.append("g"),
+                link = g
+                    .selectAll(".graph-link")
+                    .data(graph.links)
+                    .join("line")
+                    .attr("stroke-width", (d) => d.weight)
+                    .classed("graph-link", true),
+                node = g
+                    .selectAll("g")
+                    .data(graph.nodes)
+                    .join("g")
+                    .on("mouseover", mouseoverNode)
+                    .on("mouseout", mouseoutNode),
+                circle = node
+                    .append("circle")
+                    .attr("r", (d) => (d.r !== undefined ? d.r : defaultR))
+                    .classed("graph-fixed", (d) => d.fx !== undefined)
+                    .classed("graph-node", true);
+            node
+                .append("a")
+                .append("text")
+                .attr("x", textXShift)
+                .attr("y", textYShift)
+                .style("fill", defaultTextColor)
+                .text((d) => (d.title !== undefined ? d.title : d.index))
+                .classed("graph-text", true)
+                .clone(true)
+                .lower()
+                .attr("fill", "none")
+                .attr("stroke", "white")
+                .attr("stroke-width", 0.3);
+            function zoomed({ transform }) {
+                const text = node.selectAll("text");
+                if (transform.k < 0.6) {
+                    if (text.attr("opacity") !== 0) {
+                        text.transition().duration(300).attr("opacity", 0);
+                    }
+                } else {
+                    text.transition().duration(300).attr("opacity", 1);
+                }
+                g.attr("transform", transform);
+            }
+            svg.call(
+                d3
+                    .zoom()
+                    .extent([
+                        [0, 0],
+                        [width, height]
+                    ])
+                    .scaleExtent(zoomScale)
+                    .on("zoom", zoomed)
+            );
+            circle.call(drag);
+            node.on("click", redirect);
+        }
+    </script>
     <div class="container margin-top-72">
         <!-- <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -21,10 +343,10 @@
             </ol>
         </nav> -->
         <div cms:if="${#sets.contains(roles, 'ADMIN')}">
- 
+
             <a th:href="'/user/editSheet/'+${view.id}" class="btn btn-success ">编辑</a>
 
-        
+
 
         </div>
         <div class="markdown shadow p-3 bg-white rounded mb-3" th:utext="${view.formatContent}">

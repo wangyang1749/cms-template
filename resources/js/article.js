@@ -261,6 +261,27 @@ function deleteArticle(id, viewName) {
 
 }
 
+function deleteArticleReturn(id,path, viewName) {
+
+    if (confirm("确定删除该文章?")) {
+        $.ajax({
+            url: protocol + "//" + url + "/api/article/delete/" + id,
+            headers: {
+                'Content-Type': 'application/json;charset=utf8',
+                'Authorization': 'Bearer ' + token
+            },
+            type: "get",
+            success: function (data) {
+                // console.log(data.data)
+                var datas = data.data
+                // Toast("删除文章" + data.data.title + "成功！", 'success')
+                window.location.href = "/"+path+"/" + viewName + ".html";
+            }
+        });
+
+    }
+
+}
 
 
 

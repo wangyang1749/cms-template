@@ -1,0 +1,267 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/resources/css/vue.css" />
+</head>
+
+<body>
+    <nav>
+        <a href="/">首页</a>
+        <!-- <a href="#/zh-cn/">中文</a> -->
+    </nav>
+
+
+    <aside class="sidebar">
+        <h1 class="app-name"><a class="app-name-link" data-nosearch="" href="#/transcriptome/doc.html"
+                th:text="${view.category.name}">转录组教程</a></h1>
+        <div class="sidebar-nav">
+
+            <th:block th:fragment="row(commentsVar,viewName)">
+                <ul th:each="item,index:${commentsVar}">
+                    <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+
+                        <a th:href="'#/'+${item.viewName}+'.html'" class="text-secondary"
+                            th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+                            <span th:text="${item.title}"></span>
+                            <i th:if="${! #sets.isEmpty(item.children)}"
+                                class="bi bi-chevron-right text-secondary pointer" data-toggle="collapse"
+                                th:data-target="'#ID'+${item.viewName}"></i>
+                        </a>
+                    </li>
+                    <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
+
+                        <a th:href="'#/'+${item.viewName}+'.html'" class="text-secondary"
+                            th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+                            <span th:text="${item.title}"></span>
+                            <i th:if="${! #sets.isEmpty(item.children)}"
+                                class="bi bi-chevron-right text-secondary pointer" data-toggle="collapse"
+                                th:data-target="'#ID'+${item.viewName}"></i>
+                        </a>
+                        <div class="child collapse" th:id="'ID'+${item.viewName}">
+                            <th:block th:include="this::row(${item.children},${item.viewName})"></th:block>
+                        </div>
+
+                    </li>
+                </ul>
+            </th:block>
+            <div th:include="this::row(${view.contents},'none')"></div>
+        </div>
+    </aside>
+
+
+    <div id="app"></div>
+    <script src="/templates/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/templates/resources/js/jquery.lazyload.min.js"></script>
+    <!-- Production -->
+    <script src="/resources/js/vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            methods: {
+                hello() {
+                    alert(this.message);
+                }
+            },
+            // Options...
+        });
+
+        const authorization = localStorage.getItem("Authorization")
+        window.$docsify = {
+            el: '#app',
+            // nameLink: '#/transcriptome',
+            name: '转录组教程',
+            requestHeaders: {
+                'Authorization': 'Bearer ' + authorization,
+            },
+            //   basePath: '/preview/category/1277/',
+            // relativePath: true,
+            loadSidebar: true,
+            // loadSidebar: '.',
+            homepage: '[[${view.contents.get(0).viewName}]].html',
+            // loadNavbar: true,
+            subMaxLevel: 3,
+            // routerMode:"history",
+            // coverpage: true,
+            // alias: {
+            //   '/.*/_sidebar.md': '/_sidebar.md'
+            // },
+            // object
+            plugins: [
+                function (hook, vm) {
+                    hook.init(function () {
+                        // 初始化完成后调用，只调用一次，没有参数。
+
+                    });
+                    hook.beforeEach(function (content) {
+                        // 每次开始解析 Markdown 内容时调用
+                        // ...
+                        $(function () {
+                            $("img.lazy").lazyload({ effect: "fadeIn" });
+                        });
+
+                        return content;
+                    });
+
+                    hook.afterEach(function (html, next) {
+                        // 解析成 html 后调用。
+                        // beforeEach 和 afterEach 支持处理异步逻辑
+                        // ...
+                        // 异步处理完成后调用 next(html) 返回结果
+                        next(html);
+                    });
+
+                    hook.doneEach(function () {
+                        // let links = document.querySelectorAll('a');
+
+                        // // 遍历所有的 <a> 标签
+                        // links.forEach(link => {
+                        //   // 获取链接的绝对路径
+                        //   const absoluteUrl = link.href;
+
+                        //   // 获取当前页面的 URL
+                        //   const hostUrl = window.location.protocol + "//" + window.location.host + "/";
+                        //   const currentUrl = window.location.href
+                        //   // console.log(absoluteUrl);
+                        //   // // console.log(currentUrl);
+                        //   // console.log(absoluteUrl.indexOf(currentUrl));
+                        //   // 如果链接的域名和当前页面的域名相同，则将绝对路径转换为相对路径
+                        //   if (absoluteUrl.indexOf(hostUrl) === 0) {
+                        //     const relativeUrl = absoluteUrl.replace(hostUrl, '');
+                        //     link.href = "#/"+ relativeUrl;
+                        //     // console.log(relativeUrl);
+                        //   }
+                        // });
+                    });
+                }
+            ],
+            vueComponents: {
+                'button-counter': {
+                    template: `
+        <button @click="count += 1">
+          You clicked me {{ count }} times
+        </button>
+      `,
+                    data() {
+                        return {
+                            count: 0,
+                        }
+                    }
+                },
+            },
+            vueMounts: {
+                '.content-header': {
+                    data() {
+                        return {
+                            count: 0,
+                        };
+                    }, methods: {
+                        deleteArticle(id, viewName) {
+                            var url = location.hostname;
+                            var protocol = window.location.protocol;
+                            // var token = $.cookie('Authorization')
+                            if (confirm("确定删除该文章?")) {
+                                $.ajax({
+                                    url: protocol + "//" + url + "/api/article/delete/" + id,
+                                    headers: {
+                                        'Content-Type': 'application/json;charset=utf8',
+                                        'Authorization': 'Bearer ' + authorization
+                                    },
+                                    type: "get",
+                                    success: function (data) {
+                                        // console.log(data.data)
+                                        var datas = data.data
+                                        // Toast("删除文章" + data.data.title + "成功！", 'success')
+                                        window.location.href = "/html_articleList_" + viewName + ".html";
+                                    }
+                                });
+
+                            }
+
+                        }
+                    },
+                },
+            },
+            // data() {
+            //   return {
+            //     message: 'Hello, World!'
+            //   };
+            // },
+            // methods: {
+            //   hello() {
+            //     alert(this.message);
+            //   }
+            // },
+            // markdown: function (marked, renderer) {
+            //   // ...
+            //   // console.log()
+            //   // // 获取所有的 <a> 标签
+            //   // let links = document.querySelectorAll('a');
+
+            //   // // 遍历所有的 <a> 标签
+            //   // links.forEach(link => {
+            //   //   // 获取链接的绝对路径
+            //   //   const absoluteUrl = link.href;
+
+            //   //   // 获取当前页面的 URL
+            //   //   const currentUrl = window.location.href;
+
+            //   //   // 如果链接的域名和当前页面的域名相同，则将绝对路径转换为相对路径
+            //   //   if (absoluteUrl.indexOf(currentUrl) === 0) {
+            //   //     const relativeUrl = absoluteUrl.replace(currentUrl, '');
+            //   //     link.href = relativeUrl;
+            //   //   }
+            //   // });
+            //   return marked;
+            // },
+            // markdown: {
+            //   smartypants: true,
+            //   renderer: {
+            //     link: function () {
+            //       // ...
+            //       console.log(111111111111111)
+
+            //     },
+            //   },
+            // },
+        }
+
+
+        function deleteArticle(id, viewName) {
+            var url = location.hostname;
+            var protocol = window.location.protocol;
+            // var token = $.cookie('Authorization')
+            if (confirm("确定删除该文章?")) {
+                $.ajax({
+                    url: protocol + "//" + url + "/api/article/delete/" + id,
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf8',
+                        'Authorization': 'Bearer ' + authorization
+                    },
+                    type: "get",
+                    success: function (data) {
+                        console.log(data.data)
+                        var datas = data.data.linkPath
+
+                        // Toast("删除文章" + data.data.title + "成功！", 'success')
+                        window.location.href = data.data.category.linkPath;
+                    }
+                });
+
+            }
+
+        }
+    </script>
+    <script>
+
+    </script>
+    <script src="/resources/js/docsify.js"></script>
+    <!-- <script src="//cdn.jsdelivr.net/npm/docsify@4"></script> -->
+</body>
+
+</html>

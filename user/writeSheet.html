@@ -66,6 +66,19 @@
 
             </div>
         </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">封面图片</label>
+            <img th:src="${view==null?'':view.picPath}" alt="">
+            <p>
+                picPath<input class="form-control" th:value="${view==null?'':view.picPath}" id="picPath" type="text" />
+            </p>
+            <p>
+                picThumbPath<input class="form-control" th:value="${view==null?'':view.picThumbPath}" id="picThumbPath"
+                    type="text" />
+            </p>
+
+        </div>
+
         <!-- <div th:utext="${view.originalContent}" contenteditable="true" id="content"> -->
 
 
@@ -145,7 +158,7 @@
                 path    : "../lib/"
             });
             */
-            testEditor.val("aaa")
+            // testEditor.val("aaa")
         });
     </script>
     <script>
@@ -153,7 +166,7 @@
         let formatContent = $("#formatContent").val()
         let isSourceCode = false
         function uploadFileSheet() {
-            
+
         }
         // $("#textInput").val("aaaa")
         uploadFileSheet()
@@ -162,6 +175,8 @@
             function createSheet() {
                 let title = $("#title").html()
                 let content = $("#textInput").val()
+                let picPath = $("#picPath").val()
+                let picThumbPath = $("#picThumbPath").val()
                 if (title == "") {
                     // alert("文章标题不能为空")
                     handleMessage("文章标题不能为空")
@@ -176,7 +191,9 @@
                 return {
                     originalContent: content, // 输入的markdown
                     title: title,
-                    isSource: false
+                    isSource: false,
+                    picPath:picPath,
+                    picThumbPath:picThumbPath
                 };
             }
             function updateSheet() {
@@ -187,7 +204,7 @@
                     jsonData = JSON.stringify(params)
                     // console.log(jsonData)
 
-                    let address = protocol + "//" + url + ":" + port + "/api/sheet/update/" + sheetId
+                    let address = protocol + "//" + url + "/api/sheet/update/" + sheetId
 
                     $.ajax({
                         url: address,
@@ -222,7 +239,7 @@
                     jsonData = JSON.stringify(params)
                     // console.log(jsonData)
 
-                    let address = protocol + "//" + url + ":" + port + "/api/sheet/save/" + sheetId + "?more=true"
+                    let address = protocol + "//" + url + "/api/sheet/save/" + sheetId + "?more=true"
 
                     $.ajax({
                         url: address,
@@ -268,7 +285,7 @@
                 if (document.getElementById("file").files[0]) {
                     fd.append("file", document.getElementById("file").files[0]);
                     $.ajax({
-                        url: protocol + "//" + url + ":" + port + "/api/attachment/upload",
+                        url: protocol + "//" + url + "/api/attachment/upload",
                         headers: {
 
                             'Authorization': 'Bearer ' + token
@@ -304,15 +321,15 @@
                             $('.progress > div').html("上传完成！")
                             // uploadPanel();
                             // console.log(data)
-                            testEditor.insertValue("[点击下载]("+data.data.path+") \n \n");
-                            setTimeout(function(){
+                            testEditor.insertValue("[点击下载](" + data.data.path + ") \n \n");
+                            setTimeout(function () {
                                 updateSheet()
-                            },1000)
-                            
+                            }, 1000)
+
                             handleMessage("上传成功")
-                           
+
                             console.log(data)
-                         
+
                         }
                     });
                 }

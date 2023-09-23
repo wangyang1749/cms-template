@@ -17,10 +17,12 @@
 
 
                     <section id="fragment" class="w-100">
-                        <div id="carouselExampleCaptions" class="carousel slide  mb-3 shadow carousel-fade" data-ride="carousel">
+                        <div id="carouselExampleCaptions" class="carousel slide  mb-3 g-bg  carousel-fade"
+                            data-ride="carousel">
                             <ol class="carousel-indicators">
                                 <li th:each="item , userStat: ${view}" data-target="#carouselExampleCaptions"
-                                    th:data-slide-to="${userStat.index}" th:class="${userStat.index == 0} ? 'active' :''">
+                                    th:data-slide-to="${userStat.index}"
+                                    th:class="${userStat.index == 0} ? 'active' :''">
                                 </li>
 
                             </ol>
@@ -29,25 +31,28 @@
 
                                 <div th:if="${view != null}" class="carousel-item " th:each="item , userStat: ${view}"
                                     th:class="${userStat.index == 0} ? ' carousel-item active' :'carousel-item'">
+                                    <img   style="height: 100%;object-fit: cover;" 
+                                    th:if="${item.picPath!=null && item.picPath != ''}" th:src="${item.picPath}" class="d-block w-100">
+                                    <!-- <video  id="myVideo" style="height: 100%;object-fit: cover;" 
+                                        th:if="${item.picPath!=null}" th:src="${item.picPath}" class="d-block w-100"> -->
+                                        <img th:if="${item.picPath == null || item.picPath == ''}"
+                                            src="https://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/1676179378473_1676179634655.jpg?x-oss-process=image/resize,l_800,mfit"
+                                            class="d-block w-100">
 
-                                    <img th:if="${item.picPath!=null}" th:src="${item.picPath}" class="d-block w-100">
-                                    <img th:if="${item.picPath == null}"
-                                        src="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/1676179378473_1676179634655.jpg?x-oss-process=image/resize,l_800,mfit"
-                                        class="d-block w-100">
+                                        <div class="carousel-caption-warp">
+                                            <div class="carousel-caption-box">
+                                                <a th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'">
+                                                    <h5 th:text="${item.title}"></h5>
+                                                    <!-- <p th:text="${item.summary}"></p> -->
+                                                </a>
+                                            </div>
 
-                                    <div class="carousel-caption-warp">
-                                        <div class="carousel-caption-box">
-                                            <a th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'">
-                                                <h5 th:text="${item.title}"></h5>
-                                                <!-- <p th:text="${item.summary}"></p> -->
-                                            </a>
                                         </div>
-
-                                    </div>
 
                                 </div>
 
                             </div>
+
                             <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button"
                                 data-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -73,7 +78,11 @@
 
     <div cms:replace="templates/templates/fragment/footer"></div>
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script> -->
+    <script>
 
+
+
+    </script>
 </body>
 
 </html>
