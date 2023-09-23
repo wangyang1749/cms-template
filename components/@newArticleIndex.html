@@ -12,7 +12,7 @@
 
     <div class="container ">
         <section id="fragment" class="mb-3 g-bg p-2">
-            <ul class="list-group list-group-flush " th:id="${#strings.arraySplit(url,',')[0]}+'-list'">
+            <ul class="list-group list-group-flush " th:id="${#strings.arraySplit(url,',')[0].replace('/','-')}+'-list'">
                 <!-- <div class="list-group-item list-group-item-light d-flex justify-content-between">
                     <span> <i class="bi bi-journal-bookmark"></i> <span th:text="${name}"></span></span>
                     <a class="text-secondary" th:href="${showUrl}">
@@ -86,7 +86,7 @@
     
                 </a> -->
             </ul>
-            <div th:id="${#strings.arraySplit(url,',')[0]}+'-btn'"  >
+            <div th:id="${#strings.arraySplit(url,',')[0].replace('/','-')}+'-btn'"  >
                 <a class="btn btn-info btn-lg btn-block load-id" href="javascript:;" th:onclick="loadList([[${url}]])"
                     style="text-align: center;" th:data-url="${url}">
                     <!-- <span th:text="${info.ids}"></span>
@@ -107,6 +107,44 @@
         $(function () {
             $("img.lazy").lazyload({ effect: "fadeIn" });
         });
+
+        var flag = true
+        function loadList(path) {
+            // console.log(path)
+            let path2 = path.replaceAll('/','-')
+            // let lastPath = pathSplit[pathSplit.length-1]
+            id = path2.split(",")[0]
+            // console.log()
+            var url = location.hostname;
+            var protocol = window.location.protocol;
+            var port = window.location.port
+            let address = protocol + "//" + url + ":" + port + "/" + path
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'text/html;charset=utf8',
+                    'Accept': 'text/html'
+                },
+                type: 'GET',
+                success: function (data) {
+                    html = $(data).find(".list-group").children()
+
+
+                    $("#" + id + '-list').append(html)
+
+                    loadBtn = $(data).find("#" + id + '-btn').children()
+                    $("#" + id + '-btn').html(loadBtn)
+                    flag = true
+                    $("img.lazy").lazyload({ effect: "fadeIn", threshold: 500 });
+                    // loadImg('markdown-preview')
+                    // console.log(loadBtn)
+                }, error: function (data) {
+                    res = JSON.parse(data.responseText)
+                    // console.log(res.message)
+                    $("#" + id + '-btn').html(res.message)
+                }
+            });
+        }
     </script>
 </body>
 

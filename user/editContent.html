@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <cms:block cms:replace="templates/templates/fragment/header" />
+
+    <title th:text="${view==null? '发布文章':view.title}"></title>
+</head>
+
+<body>
+    <style>
+        #header {
+            position: relative;
+        }
+
+
+        .article-option {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+
+
+        /*svg字符串上传面板*/
+        .fixed-card {
+            /* position: fixed; */
+            width: 60rem;
+            z-index: 99;
+            display: none;
+            width: 100%;
+            overflow-y: auto;
+        }
+
+        .edit-input {
+            z-index: 9999;
+            width: 100%;
+            /* margin: 0; */
+
+        }
+
+        #markdown-preview {
+            overflow-y: auto;
+            max-height: 39rem;
+            overflow-x: auto;
+        }
+
+        .col-50 {
+            width: 50%;
+        }
+    </style>
+    <!-- Start Header Area -->
+    <div th:replace="/html/components/header :: #fragment"></div>
+    <!-- end Header Area -->
+
+    <div class="margin-top-72">
+
+
+        <form class="article-option">
+            <div class="row bg-white">
+                <!-- <div class="summernote">站长素材（sc.chinaz.com） 1</div> -->
+                <div class="col col-50">
+                    <div id="test-editormd" class="edit-input ">
+                        <textarea style="display:none;" id="originalContent" th:text="${view==null?'':view.originalContent}">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="col p-3 col-50">
+                    <div id="markdown-preview" th:utext="${view==null?'':view.formatContent}" class="markdown  pr-3">
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">文章标题</label>
+                <input class="form-control" th:value="${view==null?'':view.title}" id="title" type="text"
+                    placeholder="请输入文章标题" />
+            </div>
+            <div class="d-flex justify-content-end form-group">
+                <!-- <button type="button" class="btn btn-all" id="copyHTML">拷贝HTML</button> -->
+                <button type="button" class="btn  btn-success" id="attachment">附件</button>
+                <button type="button" class="btn  btn-success" id="saveLiterature">保存</button>
+                <!-- <button type="button" class="btn  btn-success" id="previewNet">预览</button> -->
+                <!-- <button type="button" class="btn btn-warning" id="submitPanel">发布</button> -->
+
+                <!-- <button type="button" class="btn  btn-success" id="submitCreate">首次发布</button> -->
+                <button type="button" class="btn  btn-success" id="literatureUpdate">更新发布</button>
+
+            </div>
+
+        </form>
+
+
+
+
+
+        <div class="drawer-panel drawer-attachment">
+            <div>
+                <a href="javascript:;" id="uploadFile" class="btn btn-all">上传</a>
+
+            </div>
+            <div id="uploadPanel" class="uploadPanel" style="display: none;">
+                <div class="p-2">
+                    <div>
+                        <input type="file" name="file" id="file">
+                    </div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar" style="width: 0%;"></div>
+                    </div>
+                    <!-- <progress value="22" max="100">
+                    </progress> -->
+                </div>
+            </div>
+            <div id="attachment-list"></div>
+            <div class="attachment m-style "></div>
+        </div>
+
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="mr-auto">消息</strong>
+                <button id="closeToast" type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body" id="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- <div cms:replace="/html/components/footer :: #fragment"></div> -->
+
+    <div th:replace="templates/templates/fragment/footer"></div>
+
+    <!-- <script src="/templates/resources/js/jquery-3.4.1.min.js"></script> -->
+
+
+    <script src="/templates/resources/js/mermaid.min.js"></script>
+    <script src="/templates/resources/js/markdown-it.min.js"></script>
+    <script src='/templates/resources/js/bootstrap-tags.min.js'></script>
+    <script src="/templates/resources/js/user.js"></script>
+    <script src="/templates/resources/js/jquery.pagination.js"></script>
+    <script src="/templates/resources/js/uploadImg.js?v=1.1"></script>
+    <script src="/templates/resources/js/article.js?v=1.07"></script>
+    <script src="/templates/resources/js/highlight/highlight.min.js"></script>
+    <script defer src="/templates/resources/js/katex.min.js"></script>
+    <script src="/templates/resources/js/write.js?v=1.9"></script>
+    <!-- <script src="/templates/resources/js/attachment.js"></script> -->
+
+    <!-- <script src="/templates/resources/js/jquery.min.js"></script>
+    <script src="/templates/resources/js/bootstrap.min.js"></script>
+    <script src="/templates/resources/dist/summernote.js"></script>
+    <link href="/templates/resources/dist/summernote.css" rel="stylesheet"> -->
+
+    <script src="/templates/resources/js/editormd.min.js"></script>
+
+    <!-- <script>
+        $(function () {
+            $('.summernote').summernote({
+                height: 200,
+                tabsize: 2,
+                lang: 'zh-CN'
+            });
+        });
+    </script> -->
+
+
+    <script>
+        mermaid.init({ noteMargin: 10 }, $(".mermaid"));
+    // mermaid.mermaidAPI.initialize({ startOnLoad: false });
+
+    // mermaid.initialize({ startOnLoad: true });
+
+    //   mermaid.init({
+    //     theme: 'forest',
+    //     // themeCSS: '.node rect { fill: red; }',
+    //     logLevel: 3,
+    //     securityLevel: 'loose',
+    //     flowchart: { curve: 'basis' },
+    //     gantt: { axisFormat: '%m/%d/%Y' },
+    //     sequence: { actorMargin: 50 },
+    //     // sequenceDiagram: { actorMargin: 300 } // deprecated
+    //   },$('.mermaid'));
+    </script>
+
+    <script>
+
+        /**
+     * 插入内容到光标处
+     */
+        (function ($) {
+            // "use strict";
+            $.fn.extend({
+                insertAtCaret: function (myValue) {
+                    var $t = $(this)[0];
+                    if (document.selection) {
+                        this.focus();
+                        var sel = document.selection.createRange();
+                        sel.text = myValue;
+                        this.focus();
+                    } else {
+                        if ($t.selectionStart || $t.selectionStart == '0') {
+                            var startPos = $t.selectionStart;
+                            var endPos = $t.selectionEnd;
+                            var scrollTop = $t.scrollTop;
+                            $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
+                            this.focus();
+                            $t.selectionStart = startPos + myValue.length;
+                            $t.selectionEnd = startPos + myValue.length;
+                            $t.scrollTop = scrollTop;
+                        } else {
+                            this.value += myValue;
+                            this.focus();
+                        }
+                    }
+                }
+            });
+        })(jQuery);
+
+
+    </script>
+
+    <!-- <script src="/templates/resources/js/jquery.cookie.js"></script> -->
+
+
+
+    <script>
+        $("#copyHTML").click(function () {
+            // console.log("11111111111")
+            copyContent('markdown-preview')
+        })
+    </script>
+    <script>
+
+        loadImg('markdown-preview')
+
+        // let weixin = document.getElementById("weixin");
+
+        // let support = document.getElementById("support");
+        // support.onmouseover = function(){
+        //     loadImage(weixin,weixin.dataset.slide,showImage);
+        //     weixin.setAttribute("style","display:inline")
+        // }
+        // support.onmouseout = function(){
+        //     console.log("bbb")
+        //     weixin.setAttribute("style","display:none")
+        // }
+    </script>
+
+    <!-- <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.2/build/highlight.min.js"></script> -->
+
+    <script>
+        // hljs.addPlugin({
+        //     'after:highlight': (result) => {
+        //         result.value = result.value.replace(/^/gm, '<span class="line-num"></span>')
+        //     }
+        // });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
+            });
+        });
+
+
+    </script>
+
+
+    <script>
+
+        (function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                var mathElems = document.getElementsByClassName("katex");
+                var elems = [];
+                for (const i in mathElems) {
+                    if (mathElems.hasOwnProperty(i)) elems.push(mathElems[i]);
+                }
+
+                elems.forEach(elem => {
+                    katex.render(elem.textContent, elem, { throwOnError: false, displayMode: elem.nodeName !== 'SPAN', });
+                });
+            });
+        })();
+    </script>
+    <script>
+        var testEditor;
+
+        $(function () {
+            testEditor = editormd("test-editormd", {
+                width: "90%",
+                height: 640,
+                watch: false,
+                toolbar: false,
+                codeFold: false,
+                syncScrolling: "single",
+                path: "/templates/resources/lib/editor/",
+                htmlDecode: true,
+                imageUpload: false,
+                onload: function () {
+                    initPasteDragImg(this); //必须
+                }, onchange() {
+                    // console.log("aa")
+                }
+                // emoji:true
+            });
+
+            /*
+            // or
+            testEditor = editormd({
+                id      : "test-editormd",
+                width   : "90%",
+                height  : 640,
+                path    : "../lib/"
+            });
+            */
+        });
+    </script>
+
+    <script>
+
+        cmsWrite.articleId = null
+        function setArticleId(param) {
+            cmsWrite.articleId = param
+        }
+        literatureUpdate([[${ view.id }]])
+        saveLiterature([[${ view.id }]])
+        // setArticleId([[${ view== null ? '' : view.id }]])
+        /**
+         * 判断是否在更新页面
+         */
+        // if (cmsWrite.articleId) {
+        //     $("#submitCreate").css("display", "none")
+        //     $("#submitUpdate").css("display", "inline-block")
+        // }
+        cmsWriteInit()
+        uploadFile()
+        // formatHtml()
+
+
+        $("#file").change(function () {
+            console.log(1111111111111)
+            var fd = new FormData();
+            // 如果有多张图片一块上传，下面直接使用fd.append()继续追加即可
+            if (document.getElementById("file").files[0]) {
+                fd.append("file", document.getElementById("file").files[0]);
+                $.ajax({
+                    url: protocol + "//" + url + "/api/attachment/upload",
+                    headers: {
+
+                        'Authorization': 'Bearer ' + token
+                    },
+                    type: 'post',
+                    data: fd,
+                    dataType: 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    processData: false,
+                    contentType: false,
+                    xhr: function () {
+                        var xhr = new XMLHttpRequest();
+                        //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+                        xhr.upload.addEventListener('progress', function (e) {
+                            console.log(e);
+                            //loaded代表上传了多少
+                            //total代表总数为多少
+                            var progressRate = (e.loaded / e.total) * 100;
+                            console.log(progressRate)
+
+                            //通过设置进度条的宽度达到效果
+                            $('.progress > div').css('width', progressRate + '%');
+                            $('.progress > div').html(progressRate + '%')
+                            if (progressRate == 100) {
+                                $('.progress > div').html("上传服务器完成，请等待！")
+                            }
+                        })
+
+                        return xhr;
+                    },
+                    success: function (data) {
+                        // testEditor.insertValue(handleType(data.data));
+                        $('.progress > div').html("上传完成！")
+                        uploadPanel();
+                        handleMessage("上传成功")
+                        loadAttachment(0)
+                        console.log(data)
+
+                    }
+                });
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>
