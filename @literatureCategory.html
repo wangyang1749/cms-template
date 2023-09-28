@@ -35,20 +35,19 @@
                     </div>
                 </form>
                 <hr>
-                <div th:utext="${view.formatContent}"></div>
-                <!-- <ul>
-                    <li th:each="item,index:${view}" class="list-unstyled">
+                <ul>
+                    <li th:each="item,index:${contents}" class="list-unstyled">
                    
-                        <a th:if="${item.url}" th:href="${item.url}">
+                        <a th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'">
                             <span th:text="${item.title}"></span>
                         </a>
-                        <span th:unless="${item.url}" th:text="${item.title}"></span>
+                        <!-- <span th:unless="${item.url}" th:text="${item.title}"></span> -->
                         
                         <span th:text="${item.key}"></span>
                         <hr>
                     </li>
 
-                </ul> -->
+                </ul>
             </div>
         </div>
 

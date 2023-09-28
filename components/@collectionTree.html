@@ -32,13 +32,13 @@
                             <th:block th:fragment="row(commentsVar)">
                                 <ul th:each="item,index:${commentsVar}">
                                     <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
-                                        <a th:href="'/html_literature_'+${item.key}+'.html'" class="text-secondary">
+                                        <a th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'" class="text-secondary">
                                             <i class="bi  bi-file-earmark-text"></i> <span
                                                 th:text="${item.name}"></span>
                                         </a>
                                     </li>
                                     <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
-                                        <a th:href="'/html_literature_'+${item.key}+'.html'" class="text-secondary">
+                                        <a th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'" class="text-secondary">
                                             <i class="bi  bi-file-earmark-text"></i> <span
                                                 th:text="${item.name}"></span>
                                         </a>
