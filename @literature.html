@@ -35,6 +35,9 @@
                     </div>
                 </form>
                 <hr>
+                <span cms:if="${#sets.contains(roles, 'ADMIN')}">
+                    <a th:href="'/user/editContent/'+${view.id}">编辑</a>
+                </span>
                 <div th:utext="${view.formatContent}"></div>
                 <!-- <ul>
                     <li th:each="item,index:${view}" class="list-unstyled">

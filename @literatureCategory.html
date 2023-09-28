@@ -43,7 +43,10 @@
                         </a>
                         <!-- <span th:unless="${item.url}" th:text="${item.title}"></span> -->
                         
-                        <span th:text="${item.key}"></span>
+                        <span th:text="${item.key}"></span>111
+                        <span cms:if="${#sets.contains(roles, 'ADMIN')}">
+                            <a th:href="'/user/editContent/'+${item.id}">编辑</a>
+                        </span>
                         <hr>
                     </li>
 

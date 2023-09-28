@@ -902,3 +902,108 @@ function categoryUpdate(id) {
 
 }
 
+
+
+
+
+function createLiterature() {
+    let title = $("#title").val()
+    // let categories = $("#categories").val()
+    let originalContent = $("#originalContent").val()
+   
+    // if (categories == "" || categories == 0) {
+    //     // alert("文章分类不能为空")
+    //     Toast("文章分类不能为空", 'error')
+    //     return
+    // }
+    // if (textInput == "") {
+    //     // alert("文章内容不能为空")
+    //     Toast("文章内容不能为空", 'error')
+    //     return
+    // }
+    // let summary = $("#summary").val()
+    return {
+        title: title, // 输入的markdown
+        originalContent: originalContent,
+    };
+}
+
+
+
+function saveLiterature(id) {
+    function save(){
+        var params = createLiterature()
+        console.log(params)
+       
+        if (params) {
+
+            jsonData = JSON.stringify(params)
+            // console.log(jsonData)
+
+            let address = protocol + "//" + url  + "/api/literature/save/" + id
+            console.log(address)
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'application/json;charset=utf8',
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                },
+                type: 'POST',
+                data: jsonData,
+                success: function (data) {
+                    $("#markdown-preview").html(data.data.formatContent)
+                    handleMessage("保存分类" + data.data.name + "成功！", 'success')
+                    // window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+
+                }
+            });
+        }
+    }
+    $("#saveLiterature").click(function () {
+       
+        save()
+    })
+
+
+    document.addEventListener("keydown", function (event) {
+        if (event.ctrlKey && event.keyCode === 83) {
+            event.preventDefault();
+            save()
+        }
+    })
+}
+
+
+
+function literatureUpdate(id) {
+    $("#literatureUpdate").click(function () {
+        var params = createLiterature()
+        console.log(params)
+        if (params) {
+
+            jsonData = JSON.stringify(params)
+            // console.log(jsonData)
+
+            let address = protocol + "//" + url  + "/api/literature/update/" + id
+
+            $.ajax({
+                url: address,
+                headers: {
+                    'Content-Type': 'application/json;charset=utf8',
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                },
+                type: 'POST',
+                data: jsonData,
+                success: function (data) {
+                    handleMessage("更新分类" + data.data.name + "成功！", 'success')
+                    window.location.href = "/" + data.data.path + "/" + data.data.viewName + ".html"
+
+                }
+            });
+        }
+
+    })
+
+}
