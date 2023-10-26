@@ -910,6 +910,7 @@ function createLiterature() {
     let title = $("#title").val()
     // let categories = $("#categories").val()
     let originalContent = $("#originalContent").val()
+    
    
     // if (categories == "" || categories == 0) {
     //     // alert("文章分类不能为空")
@@ -925,6 +926,7 @@ function createLiterature() {
     return {
         title: title, // 输入的markdown
         originalContent: originalContent,
+        tagIds: cmsWrite.selectTags
     };
 }
 

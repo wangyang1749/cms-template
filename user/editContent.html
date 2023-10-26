@@ -3,6 +3,7 @@
 
 <head>
     <cms:block cms:replace="templates/templates/fragment/header" />
+    <link rel="stylesheet" href="/templates/resources/css/bootstrap-tags.css" />
 
     <title th:text="${view==null? '发布文章':view.title}"></title>
 </head>
@@ -43,7 +44,7 @@
             max-height: 39rem;
             overflow-x: auto;
         }
-
+ 
         .col-50 {
             width: 50%;
         }
@@ -60,7 +61,7 @@
                 <!-- <div class="summernote">站长素材（sc.chinaz.com） 1</div> -->
                 <div class="col col-50">
                     <div id="test-editormd" class="edit-input ">
-                        <textarea style="display:none;" id="originalContent" th:text="${view==null?'':view.originalContent}">
+                        <textarea style="display:none;" id="originalContent" th:text="${originalContent}">
                         </textarea>
                     </div>
                 </div>
@@ -75,6 +76,11 @@
                 <input class="form-control" th:value="${view==null?'':view.title}" id="title" type="text"
                     placeholder="请输入文章标题" />
             </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">文章标签</label>
+                <div id="my-tag-list" class=" tag-list  "></div>
+            </div>
+
             <div class="d-flex justify-content-end form-group">
                 <!-- <button type="button" class="btn btn-all" id="copyHTML">拷贝HTML</button> -->
                 <button type="button" class="btn  btn-success" id="attachment">附件</button>
@@ -154,6 +160,7 @@
     <link href="/templates/resources/dist/summernote.css" rel="stylesheet"> -->
 
     <script src="/templates/resources/js/editormd.min.js"></script>
+
 
     <!-- <script>
         $(function () {
@@ -325,6 +332,7 @@
         }
         literatureUpdate([[${ view.id }]])
         saveLiterature([[${ view.id }]])
+        setSelectTags([[${ view== null ? '' : view.tagIds }]])
         // setArticleId([[${ view== null ? '' : view.id }]])
         /**
          * 判断是否在更新页面
