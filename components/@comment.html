@@ -9,7 +9,8 @@
 <body>
     <div>
         <ul th:each="item : ${view}">
-            <li th:text="${item.username}"></li>
+            <li th:text="${item.userId}"></li>
+            <li th:text="${item.originalContent}"></li>
             <li th:utext="${item.formatContent}"></li>
         </ul>
     </div>

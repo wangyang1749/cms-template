@@ -58,23 +58,24 @@
                     <div>
                         <ul class="nav nav-tabs mt-3">
                             <li class="nav-item">
-                                <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home"
-                                    type="button" aria-selected="true">最新文章</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile"
+                                <button class="nav-link active" id="profile-tab" data-toggle="tab" data-target="#profile"
                                     type="button" aria-selected="false">热门文章</button>
                             </li>
+                            <li class="nav-item">
+                                <button class="nav-link " id="home-tab" data-toggle="tab" data-target="#home"
+                                    type="button" aria-selected="true">最新文章</button>
+                            </li>
+                       
                         </ul>
 
                         <div class="tab-content">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade  show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <div cms:replace="/html/components/hotArticle :: #fragment"></div>
+                            </div>
+                            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <div cms:replace="/html/components/newArticleIndex :: #fragment"></div>
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <div cms:replace="/html/components/hotArticle :: #fragment"></div>
-
-                            </div>
+                          
                         </div>
                     </div>
 
@@ -218,7 +219,9 @@
         var flag = true
         function loadList(path) {
             // console.log(path)
-            id = path.split(",")[0]
+            let path2 = path.replaceAll('/','-')
+            // let lastPath = pathSplit[pathSplit.length-1]
+            id = path2.split(",")[0]
             // console.log()
             var url = location.hostname;
             var protocol = window.location.protocol;
@@ -228,7 +231,7 @@
                 url: address,
                 headers: {
                     'Content-Type': 'text/html;charset=utf8',
-                    // 'Accept': 'application/text'
+                    'Accept': 'text/html'
                 },
                 type: 'GET',
                 success: function (data) {
@@ -250,7 +253,6 @@
                 }
             });
         }
-
 
         // $(window).scroll(function () {
         //     var _target = $(document).height() - $(window).height() - $(window).scrollTop()

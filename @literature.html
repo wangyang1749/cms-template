@@ -35,10 +35,19 @@
                     </div>
                 </form>
                 <hr>
+   
+                
+           
+                <div class="border p-3">
+                    <b class="badge badge-primary">Title :</b> <b th:text="${view.title}"></b><br>
+                    <b class="badge  badge-success">Publish Date :</b> <b th:text="${view.publishDate}">11</b><br>
+                    <b class="badge badge-info">Zotero Link:</b> <a th:href="'zotero://select/library/items/'+${view.zoteroKey}" th:text="'zotero://select/library/items/'+${view.zoteroKey}">11</a><br>
+                </div>
+                <hr>
                 <span cms:if="${#sets.contains(roles, 'ADMIN')}">
                     <a th:href="'/user/editContent/'+${view.id}">编辑</a>
                 </span>
-                <div th:utext="${view.formatContent}"></div>
+                <div  class="markdown" th:utext="${view.formatContent}"></div>
                 <!-- <ul>
                     <li th:each="item,index:${view}" class="list-unstyled">
                    
