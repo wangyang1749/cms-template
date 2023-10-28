@@ -71,7 +71,7 @@
         }
     </style>
     <div cms:replace="/html/components/header :: #fragment"></div>
-    <div class="container margin-top-72" id="app">
+    <div class="container-xl margin-top-72" id="app">
 
         <div class="row mb-3 ">
             <div class="col-lg-3">
@@ -126,7 +126,7 @@
                     </div>
                 </form>
                 <hr>
-                <div  class="section ie-size" style="height: 500px;" id="node-graph"></div>
+                <div  class="section ie-size" style="height:600px;" id="node-graph"></div>
             </div>
         </div>
 
@@ -247,7 +247,7 @@
                     .select("circle")
                     .transition()
                     .duration(defaultDuration)
-                    .attr("r", defaultR * 1.5);
+                    .attr("r", (d.radius !== undefined ? d.radius * 1.5 : defaultR * 1.5) );
                 d3.select(this)
                     .selectAll("text")
                     .transition()
@@ -294,7 +294,7 @@
                 g.select("circle")
                     .transition()
                     .duration(defaultDuration)
-                    .attr("r", defaultR);
+                    .attr("r", (d) => (d.radius !== undefined ? d.radius : defaultR));
                 if (graphType === 1) {
                     return;
                 }
@@ -390,7 +390,7 @@
                     .on("mouseout", mouseoutNode),
                 circle = node
                     .append("circle")
-                    .attr("r", (d) => (d.r !== undefined ? d.r : defaultR))
+                    .attr("r", (d) => (d.radius !== undefined ? d.radius : defaultR))
                     .classed("graph-fixed", (d) => d.fx !== undefined)
                     .classed("graph-node", true);
             node
@@ -441,8 +441,8 @@
             json
             ,
             1000,
-            500,
-            0.3,
+            600,
+            0.15,
             0.08
         );
     // divId,
