@@ -239,7 +239,7 @@ if (document.body.clientWidth >= 977) {
 var url = location.hostname;
 var protocol = window.location.protocol;
 var token = $.cookie('Authorization')
-function deleteArticle(id, viewName) {
+function deleteArticle(id,path, viewName) {
 
     if (confirm("确定删除该文章?")) {
         $.ajax({
@@ -250,10 +250,10 @@ function deleteArticle(id, viewName) {
             },
             type: "get",
             success: function (data) {
-                // console.log(data.data)
+                console.log(viewName)
                 var datas = data.data
                 // Toast("删除文章" + data.data.title + "成功！", 'success')
-                window.location.href = "/html_articleList_" + viewName + ".html";
+                window.location.href = "/"+path+"/" + viewName + ".html";
             }
         });
 

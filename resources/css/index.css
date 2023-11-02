@@ -1372,7 +1372,7 @@ button:focus {
     font-size: 2rem;
 }
 
-.row {
+.container-80vw .row {
     margin-right: -7.5px;
     margin-left: -7.5px;
 }

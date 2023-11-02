@@ -44,7 +44,7 @@
             max-height: 39rem;
             overflow-x: auto;
         }
- 
+
         .col-50 {
             width: 50%;
         }
@@ -68,7 +68,8 @@
                 <div class="col p-3 col-50">
                     <div id="markdown-preview" th:utext="${view==null?'':view.formatContent}" class="markdown  pr-3">
                     </div>
-
+                    <iframe id="iframe-preview" style="display: none;" src="https://poe.com/chat/2gb6796rwdluxnbx2l2"
+                        frameborder="0" width="100%" height="100%"></iframe>
                 </div>
             </div>
             <div class="form-group">
@@ -83,6 +84,7 @@
 
             <div class="d-flex justify-content-end form-group">
                 <!-- <button type="button" class="btn btn-all" id="copyHTML">拷贝HTML</button> -->
+                <button type="button" class="btn  btn-success" id="changeIframe">切换iframe</button>
                 <button type="button" class="btn  btn-success" id="attachment">附件</button>
                 <button type="button" class="btn  btn-success" id="saveLiterature">保存</button>
                 <!-- <button type="button" class="btn  btn-success" id="previewNet">预览</button> -->
@@ -397,6 +399,19 @@
             }
 
         })
+
+        $("#changeIframe").click(function () {
+            if ($("#iframe-preview").css("display") != "block") {
+                $("#iframe-preview").css("display", "block")
+                $("#markdown-preview").css("display", "none")
+            } else {
+                $("#iframe-preview").css("display", "none")
+                $("#markdown-preview").css("display", "block")
+            }
+
+
+        })
+
     </script>
 
 </body>

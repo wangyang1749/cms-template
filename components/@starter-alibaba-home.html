@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+
+	<cms:block cms:replace="templates/templates/fragment/header" />
+
+	<title>付费资源 </title>
+
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="/ecommerce/images/favicon.ico"> -->
+
+	<!-- jQuery -->
+	<!-- <script src="/ecommerce/js/jquery-2.0.0.min.js" type="text/javascript"></script> -->
+
+	<!-- Bootstrap4 files-->
+	<!-- <script src="/ecommerce/js/bootstrap.bundle.min.js" type="text/javascript"></script> -->
+	<!-- <link href="/ecommerce/css/bootstrap-custom.css" rel="stylesheet" type="text/css" /> -->
+
+	<!-- Font awesome 5 -->
+	<!-- <link href="/ecommerce/fonts/fontawesome/css/fontawesome-all.min.css" type="text/css" rel="stylesheet"> -->
+
+	<!-- plugin: fancybox  -->
+	<!-- <script src="/ecommerce/plugins/fancybox/fancybox.min.js" type="text/javascript"></script>
+	<link href="/ecommerce/plugins/fancybox/fancybox.min.css" type="text/css" rel="stylesheet"> -->
+
+	<!-- plugin: owl carousel  -->
+	<!-- <link href="/ecommerce/plugins/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+	<link href="/ecommerce/plugins/owlcarousel/assets/owl.theme.default.css" rel="stylesheet">
+	<script src="/ecommerce/plugins/owlcarousel/owl.carousel.min.js"></script> -->
+
+	<!-- custom style -->
+	<link href="/ecommerce/css/uikit.css" rel="stylesheet" type="text/css" />
+	<!-- <link href="/ecommerce/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" /> -->
+
+
+
+</head>
+
+<body>
+	<div cms:replace="/html/components/header :: #fragment"></div>
+	<div class="margin-top-72 container ">
+	
+
+
+		<!-- ========================= SECTION ITEMS ========================= -->
+		<section class="section-request bg padding-y-sm" th:each="category :${view}">
+			<div class="">
+				<header class="section-heading heading-line">
+					<h4 class="title-section bg text-uppercase" th:text="${category.category.name}">Recommended items
+					</h4>
+				</header>
+
+				<div class="row-sm">
+					<div class="col-md-2" th:each="item : ${category.contentVOS}">
+						<a th:href="${item.linkPath}">
+							<figure class="card card-product">
+								<div class="img-wrap"> <img th:src="${item.picThumbPath}"></div>
+								<figcaption class="info-wrap">
+									<h6 class="title " th:text="${item.title}">Good item name</h6>
+
+									<div class="price-wrap">
+										<span class="price-new">$1</span>
+										<!-- <del class="price-old">$1980</del> -->
+									</div>
+
+								</figcaption>
+							</figure> <!-- card // -->
+						</a>
+					</div> <!-- col // -->
+
+				</div> <!-- row.// -->
+
+
+			</div><!-- container // -->
+		</section>
+		<!-- ========================= SECTION ITEMS .END// ========================= -->
+
+	</div>
+
+
+
+
+	<div cms:replace="/html/components/footer :: #fragment"></div>
+
+	<div cms:replace="templates/templates/fragment/footer"></div>
+
+</body>
+
+</html>

@@ -176,7 +176,7 @@
                                             class=" text-secondary justify-content-end text-right"><i
                                                 class="bi bi-pencil-square"></i> 编辑</a>
                                         <a class=" text-secondary justify-content-end text-right" href="javascript:;"
-                                            th:onclick="deleteArticle([[${view.id}]],[[${view.category.viewName}]])"
+                                            th:onclick="deleteArticle([[${view.id}]],[[${view.category.path}]],[[${view.category.viewName}]])"
                                             th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
                                         <a href="javascript:;" onclick="loadImgCall(copyContent,'markdown')"
                                             class="text-secondary justify-content-end text-right">拷贝</a>

@@ -1,0 +1,72 @@
+<th:block th:fragment="row(commentsVar,viewName)">
+    <ul th:each="item,index:${commentsVar}" class="md-nav__list" data-md-scrollfix>
+        <li th:if="${#lists.isEmpty(item.children)}" class="md-nav__item">
+
+            <a th:if="!${item.isDivision}" th:href="${item.linkPath}" class="md-nav__link"
+                th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+                <span th:text="${item.title}"></span>
+                <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"
+                    data-toggle="collapse" th:data-target="'#ID'+${item.viewName}"></i>
+            </a>
+            <a href="javascript:;" th:if="${item.isDivision}" class="md-nav__link"
+                th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+                <span th:text="${item.title}"></span>
+                <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"
+                    data-toggle="collapse" th:data-target="'#ID'+${item.viewName}"></i>
+            </a>
+        </li>
+        <li th:if="not ${#lists.isEmpty(item.children)}" class="md-nav__item">
+
+            <a th:if="!${item.isDivision}" th:href="${item.linkPath}" class="md-nav__link"
+                th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+                <span th:text="${item.title}"></span>
+                <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"
+                    data-toggle="collapse" th:data-target="'#ID'+${item.viewName}"></i>
+            </a>
+            <a href="javascript:;" th:if="${item.isDivision}" class="md-nav__link"
+                th:id="'ID-current-'+${item.viewName}" th:data-parent="${viewName}">
+                <span th:text="${item.title}"></span>
+                <i th:if="${! #sets.isEmpty(item.children)}" class="bi bi-chevron-right text-secondary pointer"
+                    data-toggle="collapse" th:data-target="'#ID'+${item.viewName}"></i>
+            </a>
+
+            <div class="child collapse" th:id="'ID'+${item.viewName}">
+                <th:block th:include="this::row(${item.children},${item.viewName})"></th:block>
+            </div>
+
+        </li>
+    </ul>
+</th:block>
+
+<div th:include="this::row(${view.contents},'none')"></div>
+
+
+<!-- 
+<ul class="md-nav__list" data-md-scrollfix>
+    <li class="md-nav__item">
+        <a href="../" class="md-nav__link">
+            <span class="md-ellipsis">
+                Welcome
+            </span>
+        </a>
+    </li>
+
+
+    <li class="md-nav__item">
+        <a href="../channels/" class="md-nav__link">
+
+
+            <span class="md-ellipsis">
+                Channels
+            </span>
+        </a>
+    </li>
+    <li class="md-nav__item">
+        <a href="../processes/" class="md-nav__link">
+            <span class="md-ellipsis">
+                Processes
+            </span>
+        </a>
+    </li>
+
+</ul> -->

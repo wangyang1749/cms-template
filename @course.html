@@ -77,6 +77,15 @@
                 <div class="flex-table ">
                     <div cms:replace="/html/components/form :: #fragment"></div>
                     <div class="g-bg p-2">
+                        <dl>
+                            <dt class="text-muted">标签</dt>
+                            <dd th:if="${view.tags!=null}">
+                                <a th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
+                                    th:each="item : ${view.tags}" th:text="${item.name}"></a>
+                            </dd>
+
+                        </dl>
+                        <hr>
                         <div cms:replace="~{${view.parentCategory.get(0).path}+'/CATEGORY_PARTNER/'+${view.parentCategory.get(0).viewName}} ?:_"
                             parser>
                         </div>
@@ -169,7 +178,7 @@
                                             class=" text-secondary justify-content-end text-right"><i
                                                 class="bi bi-pencil-square"></i> 编辑</a>
                                         <a class=" text-secondary justify-content-end text-right" href="javascript:;"
-                                            th:onclick="deleteArticle([[${view.id}]],[[${view.category.viewName}]])"
+                                            th:onclick="deleteArticle([[${view.id}]],[[${view.category.path}]],[[${view.category.viewName}]])"
                                             th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
                                         <a href="javascript:;" onclick="loadImgCall(copyContent,'markdown')"
                                             class="text-secondary justify-content-end text-right">拷贝</a>

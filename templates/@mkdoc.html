@@ -353,15 +353,6 @@
                 </div> -->
 
                   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-                    <div cms:if="${#sets.contains(roles, 'ADMIN')}">
-                      <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
-                        <input name="title" type="text" class="form-control" placeholder="input article name">
-                        <div class="input-group-append">
-                          <button class="btn btn-outline-secondary" type="submit">创建文章</button>
-                        </div>
-                      </form>
-                      <br>
-                    </div>
 
 
 
@@ -384,20 +375,16 @@
                         <span class="md-nav__icon md-icon"></span>
                         <span th:text="${view.category.name}">Basic Training</span>
                       </label>
-                      <div cms:replace="~{${view.category.path}+'/CATEGORY_TITLE/'+${view.category.viewName}} ?:_"
+
+                      <div cms:replace="~{${view.category.path}+'/categoryDocTitle/'+${view.category.viewName}} ?:_"
                         parser>
                       </div>
                       <!-- <ul class="md-nav__list" data-md-scrollfix>
-
                         <li class="md-nav__item">
                           <a href="../" class="md-nav__link">
-
-
                             <span class="md-ellipsis">
                               Welcome
                             </span>
-
-
                           </a>
                         </li>
 
@@ -1051,9 +1038,11 @@
 
 
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
-          <div class="md-sidebar__scrollwrap">
-            <div class="md-sidebar__inner">
 
+          <div class="md-sidebar__scrollwrap">
+
+
+            <div class="md-sidebar__inner">
 
               <nav class="md-nav md-nav--secondary" aria-label="On this page">
 
@@ -1061,12 +1050,15 @@
                   <span class="md-nav__icon md-icon"></span>
                   On this page
                 </label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix th:utext="${view.toc}">
-                  <li class="md-nav__item">
-                    <a href="#define-the-workflow-parameters" class="md-nav__link">
+                <!-- <span th:text="${view.tocList}"></span> -->
+                <!-- th:utext="${view.toc}" -->
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix >
+
+                  <li class="md-nav__item" th:each="item : ${view.tocList}">
+                    <a th:href="${item.linkPath}" class="md-nav__link" th:text="${item.title}">
                       Define the workflow parameters
                     </a>
-
+<!-- 
                     <nav class="md-nav" aria-label="Define the workflow parameters">
                       <ul class="md-nav__list">
 
@@ -1085,168 +1077,21 @@
                         </li>
 
                       </ul>
-                    </nav>
+                    </nav> -->
 
                   </li>
-                  <li class="md-nav__item">
-                    <a href="#create-a-transcriptome-index-file" class="md-nav__link">
-                      Create a transcriptome index file
-                    </a>
 
-                    <nav class="md-nav" aria-label="Create a transcriptome index file">
-                      <ul class="md-nav__list">
-
-                        <li class="md-nav__item">
-                          <a href="#exercises_1" class="md-nav__link">
-                            Exercises
-                          </a>
-
-                        </li>
-
-                        <li class="md-nav__item">
-                          <a href="#summary_1" class="md-nav__link">
-                            Summary
-                          </a>
-
-                        </li>
-
-                      </ul>
-                    </nav>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#collect-read-files-by-pairs" class="md-nav__link">
-                      Collect read files by pairs
-                    </a>
-
-                    <nav class="md-nav" aria-label="Collect read files by pairs">
-                      <ul class="md-nav__list">
-
-                        <li class="md-nav__item">
-                          <a href="#exercises_2" class="md-nav__link">
-                            Exercises
-                          </a>
-
-                        </li>
-
-                        <li class="md-nav__item">
-                          <a href="#summary_2" class="md-nav__link">
-                            Summary
-                          </a>
-
-                        </li>
-
-                      </ul>
-                    </nav>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#perform-expression-quantification" class="md-nav__link">
-                      Perform expression quantification
-                    </a>
-
-                    <nav class="md-nav" aria-label="Perform expression quantification">
-                      <ul class="md-nav__list">
-
-                        <li class="md-nav__item">
-                          <a href="#exercises_3" class="md-nav__link">
-                            Exercises
-                          </a>
-
-                        </li>
-
-                        <li class="md-nav__item">
-                          <a href="#summary_3" class="md-nav__link">
-                            Summary
-                          </a>
-
-                        </li>
-
-                      </ul>
-                    </nav>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#quality-control" class="md-nav__link">
-                      Quality control
-                    </a>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#multiqc-report" class="md-nav__link">
-                      MultiQC report
-                    </a>
-
-                    <nav class="md-nav" aria-label="MultiQC report">
-                      <ul class="md-nav__list">
-
-                        <li class="md-nav__item">
-                          <a href="#summary_4" class="md-nav__link">
-                            Summary
-                          </a>
-
-                        </li>
-
-                      </ul>
-                    </nav>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#handle-completion-event" class="md-nav__link">
-                      Handle completion event
-                    </a>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#email-notifications" class="md-nav__link">
-                      Email notifications
-                    </a>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#custom-scripts" class="md-nav__link">
-                      Custom scripts
-                    </a>
-
-                    <nav class="md-nav" aria-label="Custom scripts">
-                      <ul class="md-nav__list">
-
-                        <li class="md-nav__item">
-                          <a href="#summary_5" class="md-nav__link">
-                            Summary
-                          </a>
-
-                        </li>
-
-                      </ul>
-                    </nav>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#metrics-and-reports" class="md-nav__link">
-                      Metrics and reports
-                    </a>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#run-a-project-from-github" class="md-nav__link">
-                      Run a project from GitHub
-                    </a>
-
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#more-resources" class="md-nav__link">
-                      More resources
-                    </a>
-
-                  </li>
+                 
                 </ul>
 
               </nav>
-              <!-- <nav class="md-nav md-nav--secondary sidebar_resources" aria-label="Resources">
-                <label class="md-nav__title">Resources</label>
+              <nav class="md-nav md-nav--secondary sidebar_resources" aria-label="Resources">
+                <label class="md-nav__title">标签</label>
                 <ul class="md-nav__list">
+
                   <li class="md-nav__item">
+
+                    <!--           
                     <a href="https://nextflow.io/docs/latest/index.html" target="_blank" rel="noopener"
                       class="md-nav__link">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -1255,81 +1100,17 @@
                         </path>
                       </svg>
                       Nextflow Docs
-                    </a>
+                    </a> -->
+                    <div class="mb-5">
+                      <div th:if="${view.tags!=null}">
+                        <a class="md-nav__link" th:href="@{~/articleList(tagsId=${item.id})}"
+                          th:each="item : ${view.tags}" th:text="${item.name}"></a>
+                      </div>
+                    </div>
                   </li>
-                  <li class="md-nav__item">
-                    <a href="https://www.nextflow.io/slack-invite.html" target="_blank" rel="noopener"
-                      class="md-nav__link">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path
-                          d="M6 15a2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2h2v2m1 0a2 2 0 0 1 2-2 2 2 0 0 1 2 2v5a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-5m2-8a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2v2H9m0 1a2 2 0 0 1 2 2 2 2 0 0 1-2 2H4a2 2 0 0 1-2-2 2 2 0 0 1 2-2h5m8 2a2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2h-2v-2m-1 0a2 2 0 0 1-2 2 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2 2 2 0 0 1 2 2v5m-2 8a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2v-2h2m0-1a2 2 0 0 1-2-2 2 2 0 0 1 2-2h5a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-5Z">
-                        </path>
-                      </svg>
-                      Nextflow Slack
-                    </a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="https://nextflow.io/" target="_blank" rel="noopener" class="md-nav__link">
-                      <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.85 75.1">
-                        <path class="cls-1"
-                          d="M30.18,37.15c-8.03,7.54-16.32,12.68-24.03,16.16,0,0-.02,.02-.02,.02-2.09,.96-4.14,1.78-6.12,2.51v16.28c3.74-1.13,7.71-2.56,11.84-4.41,.15-.07,.3-.13,.45-.19,.03-.01,.05-.02,.08-.04h0c8.81-3.95,18.19-9.68,27.28-17.98,14.35,17.43,31.23,23.56,43.2,25.6v-15.77c-9.25-2.07-21.7-7.45-32.36-21.09,13.4-14.66,20.7-18.19,28.45-20.33h0c.19-.02,1.63-.28,3.91-.61V1.73c-11.62,2.68-26.93,9.11-41.9,24.15C19.87,1.23,2.16,.05,0,0V15.44s13.16,1.24,30.18,21.71Z" />
-                      </svg>
-                      Nextflow Homepage
-                    </a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="https://seqera.io/" target="_blank" rel="noopener" class="md-nav__link">
-                      <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 66.18 52.32">
-                        <path class="cls-1"
-                          d="M14.98,0H52.6c1.61,0,2.93,1.32,2.93,2.93h0c0,1.61-1.32,2.93-2.93,2.93H14.98c-1.61,0-2.93-1.32-2.93-2.93h0c0-1.61,1.32-2.93,2.93-2.93Z" />
-                        <path class="cls-1"
-                          d="M63.36,0h0c1.55,0,2.82,1.27,2.82,2.82v.23c0,1.55-1.27,2.82-2.82,2.82h0c-1.55,0-2.82-1.27-2.82-2.82v-.23c0-1.55,1.27-2.82,2.82-2.82Z" />
-                        <path class="cls-1"
-                          d="M2.93,0H7.1c1.61,0,2.93,1.32,2.93,2.93h0c0,1.61-1.32,2.93-2.93,2.93H2.93c-1.61,0-2.93-1.32-2.93-2.93H0C0,1.32,1.32,0,2.93,0Z" />
-                        <path class="cls-1"
-                          d="M2.93,11.6H40.55c1.61,0,2.93,1.32,2.93,2.93h0c0,1.61-1.32,2.93-2.93,2.93H2.93c-1.61,0-2.93-1.32-2.93-2.93H0c0-1.61,1.32-2.93,2.93-2.93Z" />
-                        <path class="cls-1"
-                          d="M49.85,11.6h0c1.55,0,2.82,1.27,2.82,2.82v.23c0,1.55-1.27,2.82-2.82,2.82h0c-1.55,0-2.82-1.27-2.82-2.82v-.23c0-1.55,1.27-2.82,2.82-2.82Z" />
-                        <path class="cls-1"
-                          d="M59.08,11.6h4.17c1.61,0,2.93,1.32,2.93,2.93h0c0,1.61-1.32,2.93-2.93,2.93h-4.17c-1.61,0-2.93-1.32-2.93-2.93h0c0-1.61,1.32-2.93,2.93-2.93Z" />
-                        <path class="cls-1"
-                          d="M15.6,23.26H53.22c1.61,0,2.93,1.32,2.93,2.93h0c0,1.61-1.32,2.93-2.93,2.93H15.6c-1.61,0-2.93-1.32-2.93-2.93h0c0-1.61,1.32-2.93,2.93-2.93Z" />
-                        <path class="cls-1"
-                          d="M63.36,23.26h0c1.55,0,2.82,1.27,2.82,2.82v.23c0,1.55-1.27,2.82-2.82,2.82h0c-1.55,0-2.82-1.27-2.82-2.82v-.23c0-1.55,1.27-2.82,2.82-2.82Z" />
-                        <path class="cls-1"
-                          d="M2.93,23.26H7.1c1.61,0,2.93,1.32,2.93,2.93h0c0,1.61-1.32,2.93-2.93,2.93H2.93c-1.61,0-2.93-1.32-2.93-2.93H0c0-1.61,1.32-2.93,2.93-2.93Z" />
-                        <g>
-                          <path class="cls-1"
-                            d="M63.25,34.86H25.63c-1.61,0-2.93,1.32-2.93,2.93h0c0,1.61,1.32,2.93,2.93,2.93H63.25c1.61,0,2.93-1.32,2.93-2.93h0c0-1.61-1.32-2.93-2.93-2.93Z" />
-                          <path class="cls-1"
-                            d="M16.33,34.86h0c-1.55,0-2.82,1.27-2.82,2.82v.23c0,1.55,1.27,2.82,2.82,2.82h0c1.55,0,2.82-1.27,2.82-2.82v-.23c0-1.55-1.27-2.82-2.82-2.82Z" />
-                          <path class="cls-1"
-                            d="M7.1,34.86H2.93C1.32,34.86,0,36.18,0,37.79H0c0,1.61,1.32,2.93,2.93,2.93H7.1c1.61,0,2.93-1.32,2.93-2.93h0c0-1.61-1.32-2.93-2.93-2.93Z" />
-                        </g>
-                        <path class="cls-1"
-                          d="M51.2,46.46H13.58c-1.61,0-2.93,1.32-2.93,2.93h0c0,1.61,1.32,2.93,2.93,2.93H51.2c1.61,0,2.93-1.32,2.93-2.93h0c0-1.61-1.32-2.93-2.93-2.93Z" />
-                        <path class="cls-1"
-                          d="M2.82,46.46h0C1.27,46.46,0,47.73,0,49.28v.23c0,1.55,1.27,2.82,2.82,2.82h0c1.55,0,2.82-1.27,2.82-2.82v-.23c0-1.55-1.27-2.82-2.82-2.82Z" />
-                        <path class="cls-1"
-                          d="M63.25,46.46h-4.17c-1.61,0-2.93,1.32-2.93,2.93h0c0,1.61,1.32,2.93,2.93,2.93h4.17c1.61,0,2.93-1.32,2.93-2.93h0c0-1.61-1.32-2.93-2.93-2.93Z" />
-                      </svg>
-                      Seqera Labs
-                    </a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="https://github.com/nextflow-io/training" target="_blank" rel="noopener"
-                      class="md-nav__link">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path
-                          d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z">
-                        </path>
-                      </svg>
-                      Training on GitHub
-                    </a>
-                  </li>
+
                 </ul>
-              </nav> -->
+              </nav>
             </div>
           </div>
         </div>
@@ -1337,8 +1118,20 @@
 
         <div class="md-content" data-md-component="content">
 
+
           <article class="md-content__inner md-typeset">
             <h1 th:text="${view.title}"></h1>
+            <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+              <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                <input name="title" type="text" class="form-control" placeholder="input article name">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="submit">创建文章</button>
+                </div>
+              </form>
+              <br>
+            </div>
+
+
             <span cms:if="${#sets.contains(roles, 'ADMIN')}">
               <a th:href="@{'~/user/edit/'+${view.id}}" class=" text-secondary justify-content-end text-right"><i
                   class="bi bi-pencil-square"></i> 编辑</a>

@@ -342,15 +342,14 @@
                 <li class="breadcrumb-item active" aria-current="page" th:text="${view.title}">首页</li>
             </ol>
         </nav> -->
-        <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+        <section id="fragment">
+            <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+                <a th:href="'/user/editSheet/'+${view.id}" class="btn btn-success ">编辑</a>
+            </div>
+            <div class="markdown shadow p-3 bg-white rounded mb-3" th:utext="${view.formatContent}">
+            </div>
+        </section>
 
-            <a th:href="'/user/editSheet/'+${view.id}" class="btn btn-success ">编辑</a>
-
-
-
-        </div>
-        <div class="markdown shadow p-3 bg-white rounded mb-3" th:utext="${view.formatContent}">
-        </div>
 
     </div>
 

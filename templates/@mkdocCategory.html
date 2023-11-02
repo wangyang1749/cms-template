@@ -353,15 +353,6 @@
                   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
 
 
-                    <div cms:if="${#sets.contains(roles, 'ADMIN')}">
-                      <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
-                        <input name="title" type="text" class="form-control" placeholder="input article name">
-                        <div class="input-group-append">
-                          <button class="btn btn-outline-secondary" type="submit">创建文章</button>
-                        </div>
-                      </form>
-                      <br>
-                    </div>
 
 
                     <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
@@ -382,9 +373,9 @@
                         <span class="md-nav__icon md-icon"></span>
                         <span th:text="${view.category.name}">Basic Training</span>
                       </label>
-                      <div cms:replace="~{${view.category.path}+'/CATEGORY_TITLE/'+${view.category.viewName}} ?:_"
-                        parser>
-                      </div>
+                      <div cms:replace="~{${view.category.path}+'/categoryDocTitle/'+${view.category.viewName}} ?:_"
+                      parser>
+                    </div>
                       <!-- <ul class="md-nav__list" data-md-scrollfix>
 
                         <li class="md-nav__item">
@@ -1338,6 +1329,16 @@
 
           <article class="md-content__inner md-typeset">
             <h1 th:text="${view.category.name}"></h1>
+
+            <div cms:if="${#sets.contains(roles, 'ADMIN')}">
+              <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                <input name="title" type="text" class="form-control" placeholder="input article name">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="submit">创建文章</button>
+                </div>
+              </form>
+              <br>
+            </div>
             <a cms:if="${#sets.contains(roles, 'ADMIN')}" class=" badge badge-success"
               th:href="@{'~/user/editCategory/'+${view.category.id}}">
               编辑</a>

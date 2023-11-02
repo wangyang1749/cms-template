@@ -126,7 +126,7 @@
                     </div>
                 </form>
                 <hr>
-                <div  class="section ie-size" style="height:600px;" id="node-graph"></div>
+                <div class="section ie-size" style="height:600px;" id="node-graph"></div>
             </div>
         </div>
 
@@ -154,6 +154,7 @@
 
 
     <script src="/resources/js/d3.v7.min.js"></script>
+
 
     <script>
         let graphType = 0;
@@ -247,7 +248,7 @@
                     .select("circle")
                     .transition()
                     .duration(defaultDuration)
-                    .attr("r", (d.radius !== undefined ? d.radius * 1.5 : defaultR * 1.5) );
+                    .attr("r", (d.radius !== undefined ? d.radius * 1.5 : defaultR * 1.5));
                 d3.select(this)
                     .selectAll("text")
                     .transition()
@@ -344,7 +345,7 @@
             function dragged(event, d) {
                 d.fx = clamp(event.x, 0, width);
                 d.fy = clamp(event.y, 0, height);
-                simulation.alpha(1).restart();
+                simulation.alpha(0.1).restart();
             }
             const simulation = d3
                 .forceSimulation(graph.nodes)
@@ -369,7 +370,22 @@
                         .strength(linkStrength)
                 )
                 .on("tick", tick);
-            const drag = d3.drag().on("drag", dragged).on("end", dragend);
+            // 拖动节点开始时的处理函数
+            function dragstarted(d) {
+                if (!simulation.alpha()) simulation.alpha(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            // 拖动节点结束时的处理函数
+
+            function dragended(d) {
+                if (!simulation.alpha()) simulation.alpha(0);
+                d.fx = null;
+                d.fy = null;
+            }
+
+            const drag = d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
             const svg = d3
                 .select("#" + divId)
                 .append("svg")
@@ -440,10 +456,10 @@
             "node-graph",
             json
             ,
-            1000,
+            900,
             600,
-            0.15,
-            0.08
+            0.2,
+            0.1
         );
     // divId,
     //     graph,
@@ -452,7 +468,7 @@
     //     velocityDecay,
     //     alphaDecay
     </script>
-    
+
 </body>
 
 </html>
