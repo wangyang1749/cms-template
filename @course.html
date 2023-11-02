@@ -86,7 +86,7 @@
 
                         </dl>
                         <hr>
-                        <div cms:replace="~{${view.parentCategory.get(0).path}+'/CATEGORY_PARTNER/'+${view.parentCategory.get(0).viewName}} ?:_"
+                        <div cms:replace="~{${view.parentCategories.get(0).path}+'/CATEGORY_PARTNER/'+${view.parentCategories.get(0).viewName}} ?:_"
                             parser>
                         </div>
                     </div>
@@ -112,8 +112,8 @@
                     <div class="video-bg">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">首页 </a></li>
-                            <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategory)}"
-                                th:each="item : ${view.parentCategory}">
+                            <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategories)}"
+                                th:each="item : ${view.parentCategories}">
                                 <a th:href="${item.linkPath}" th:text="${item.name}"></a>
                             </li>
                             <li class="breadcrumb-item">

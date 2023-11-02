@@ -128,7 +128,7 @@
       <div class="md-header__title" data-md-component="header-title">
         <div class="md-header__ellipsis">
           <div class="md-header__topic">
-            <span class="md-ellipsis" th:text="${view.parentCategory.get(0).name}+' - 生信小木屋'">
+            <span class="md-ellipsis" th:text="${view.parentCategories.get(0).name}+' - 生信小木屋'">
               生信小木屋
             </span>
           </div>
@@ -267,7 +267,7 @@
     <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
       <div class="md-grid">
         <div
-          cms:replace="~{${view.parentCategory.get(0).path}+'/CATEGORY_PARTNER_MKDOC/'+${view.parentCategory.get(0).viewName}} ?:_"
+          cms:replace="~{${view.parentCategories.get(0).path}+'/CATEGORY_PARTNER_MKDOC/'+${view.parentCategories.get(0).viewName}} ?:_"
           parser>
         </div>
         <!-- <ul class="md-tabs__list">
