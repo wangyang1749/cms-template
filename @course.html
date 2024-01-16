@@ -32,13 +32,12 @@
         <div class="row">
             <div class="col-lg-2  pb-3 md-left order-1 m-order-2" id="tab-content1">
                 <div class="flex-table">
-                    <div class="d-flex user-info g-bg p-2">
-                        <img th:src="${view.user.avatar}" alt="" class="img-fluid rounded-circle" />
+                    <div class="d-flex user-info g-bg p-2" th:each="item : ${view.users}" th:if="${item.username}!='admin'">
+                        <img th:src="${item.avatar}" alt="" class="img-fluid rounded-circle" />
                         <div class="align-self-center ml-3">
-                            <i class="bi bi-person"></i>: <strong th:text="${view.category.user.username}">
+                            <i class="bi bi-person"></i>: <strong th:text="${item.username}">
                             </strong><br>
                             <i class="bi bi-envelope"></i>: <strong> 联系作者</strong>
-
                         </div>
                     </div>
 
@@ -277,20 +276,20 @@
     </script>
     <script>
         mermaid.init({ noteMargin: 10 }, $(".mermaid"));
-    // mermaid.mermaidAPI.initialize({ startOnLoad: false });
+        // mermaid.mermaidAPI.initialize({ startOnLoad: false });
 
-    // mermaid.initialize({ startOnLoad: true });
+        // mermaid.initialize({ startOnLoad: true });
 
-    //   mermaid.init({
-    //     theme: 'forest',
-    //     // themeCSS: '.node rect { fill: red; }',
-    //     logLevel: 3,
-    //     securityLevel: 'loose',
-    //     flowchart: { curve: 'basis' },
-    //     gantt: { axisFormat: '%m/%d/%Y' },
-    //     sequence: { actorMargin: 50 },
-    //     // sequenceDiagram: { actorMargin: 300 } // deprecated
-    //   },$('.mermaid'));
+        //   mermaid.init({
+        //     theme: 'forest',
+        //     // themeCSS: '.node rect { fill: red; }',
+        //     logLevel: 3,
+        //     securityLevel: 'loose',
+        //     flowchart: { curve: 'basis' },
+        //     gantt: { axisFormat: '%m/%d/%Y' },
+        //     sequence: { actorMargin: 50 },
+        //     // sequenceDiagram: { actorMargin: 300 } // deprecated
+        //   },$('.mermaid'));
     </script>
 
     <script>

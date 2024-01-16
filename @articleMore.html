@@ -42,11 +42,11 @@
                     <p class="mb-1" th:text="${item.summary}"></p>
                     <small>
                         <div class="d-flex flex-row bd-highlight ">
-                            <div class="p-2 bd-highlight" style="width: 2.3rem;">
+                            <!-- <div class="p-2 bd-highlight" style="width: 2.3rem;">
                                 <img th:src="${item.user.avatar}" alt="" class="img-fluid rounded-circle">
-                            </div>
+                            </div> -->
                             <div class="p-2 bd-highlight">
-                                <span th:text="${item.user.username}"></span>&nbsp;&nbsp;
+                                <!-- <span th:text="${item.user.username}"></span>&nbsp;&nbsp; -->
                                 <span>发布于: </span>
                                 <span th:text="${#dates.format( item.updateDate, 'yyyy-MM-dd HH:mm:ss')}">3 days ago</span>
                             </div>

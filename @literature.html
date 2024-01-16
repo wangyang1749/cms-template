@@ -47,8 +47,8 @@
                 <span cms:if="${#sets.contains(roles, 'ADMIN')}">
                     <a th:href="'/user/editContent/'+${view.id}">编辑</a>
                 </span>
-                <a th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
-                th:each="item : ${view.tags}" th:text="${item.name}"></a>
+                <!-- <a  th:if="${view.tags}" th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
+                th:each="item : ${view.tags}" th:text="${item.name}"></a> -->
                 
                 <div  class="markdown" th:utext="${view.formatContent}"></div>
                 <!-- <ul>
