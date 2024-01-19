@@ -36,14 +36,14 @@
                 </form>
                 <hr>
                 <ul>
-                    <li th:each="item,index:${contents}" class="list-unstyled">
+                    <li th:each="item,index:${view.contents}" class="list-unstyled">
                    
                         <a th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'">
                             <span th:text="${item.title}"></span>
                         </a>
                         <!-- <span th:unless="${item.url}" th:text="${item.title}"></span> -->
                         
-                        <span th:text="${item.key}"></span>111
+                        <!-- <span th:text="${item.key}"></span>111 -->
                         <span cms:if="${#sets.contains(roles, 'ADMIN')}">
                             <a th:href="'/user/editContent/'+${item.id}">编辑</a>
                         </span>
