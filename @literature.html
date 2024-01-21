@@ -49,7 +49,8 @@
                 </span>
                 <!-- <a  th:if="${view.tags}" th:href="@{~/articleList(tagsId=${item.id})}" class="badge badge-info mr-1"
                 th:each="item : ${view.tags}" th:text="${item.name}"></a> -->
-                
+                <a  th:if="${view.tags}" th:href="${item.url}" class="badge badge-info mr-1"
+                th:each="item : ${view.tags}" th:text="${item.name}"></a>
                 <div  class="markdown" th:utext="${view.formatContent}"></div>
                 <!-- <ul>
                     <li th:each="item,index:${view}" class="list-unstyled">
