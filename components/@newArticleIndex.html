@@ -10,83 +10,33 @@
 <body>
     <div cms:replace="/html/components/header :: #fragment"></div>
 
-    <div class="container container-80vw margin-top-72">
-        <section id="fragment" class="mb-3 g-bg p-2">
-            <ul class="list-group list-group-flush " th:id="${#strings.arraySplit(url,',')[0].replace('/','-')}+'-list'">
-                <!-- <div class="list-group-item list-group-item-light d-flex justify-content-between">
-                    <span> <i class="bi bi-journal-bookmark"></i> <span th:text="${name}"></span></span>
-                    <a class="text-secondary" th:href="${showUrl}">
-                        更多<i class="bi bi-three-dots-vertical"></i>
-                    </a>
-                </div> -->
+    <div class="container container-80vw margin-top-72 " id="article2">
+        <section id="fragment">
 
+            <div class="list-group" th:id="${#strings.arraySplit(url,',')[0].replace('/','-')}+'-list'">
+                <a class="card2" th:href="${item.linkPath}" style="cursor: pointer;" th:each="item : ${view}">
+                    <img th:if="${item.picThumbPath!=null && item.picThumbPath!=''}" class=" lazy"
+                        th:data-original="${item.picThumbPath}">
+                    <div class="info">
+                        <h1 th:text="${item.title}">It's AsmrProg</h1>
+                        <p>
+                            <span th:text="${item.summary}">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Veniam voluptates error in
+                                dolorum
+                                dolor
+                                rerum
+                                reiciendis consequuntur tenetur maxime.</span>
+                            <br>
+                            <span>发布于: </span>
+                            <span th:text="${#dates.format( item.updateDate, 'yyyy-MM-dd HH:mm:ss')}">3 days ago</span>
+                        </p>
 
-                <li class="list-group-item" th:each="item : ${view}">
-                    <!-- th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'" -->
-                    <a th:href="${item.linkPath}" class="text-secondary text-decoration-none ">
-
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1 title" th:text="${item.title}"></h5>
-                        </div>
-                        <div class="d-flex mobile-summary">
-                            <div class="mr-3 mobile-img" th:if="${item.picThumbPath!=null && item.picThumbPath!=''}">
-                                <div class="img-summary">
-                                    <img class=" lazy" th:data-original="${item.picThumbPath}" alt="">
-                                </div>
-                            </div>
-                            <div>
-                                <p class="mb-1 text-break" th:text="${item.summary}"></p>
-                            </div>
-                        </div>
-
-                    </a>
-                    <small>
-                        <div class="d-flex flex-row bd-highlight ">
-                            <!-- <div class="p-2 bd-highlight" style="width: 2.3rem;">
-                                <img th:src="${item.user.avatar}" alt="" class="img-avatar rounded-circle">
-                            </div> -->
-                            <div class="p-2 bd-highlight">
-                                <!-- <span th:text="${item.user.username}"></span>&nbsp;&nbsp; -->
-                                <span>发布于: </span>
-                                <span th:text="${#dates.format( item.updateDate, 'yyyy-MM-dd HH:mm:ss')}">3 days
-                                    ago</span>
-                            </div>
-                            <div class="p-2 bd-highlight">
-                                <a href="javascript:;"
-                                    th:onclick="previewArticleHTML([[${item.path}]],[[${item.viewName}]])"
-                                    class="text-secondary preview">
-                                    <span th:id="'article-expand-'+${item.viewName}">阅读全文<i
-                                            class="bi bi-arrows-expand"></i></span>
-                                    <span th:id="'article-shrink-'+${item.viewName}" style="display: none;">收起<i
-                                            class="bi bi-arrows-collapse"></i></span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </small>
-                    <div th:id="${item.viewName}" class="bg-white markdown">
                     </div>
-                    <div class="mt-2">
-                        <a href="javascript:;" th:onclick="previewArticleHTML([[${item.path}]],[[${item.viewName}]])"
-                            class="text-secondary preview">
-                            <span th:id="'article-shrink-bottom-'+${item.viewName}" style="display: none;">收起<i
-                                    class="bi bi-arrows-collapse"></i></span> </a>
-                    </div>
-                </li>
-                <!-- <div id="articles">
+                </a>
+            </div>
 
-                </div> -->
 
-                <!-- <a th:href="${item.linkPath}" th:each="item : ${view}"
-                    class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-    
-                    <span th:text="${item.title}" class="text-truncate" style="max-width: 12rem;"></span>
-                    <span style="font-size: 0.6rem;" class="badge badge-secondary badge-pill"
-                        th:text="${item.visits}"></span>
-    
-                </a> -->
-            </ul>
-            <div th:id="${#strings.arraySplit(url,',')[0].replace('/','-')}+'-btn'"  >
+            <div th:id="${#strings.arraySplit(url,',')[0].replace('/','-')}+'-btn'">
                 <a class="btn btn-info btn-lg btn-block load-id" href="javascript:;" th:onclick="loadList([[${url}]])"
                     style="text-align: center;" th:data-url="${url}">
                     <!-- <span th:text="${info.ids}"></span>
@@ -111,7 +61,7 @@
         var flag = true
         function loadList(path) {
             // console.log(path)
-            let path2 = path.replaceAll('/','-')
+            let path2 = path.replaceAll('/', '-')
             // let lastPath = pathSplit[pathSplit.length-1]
             id = path2.split(",")[0]
             // console.log()

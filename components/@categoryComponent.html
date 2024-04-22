@@ -21,7 +21,9 @@
 
             <div th:each="category :${view}" class="g-bg p-2">
                 <div class="header-left-small">
-                    <h5 th:text="${category.category.name}"></h5>
+                    <a th:href="${category.category.linkPath}">
+                        <h5 th:text="${category.category.name}"></h5>
+                    </a>                    
                 </div>
                 <!-- column category-icon   -->
 

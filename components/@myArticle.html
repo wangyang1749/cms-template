@@ -11,13 +11,24 @@
     <div class="container margin-top-72">
 
         <section id="fragment">
-            <!-- <ul class="list-group list-group-flush "> -->
 
-            <a th:href="${item.linkPath}" th:each="item : ${view}">
-                <span class="badge badge-info mr-1"><i class="bi  bi-file-earmark-text"></i> <span
-                        th:text="${item.title} "></span></span>
-                <!-- <span style="font-size: 0.6rem;" class="badge badge-secondary badge-pill"
-                    th:text="${item.visits}"></span> -->
+            <a href="https://arxiv.org/">
+                <span class="badge badge-primary mr-1">
+                    <i class="bi  bi-file-earmark-text"></i>
+                    arxiv
+                </span>
+            </a>
+            <a href="https://www.medrxiv.org/">
+                <span class="badge badge-primary mr-1">
+                    <i class="bi  bi-file-earmark-text"></i>
+                    medrxiv
+                </span>
+            </a>
+            <a href="https://bioinfo.online/md/index.html">
+                <span class="badge badge-primary mr-1">
+                    <i class="bi  bi-file-earmark-text"></i>
+                    markdown
+                </span>
             </a>
             <a href="/html/components/sraExplorerApp.html">
                 <span class="badge badge-primary mr-1">
@@ -25,6 +36,14 @@
                     SRA Explorer
                 </span>
             </a>
+                        <!-- <ul class="list-group list-group-flush "> -->
+
+                            <a th:href="${item.linkPath}" th:each="item : ${view}">
+                                <span class="badge badge-info mr-1"><i class="bi  bi-file-earmark-text"></i> <span
+                                        th:text="${item.title} "></span></span>
+                                <!-- <span style="font-size: 0.6rem;" class="badge badge-secondary badge-pill"
+                                    th:text="${item.visits}"></span> -->
+                            </a>
             <hr>
             <ul class="list-unstyled">
                 <li class="text-primary">
@@ -41,18 +60,17 @@
                 </li>
             </ul>
             <!-- </ul> -->
-            <form action="https://zhannei.baidu.com/cse/site" method="get">
+            <!-- <form action="https://zhannei.baidu.com/cse/site" method="get">
                 <div class="input-group mb-3">
                     <input type="hidden" name="cc" id=""
-                        value="bioinfo.online" /><!--设置拼接参数cl，name属性写api的参数名，value写参数值-->
-                    <!-- <input type="hidden" name="pn" id="" value="3" /> -->
+                        value="bioinfo.online" />
                     <input type="text" class="form-control" placeholder="百度站内搜索" name="q"
                         aria-describedby="basic-addon2">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit">搜索</button>
                     </div>
                 </div>
-            </form>
+            </form> -->
       
            
         </section>

@@ -1,0 +1,251 @@
+<!-- 基于页码的分页 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title th:text="${view.category.name}">分类页面</title>
+    <cms:block cms:replace="templates/templates/fragment/header" />
+
+    <link rel="stylesheet" href="/templates/resources/css/category.css">
+    <cms:block cms:replace="templates/templates/fragment/statistics" />
+
+</head>
+
+<body cms:inline="none">
+    <div cms:replace="/html/components/header :: #fragment"></div>
+    <div class="container margin-top-72" id="app">
+
+        <div class="row">
+            <!-- <div class="col-lg-3 ">
+                <div class="p-1 bg-white">
+                    <form th:action="@{'~/user/write/'+${view.category.id}}" method="get" class="input-group">
+                        <input name="title" type="text" class="form-control" placeholder="input article name">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">创建文章</button>
+                        </div>
+                    </form>
+                </div>
+
+                <th:block th:fragment="category(commentsVar)">
+                    <ul th:each="item,index:${commentsVar}">
+                        <li th:if="${#lists.isEmpty(item.children)}" class="list-unstyled">
+                            <h4 th:if="${item.parentId==0}">
+                                </i><a th:href="${item.linkPath}" class="text-muted">
+                                    <i class="bi  bi-book" th:class="${item.icon}"></i> <span
+                                        th:text="${item.name}"></span>
+                                </a>
+                            </h4>
+                            <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                                <i class="bi  bi-box2" th:class="${item.icon}"></i> <span th:text="${item.name}"></span>
+                            </a>
+                        </li>
+                        <li th:if="not ${#lists.isEmpty(item.children)}" class="list-unstyled">
+                            <h4 th:if="${item.parentId==0}">
+                                </i><a th:href="${item.linkPath}" class="text-muted">
+                                    <i class="bi  bi-book" th:class="${item.icon}"></i> <span
+                                        th:text="${item.name}"></span>
+                                </a>
+                            </h4>
+                            <a th:if="${item.parentId!=0}" th:href="${item.linkPath}" class="text-secondary">
+                                <i class="bi  bi-box2" th:class="${item.icon}"></i> <span th:text="${item.name}"></span>
+                            </a>
+                            <th:block th:include="this::category(${item.children})"></th:block>
+                        </li>
+                    </ul>
+                </th:block>
+                <div class="bg-white" th:include="this::category(${view.children})"></div>
+                <div class="bg-white p-3">
+                    <div cms:replace="/html/components/form :: #fragment"></div>
+                </div>
+            </div> -->
+            <div class="col-lg-12 ">
+
+                <div id="main-content" class="bg-white">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">首页 </a></li>
+                        <li class="breadcrumb-item" th:if="${not #lists.isEmpty(view.parentCategories)}"
+                            th:each="item : ${view.parentCategories}">
+                            <a th:href="${item.linkPath}" th:text="${item.name}"></a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            <span th:text="${view.category.name}"></span>
+                        </li>
+                    </ol>
+
+
+                    <div class="catrgory-header">
+                        <div class="img mr-3">
+                            <img th:if="${view.category.picPath==''||view.category.picPath==null}" class="mb-1"
+                                src="http://wangyang-bucket.oss-cn-beijing.aliyuncs.com/cms/image/1676179378473_1676179634655.jpg?x-oss-process=image/resize,l_600,mfit">
+                            <img th:if="${view.category.picPath!=null && view.category.picPath!=''}"
+                                th:src="${view.category.picPath}" class="mb-1">
+                            <div class="d-flex title">
+                                <a class="text-secondary"
+                                    th:href="@{'~'+${view.linkPath.replace('.html','')}+'-mind.html'}">
+                                    <span th:text="${view.category.name}"></span>
+                                </a>
+
+                                <!-- 
+                                <a class="text-secondary" th:href="@{'~/user/mindJs/'+${view.category.id}}">
+                                    &nbsp; [编辑]
+                                </a> -->
+
+                                <!-- <a class="text-secondary" href="#">
+                                    &nbsp; [新建文章]
+                                </a> -->
+                            </div>
+                        </div>
+
+                        <div class=" p-3">
+                            <!-- <div th:utext="${view.category.description}"></div> -->
+
+                            <h2 th:text="${view.category.name}" style="text-align: center;"></h2>
+                            <!-- <span ></span> -->
+                            <ol>
+                                <a th:href="${item.linkPath}" th:each="item: ${view.children}">
+                                    <li th:text="${item.name}"></li>
+                                </a>
+                            </ol>
+                            <hr>
+                            <a cms:if="${#sets.contains(roles, 'ADMIN')}" class=" badge badge-success"
+                                th:href="@{'~/user/editCategory/'+${view.category.id}}">
+                                编辑</a>
+                            <div id="markdown" th:utext="${view.category.formatContent}"></div>
+
+                            <ul class="list-group list-group-flush">
+                                <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName} :: #fragment }   ?:_"
+                                    parser></div>
+                            </ul>
+
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!-- 文章列表 -->
+                    <ul class="list-group list-group-flush mb-3">
+                        <!-- <div class="list-group-item list-group-item-light">
+                            <strong th:text="${view.category.name}"></strong> 一共收录文章<em
+                                th:text="${view.totalElements}"></em>篇，
+                            一共有<span th:text="${view.totalPages}"> </span>页，
+                            每页显示<span th:text="${view.size}"> </span>篇
+
+                        </div> -->
+                        <!-- <div cms:replace="'/'+${view.category.path}+'/top/'+${view.category.viewName} ?: _" parser null></div> -->
+                        <div cms:replace="~{'/'+${view.category.path}+'/top/'+${view.category.viewName} :: #fragment }   ?:_"
+                            parser></div>
+
+                        <div id="components">
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" th:each="item : ${view.contents}">
+                                    <!-- th:href="'/'+${item.path}+'/'+${item.viewName}+'.html'" -->
+                                    <a th:href="${item.linkPath}" class="text-secondary text-decoration-none ">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1 title" th:text="${item.title}"></h5>
+                                        </div>
+                                        <div class="d-flex mobile-summary">
+                                            <div class="mr-3 mobile-img"
+                                                th:if="${item.picThumbPath!=null && item.picThumbPath!=''}">
+                                                <div class="img-summary">
+                                                    <img class=" lazy" th:data-original="${item.picThumbPath}" alt="">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p class="mb-1 text-break" th:text="${item.summary}"></p>
+                                            </div>
+                                        </div>
+
+                                    </a>
+                                    <small>
+                                        <div class="d-flex flex-row bd-highlight ">
+                                            <!-- <div class="p-2 bd-highlight" style="width: 2.3rem;">
+                                                <img th:src="${item.user.avatar}" alt=""
+                                                    class="img-avatar rounded-circle">
+                                            </div> -->
+                                            <div class="p-2 bd-highlight">
+                                                <!-- <span th:text="${item.user.username}"></span>&nbsp;&nbsp; -->
+                                                <span>发布于: </span>
+                                                <span
+                                                    th:text="${#dates.format( item.updateDate, 'yyyy-MM-dd HH:mm:ss')}">3
+                                                    days ago</span>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <a href="javascript:;"
+                                                    th:onclick="previewArticleHTML([[${item.path}]],[[${item.viewName}]])"
+                                                    class="text-secondary preview ">阅读全文</a>
+                                            </div>
+                                        </div>
+
+                                    </small>
+                                    <div th:id="${item.viewName}" class="bg-white markdown">
+                                    </div>
+                                </li>
+
+                            </ul>
+
+
+                            <!-- <div th:each="item : ${view.getContent()}" class="bg-white">
+                              
+                            </div> -->
+
+                        </div>
+
+                    </ul>
+
+                    <div th:if="${view.totalPages} gt '1'" class="mb-3">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+
+                                <li class="page-item">
+                                    <a class="page-link" th:href="${view.linkPath.replace('.html','')}+'.html'"
+                                        aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        th:href="'/'+${view.category.path}+'/'+${view.category.viewName}+'.html'">1</a>
+                                </li>
+
+                                <li class="page-item" th:each="item : ${#numbers.sequence(2, view.totalPages)}">
+                                    <a class="page-link"
+                                        th:href="${view.linkPath.replace('.html','')}+'-'+${item}+'-page.html'"
+                                        th:text="${item}">1</a>
+                                </li>
+
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        th:href="${view.linkPath.replace('.html','')}+'-'+${view.totalPages}+'-page.html'"
+                                        aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div cms:replace="/html/components/footer :: #fragment"></div>
+    <div cms:replace="templates/templates/fragment/footer"></div>
+
+    <script>
+        $(function () {
+            $("img.lazy").lazyload({ effect: "fadeIn" });
+        });
+    </script>
+</body>
+
+</html>

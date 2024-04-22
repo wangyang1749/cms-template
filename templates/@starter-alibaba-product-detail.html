@@ -77,7 +77,7 @@
 											<!-- <div> <a href="/ecommerce/images/items/1.jpg" data-fancybox=""><img
 														th:src="${view.picThumbPath}"></a></div> -->
 											<div>
-												<img th:src="${view.picThumbPath}">
+												<img th:src="${view.goodsImg}">
 											</div>
 										</div> <!-- slider-product.// -->
 										<div class="img-small-wrap">
@@ -96,7 +96,8 @@
 
 										<div class="mb-3">
 											<var class="price h3 text-warning">
-												<span class="currency"> $</span><span class="num">1</span>
+												<span class="currency"> $</span><span class="num"
+													th:text="${view.cost}">1</span>
 											</var>
 											<!-- <span>/per kg</span> -->
 										</div>
@@ -121,7 +122,7 @@
 										</dl> -->
 										<div class="rating-wrap">
 
-											<ul class="rating-stars">
+											<!-- <ul class="rating-stars">
 												<li style="width:80%" class="stars-active">
 													<i class="fa fa-star"></i> <i class="fa fa-star"></i>
 													<i class="fa fa-star"></i> <i class="fa fa-star"></i>
@@ -132,8 +133,9 @@
 													<i class="fa fa-star"></i> <i class="fa fa-star"></i>
 													<i class="fa fa-star"></i>
 												</li>
-											</ul>
+											</ul> -->
 											<div class="label-rating">浏览量:<strong id="visits"></strong></div>
+
 											<!-- <div class="label-rating">154 orders </div> -->
 										</div> <!-- rating-wrap.// -->
 										<!-- <hr> -->
@@ -175,8 +177,37 @@
 											</div> 
 										</div>  -->
 										<hr>
-										<a th:href="${view.picPath}" class="btn  btn-warning"> <i
-												class="fa fa-envelope"></i>点击购买 </a>
+										<div class="row" style="margin:0">
+											<div class="col  ">
+												<div>
+													<div  class="mb-2  text-center">
+														打开淘宝扫一扫
+													</div>
+													<div>
+														<img th:src="${view.goodsQr}" alt="" class="border border-info shadow-sm p-3 mb-5 bg-white rounded">
+													</div>
+												</div>
+
+											</div>
+											<div class="col ">
+												<!-- <img th:src="${view.goodsQr}" alt="" class="border border-info"> -->
+											</div>
+											<div class="col ">
+												<!-- <img th:src="${view.goodsQr}" alt="" class="border border-info"> -->
+											</div>
+										</div>
+										<!-- <div style="width: 30%; " class="border border-info">
+
+											
+										</div> -->
+
+										<hr>
+										<div>
+											<a th:href="${view.costUrl}" class="btn  btn-warning" target="_blank"> <i
+													class="fa fa-envelope"></i>点击购买 </a>
+										</div>
+
+
 										<!-- <a href="#" class="btn  btn-outline-warning"> Start Order </a> -->
 										<!-- short-info-wrap .// -->
 									</article> <!-- card-body.// -->

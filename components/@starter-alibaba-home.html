@@ -54,12 +54,14 @@
 					<div class="col-md-2" th:each="item : ${category.contentVOS}">
 						<a th:href="${item.linkPath}">
 							<figure class="card card-product">
-								<div class="img-wrap"> <img th:src="${item.picThumbPath}"></div>
+								<div class="img-wrap"> 
+									<img th:src="${item.picPath}">
+								</div>
 								<figcaption class="info-wrap">
 									<h6 class="title " th:text="${item.title}">Good item name</h6>
 
 									<div class="price-wrap">
-										<span class="price-new">$1</span>
+										<span class="price-new">$ <span th:text="${item.cost}"></span></span>
 										<!-- <del class="price-old">$1980</del> -->
 									</div>
 

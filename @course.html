@@ -176,6 +176,9 @@
                                         <a th:href="@{'~/user/edit/'+${view.id}}"
                                             class=" text-secondary justify-content-end text-right"><i
                                                 class="bi bi-pencil-square"></i> 编辑</a>
+                                        <a th:href="@{'~/md/'+${view.id}+'.do'}"
+                                                class=" text-secondary justify-content-end text-right"><i
+                                                class="bi bi-pencil-square"></i> 编辑MD</a>
                                         <a class=" text-secondary justify-content-end text-right" href="javascript:;"
                                             th:onclick="deleteArticle([[${view.id}]],[[${view.category.path}]],[[${view.category.viewName}]])"
                                             th:attr="data-id=${view.id}"><i class="bi bi-trash"></i> 删除</a>
